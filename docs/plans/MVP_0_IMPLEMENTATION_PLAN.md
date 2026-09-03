@@ -33,6 +33,7 @@ System
 Component
 Function
 AnalysisContext
+FMEAItem
 Evidence
 FailureModeCandidate
 FailureCauseCandidate
@@ -41,6 +42,11 @@ RiskAssessment
 ```
 
 Use typed Pydantic models.
+
+`FMEAItem` stays minimal in MVP-0: it represents the analysis-object
+identity of a Canonical System Element inside the current
+`AnalysisContext`. Do not permanently merge `Component` and `FMEAItem`
+into one domain object.
 
 Tests first:
 

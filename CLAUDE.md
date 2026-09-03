@@ -153,7 +153,7 @@ evaluation/
 cli/
 ```
 
-Recommended ports:
+Target ports (long-term architecture):
 
 ```text
 SystemModelRepository
@@ -163,6 +163,24 @@ LLMClient
 RiskStrategy
 ReviewRepository
 ```
+
+Current MVP required ports (controlled by the current spec):
+
+```text
+SystemModelRepository
+FailureKnowledgeRepository
+LLMClient
+RiskStrategy
+```
+
+Deferred until needed:
+
+```text
+EvidenceRepository — until real Evidence / KG-RAG capabilities are needed
+ReviewRepository   — until the Human Review stage
+```
+
+The current spec controls what must be implemented in the current MVP.
 
 Initial implementations may be:
 
