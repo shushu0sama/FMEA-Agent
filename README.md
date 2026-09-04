@@ -2,8 +2,10 @@
 
 可维护、证据可溯、MBSE 感知的 FMEA Agent。
 
-**当前版本：MVP-1 Real System Facts — RELEASED（release tag: v0.1.0，2026-09-04）**
-（MVP-0 Runnable Vertical Slice 已完成并作为回归基线保留）
+**当前版本：MVP-1 Real System Facts — RELEASED（current stable release tag: v0.1.1，2026-09-04）**
+（v0.1.0 = original MVP-1 capability release；v0.1.1 = docs-only
+post-release consistency patch，无 capability 变化。
+MVP-0 Runnable Vertical Slice 已完成并作为回归基线保留）
 
 ## 当前能做什么
 
@@ -89,20 +91,19 @@ python scripts/verify.py
 
 ## 下一步
 
-MVP-1 已 **RELEASED**（release tag: `v0.1.0`）：
+MVP-1 已 **RELEASED**：
 
 ```text
 Independent Release Review ACCEPTED（review baseline 369f09d）
 → merge master（2871b23c，--no-ff）
 → master verification（PASS，LOCAL）
 → final release closeout
-→ annotated tag v0.1.0
-```
+→ annotated tag v0.1.0（original capability release）
 
-Post-Release Audit 已完成：唯一发现为 benchmark report 两处
-current-state drift（Review Baseline anchor + release execution
-state），已由 v0.1.1 docs-only patch candidate 修正（无 capability
-变化），待独立 Post-Release Patch Review 后另行打 tag v0.1.1。
+Post-Release Audit（唯一发现：benchmark report 两处 current-state
+drift）→ docs-only patch → Independent Patch Review ACCEPTED
+→ annotated tag v0.1.1（current stable patch；无 capability 变化）
+```
 
 下一步：MVP-2 Real Failure Knowledge — Read-only Planning（另开 Session）。
 
@@ -118,7 +119,7 @@ MCP / Human Review / Failure Propagation / Dynamic FMEA
 ```text
 docs/records/MVP_1/MVP_1_RELEASE.md
 docs/records/MVP_1/MVP_1F_BENCHMARK_RELEASE.md
-docs/records/MVP_1/MVP_1_POST_RELEASE_PATCH.md（v0.1.1 docs patch candidate）
+docs/records/MVP_1/MVP_1_POST_RELEASE_PATCH.md（v0.1.1 docs patch release）
 ```
 
 ## Claude Code 每次新 Session 首先读取

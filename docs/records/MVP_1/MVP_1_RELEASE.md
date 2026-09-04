@@ -243,11 +243,17 @@ NOT CONFIGURED（全部 evidence 为 LOCAL，非 CI PASS）
 ## Version History（治理 §13）
 
 ```text
-v0.1.0 = original MVP-1 release（annotated tag，不可变）
-v0.1.1 = documentation / current-state consistency correction
-         （patch candidate；tag 待独立 Post-Release Patch Review
-         通过后另行创建）
+v0.1.0 = original MVP-1 capability release（annotated tag，不可变）
+
+v0.1.1 = post-release documentation / current-state consistency patch
+
+Patch candidate:          e367fd8579e1c7039871052a77aade4f1622a061
+Independent Patch Review: ACCEPTED（review baseline e367fd8）
+Final tag:                v0.1.1（annotated）
 ```
+
+最终 immutable patch anchor 是 annotated tag v0.1.1 所指向的
+patch-closeout commit。
 
 详见 `docs/records/MVP_1/MVP_1_POST_RELEASE_PATCH.md`。
 
@@ -260,11 +266,10 @@ v0.1.1 = documentation / current-state consistency correction
 
 ## Recommended Next MVP
 
-MVP-2 Real Failure Knowledge —— MVP-1 已 RELEASED。Post-Release Audit
-已完成（唯一 blocker：benchmark report 两处 current-state drift，已由
-v0.1.1 docs patch candidate 修正，待独立 patch review）。之后另开
-Session 进行 MVP-2 Read-only Planning。feature/mvp1-real-system-facts
-分支暂不删除。
+MVP-2 Real Failure Knowledge —— MVP-1 已 RELEASED（v0.1.0 capability
++ v0.1.1 docs patch）。Post-Release Audit 与 patch release 已完成。
+下一 Session：MVP-2 Read-only Planning（MVP-2 = NOT_STARTED）。
+feature/mvp1-real-system-facts 分支暂不删除。
 
 ## Historical Records
 

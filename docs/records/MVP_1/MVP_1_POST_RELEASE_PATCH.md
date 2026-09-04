@@ -1,7 +1,27 @@
 # MVP-1 — Post-Release Documentation Patch Record
 
-Status: PATCH_READY_FOR_REVIEW（v0.1.1 candidate；tag 未创建）
+Status: RELEASED（v0.1.1）
 Date: 2026-09-04
+
+```text
+Patch Review Baseline:   e367fd8579e1c7039871052a77aade4f1622a061
+Independent Post-Release Patch Review: ACCEPTED
+Release Tag:             v0.1.1（annotated）
+```
+
+Review conclusion：
+
+```text
+Benchmark Report correction:   ACCEPTED
+Patch Record:                  ACCEPTED
+Current-state documentation:   ACCEPTED
+Production code:               unchanged
+Tests:                         unchanged
+Benchmark gold:                unchanged
+pyproject.toml:                unchanged
+uv.lock:                       unchanged
+Patch blocker:                 NONE
+```
 
 ## Context
 
@@ -52,8 +72,7 @@ Benchmark 历史结果（B0/B1 gold、metrics、11 benchmark tests）未重写�
 ```text
 v0.1.0 = original MVP-1 release（不可变）
 v0.1.1 = documentation / current-state consistency correction
-         （PATCH_READY_FOR_REVIEW；tag 待独立 Post-Release Patch
-         Review 通过后另行创建）
+         （RELEASED；annotated tag v0.1.1）
 ```
 
 保持不变：
@@ -102,15 +121,20 @@ CI：GitHub Actions NOT CONFIGURED（全部 LOCAL evidence）。
 ## Release Gate — Patch
 
 ```text
-Independent Post-Release Patch Review  — NOT_YET_EXECUTED
-```
+[x] EXTERNAL_REVIEW — Independent Post-Release Patch Review ACCEPTED
+    Review baseline: e367fd8
 
-本 Session 不创建 tag v0.1.1；待 patch review 通过后另开 Session 创建。
+Release execution（本 Session）:
+
+    patch release closeout commit
+    annotated tag v0.1.1
+```
 
 ## Next Stage
 
 ```text
-1. 独立 Post-Release Patch Review（本 patch candidate）
-2. review 通过后：annotated tag v0.1.1（另开 Session）
-3. MVP-2 Read-only Planning（另开 Session；MVP-2 = NOT_STARTED）
+MVP-2 Real Failure Knowledge — Read-only Planning（另开 Session；
+MVP-2 = NOT_STARTED）
 ```
+
+feature branch 不删除。

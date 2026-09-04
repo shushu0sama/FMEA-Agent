@@ -13,15 +13,18 @@ FMEA profile:          AIAG-VDA FMEA（七步 workflow shape）
 Current branch:        master
 Review Baseline:       369f09d
 Current MVP:           MVP-1 Real System Facts
-MVP status:            RELEASED（release tag: v0.1.0，annotated）
+MVP status:            RELEASED（v0.1.0 = original capability release；
+                       v0.1.1 = current stable docs-only patch）
 Current Stage:         1F Benchmark & Release（ACCEPTED）
+Post-Release Patch:    DONE（Independent Patch Review = ACCEPTED；
+                       annotated tag v0.1.1）
 ```
 
 ## Overall Roadmap
 
 ```text
 MVP-0 COMPLETE（v0.0.1 tagged）
-MVP-1 Real System Facts       — RELEASED（v0.1.0 tagged）
+MVP-1 Real System Facts       — RELEASED（v0.1.0 capability；v0.1.1 stable patch）
 MVP-2 Real Failure Knowledge  — NOT_STARTED（另开 Session；禁止提前开始）
 MVP-3 Evidence-grounded LLM
 MVP-4 AIAG-VDA Risk & Semantic Validation
@@ -86,6 +89,8 @@ Dynamic FMEA
                                  Review @ 369f09d）
 Release Closeout              — DONE（2026-09-04，master merge 2871b23c
                                  --no-ff + annotated tag v0.1.0）
+Post-Release Patch            — DONE（2026-09-04，annotated tag v0.1.1；
+                                 docs-only consistency correction）
 ```
 
 关键文档：
@@ -101,15 +106,18 @@ Release Closeout              — DONE（2026-09-04，master merge 2871b23c
 
 ## Current Blockers
 
-No blocker。MVP-1 = RELEASED（annotated tag v0.1.0，指向 release
-closeout commit）。Release 流程已全部完成：merge master（2871b23c，
---no-ff）→ master verification（PASS，LOCAL）→ final release closeout
-→ tag v0.1.0。
+No blocker。MVP-1 = RELEASED。Release 流程已全部完成：
 
-Post-Release Audit 已完成：唯一 blocker 为 benchmark report 两处
-current-state drift（Review Baseline anchor + release execution
-state），已由 v0.1.1 docs-only patch candidate 修正，待独立
-Post-Release Patch Review（tag v0.1.1 未创建）。
+```text
+merge master（2871b23c，--no-ff）
+→ master verification（PASS，LOCAL）
+→ final release closeout
+→ annotated tag v0.1.0（original capability release）
+
+Post-Release Audit 已完成（唯一 blocker：benchmark report 两处
+current-state drift）→ v0.1.1 docs-only patch → Independent Patch
+Review ACCEPTED → annotated tag v0.1.1（current stable patch）
+```
 
 ## Current Known Limitations
 
@@ -146,15 +154,16 @@ CI:              GitHub Actions NOT CONFIGURED
 
 ## Next Action
 
-MVP-1 = RELEASED（annotated release tag v0.1.0）。Post-Release Audit
-已完成（current-state docs drift 已由 v0.1.1 patch candidate 修正）。
+MVP-1 = RELEASED（v0.1.0 = original capability release；
+v0.1.1 = current stable docs-only patch）。Post-Release Patch =
+DONE（Independent Patch Review ACCEPTED；annotated tag v0.1.1）。
+
 后续 Session：
 
 ```text
-1. Independent Post-Release Patch Review（v0.1.1 candidate；通过后
-   另开 Session 创建 annotated tag v0.1.1）
-2. MVP-2 Read-only Planning（另开 Session；MVP-2 = NOT_STARTED）
-禁止:     本 Session 创建 v0.1.1 tag / 开始 MVP-2 implementation
+1. MVP-2 Real Failure Knowledge — Read-only Planning
+   （另开 Session；MVP-2 = NOT_STARTED）
+禁止:     开始 MVP-2 implementation
 ```
 
 Patch 详情：`docs/records/MVP_1/MVP_1_POST_RELEASE_PATCH.md`。
