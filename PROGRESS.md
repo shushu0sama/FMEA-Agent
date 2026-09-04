@@ -48,7 +48,8 @@ MVP-1 阶段：
 ```text
 1A Feasibility Spike          — COMPLETE（CONDITIONAL_GO）
 1B Snapshot Contracts         — COMPLETE
-1C OpenSysML Adapter          — NEXT
+1C-0 Dependency Reproduction — COMPLETE（PYPI_PIN_CONFIRMED，2026-09-04）
+1C OpenSysML Adapter          — NEXT（implementation not started）
 1D Canonical Mapping
 1E Workflow Integration
 1F Benchmark & Release
@@ -59,6 +60,7 @@ MVP-1 阶段：
 - Spec：`docs/specs/MVP_1_REAL_SYSTEM_FACTS.md`
 - Plan：`docs/plans/MVP_1_IMPLEMENTATION_PLAN.md`
 - Spike：`docs/research/OPENSYSML_FEASIBILITY_SPIKE.md`
+- 1C-0 复现报告：`docs/research/OPENSYSML_DEPENDENCY_REPRODUCTION_REPORT.md`
 - Mapping：`docs/architecture/SYSML_TO_CANONICAL_MAPPING.md`
 - Snapshot 契约：`docs/architecture/SYSML_FACT_SNAPSHOT_CONTRACTS.md`
 - Benchmark：`docs/evaluation/MVP_1_BENCHMARK_SPEC.md`
@@ -75,6 +77,17 @@ Conditions（MVP-1B Snapshot Contracts 必须纳入）：
 - **C2** — pin `opensysml==0.4.0`（PyPI）+ `sysml-grpc v0.4.3` windows-amd64（SHA-256 记录于 Spike 报告）。
 - **C3** — source identity 为 name-derived FQN；rename 改变 source ID；不得宣称为跨版本稳定 Canonical identity。
 - **C4** — performed ActionUsage public facts 不足以推导 function typing；禁止发明类型关系；Mapping 按 UNKNOWN / NEEDS_RESEARCH 处理。
+
+### 1C-0 Dependency Reproduction Gate 结果（2026-09-04）
+
+结论：**PYPI_PIN_CONFIRMED**（报告：`docs/research/OPENSYSML_DEPENDENCY_REPRODUCTION_REPORT.md`）。
+
+- PyPI `opensysml==0.4.0`（wheel sha256 `d3a9cfea…`，Apache-2.0）在独立 throwaway venv 重跑全部 13 项 MVP-1C probe，与 MVP-1A checkout 证据逐项 **MATCH**。
+- PyPI wheel 与 checkout client source 内容等价（28/28 文件，0 真实差异，仅 26 个 EOL 差异）。
+- C2 pin 确认：`opensysml==0.4.0`（PyPI）+ `sysml-grpc v0.4.3` windows-amd64（commit `99e02003…`，sha256 `0b188ec…`）。
+- **F1（1C Adapter Profile 必须记录）**：`Model.hash` 不是纯内容哈希 —— 服务端 `digestOf` = SHA256(name + per-file content sha256)；同一文件以不同路径字符串加载得到不同 hash。正式语义：`model_hash` = 当前模型 load context 下的 fingerprint；不是 Canonical ID、不是跨路径稳定 identity、不是跨机器永久稳定 identity、不得用于判断工程实体跨版本 identity。adapter 必须定义 documented deterministic path normalization / load policy；禁止自行重新实现 hash 算法以获取"稳定 hash"（一律原样记录 OpenSysML 返回值）。
+- 孤儿进程检查修正：digest-link 进程名为 `sysml-grpc-0b188ec140872c0f`，须用通配符 `sysml-grpc*` 检查；本轮验证连接打开 1 进程、close 后 0、全流程后 0。
+- 未修改 OpenSysML repo、未修改 FMEA production code、未修改 pyproject.toml。
 
 ### Milestone 0 — Runnable Agent Skeleton
 
@@ -292,6 +305,8 @@ PROGRESS.md updated           PASS
 
 ## Next Action
 
+1C-0 Dependency Reproduction Gate 已通过（PYPI_PIN_CONFIRMED），允许开始 1C。
+
 执行 MVP-1C OpenSysML Adapter（见 `docs/plans/MVP_1_IMPLEMENTATION_PLAN.md` Stage 3）：
 
 ```text
@@ -303,7 +318,8 @@ OpenSysMLFileAdapter
 1C 必须遵守：
 
 - 契约不变：`src/fmea_agent/adapters/sysml/contracts.py` 为 parser-neutral 稳定契约；
-- dependency pin：`opensysml==0.4.0`（PyPI）+ `sysml-grpc v0.4.3` windows-amd64（C2）；
+- dependency pin：`opensysml==0.4.0`（PyPI）+ `sysml-grpc v0.4.3` windows-amd64（C2，1C-0 已复现确认）；
+- `Model.hash` 语义（F1）：hash = load context fingerprint（name+content digest），随加载路径字符串变化；adapter 定义 documented deterministic load/path policy；禁止自行重实现 hash 算法；
 - 单文件子集 + unresolved-import 显式诊断（C1）；
 - owner_id 经真实 traversal/parent context 建立，禁止 FQN 前缀字符串推导；
 - performed ActionUsage typing 缺失 → `type_facts=None`，不推断（C4）；
