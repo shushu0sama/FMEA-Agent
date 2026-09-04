@@ -104,8 +104,12 @@ Release Closeout              — DONE（2026-09-04，master merge 2871b23c
 No blocker。MVP-1 = RELEASED（annotated tag v0.1.0，指向 release
 closeout commit）。Release 流程已全部完成：merge master（2871b23c，
 --no-ff）→ master verification（PASS，LOCAL）→ final release closeout
-→ tag v0.1.0。下一 Session：MVP-1 Post-Release Audit（不删除 feature
-branch、不开始 MVP-2）。
+→ tag v0.1.0。
+
+Post-Release Audit 已完成：唯一 blocker 为 benchmark report 两处
+current-state drift（Review Baseline anchor + release execution
+state），已由 v0.1.1 docs-only patch candidate 修正，待独立
+Post-Release Patch Review（tag v0.1.1 未创建）。
 
 ## Current Known Limitations
 
@@ -142,14 +146,18 @@ CI:              GitHub Actions NOT CONFIGURED
 
 ## Next Action
 
-MVP-1 = RELEASED（annotated release tag v0.1.0）。Release closeout 已
-完成。后续 Session：
+MVP-1 = RELEASED（annotated release tag v0.1.0）。Post-Release Audit
+已完成（current-state docs drift 已由 v0.1.1 patch candidate 修正）。
+后续 Session：
 
 ```text
-1. MVP-1 Post-Release Audit（另开 Session；不删除 feature branch）
+1. Independent Post-Release Patch Review（v0.1.1 candidate；通过后
+   另开 Session 创建 annotated tag v0.1.1）
 2. MVP-2 Read-only Planning（另开 Session；MVP-2 = NOT_STARTED）
-禁止:     本 Session 开始 MVP-2 implementation
+禁止:     本 Session 创建 v0.1.1 tag / 开始 MVP-2 implementation
 ```
+
+Patch 详情：`docs/records/MVP_1/MVP_1_POST_RELEASE_PATCH.md`。
 
 ## Historical Records
 

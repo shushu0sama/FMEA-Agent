@@ -240,11 +240,31 @@ GitHub CI:
 NOT CONFIGURED（全部 evidence 为 LOCAL，非 CI PASS）
 ```
 
+## Version History（治理 §13）
+
+```text
+v0.1.0 = original MVP-1 release（annotated tag，不可变）
+v0.1.1 = documentation / current-state consistency correction
+         （patch candidate；tag 待独立 Post-Release Patch Review
+         通过后另行创建）
+```
+
+详见 `docs/records/MVP_1/MVP_1_POST_RELEASE_PATCH.md`。
+
+## Known Follow-up / Observation
+
+- Python package version synchronization policy remains undefined：
+  `pyproject.toml` 仍为 `version = "0.0.1"`，与 Git tag（v0.1.0）
+  的同步策略未定义。resolve before any package publication；本 patch
+  不修改 `pyproject.toml` / `uv.lock`。
+
 ## Recommended Next MVP
 
-MVP-2 Real Failure Knowledge —— MVP-1 已 RELEASED。下一 Session：
-MVP-1 Post-Release Audit；之后另开 Session 进行 MVP-2 Read-only
-Planning。feature/mvp1-real-system-facts 分支暂不删除。
+MVP-2 Real Failure Knowledge —— MVP-1 已 RELEASED。Post-Release Audit
+已完成（唯一 blocker：benchmark report 两处 current-state drift，已由
+v0.1.1 docs patch candidate 修正，待独立 patch review）。之后另开
+Session 进行 MVP-2 Read-only Planning。feature/mvp1-real-system-facts
+分支暂不删除。
 
 ## Historical Records
 

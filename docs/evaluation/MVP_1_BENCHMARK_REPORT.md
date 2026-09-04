@@ -6,9 +6,14 @@ Date: 2026-09-04
 Commits（完整锚点表见 `docs/records/MVP_1/MVP_1_RELEASE.md`）:
 
 ```text
-Benchmark RC:   4f73d22  test/docs: complete MVP-1F benchmark and release candidate
-Review Baseline: 5da0f11  docs: add per-item release gate evidence to MVP-1F record
+Benchmark RC:      4f73d22  test/docs: complete MVP-1F benchmark and release candidate
+Review Evidence:   5da0f11  docs: add per-item release gate evidence to MVP-1F record
+Review Baseline:   369f09d  docs: fix SysML provenance and third-party license notices
 ```
+
+> Post-release correction（v0.1.1 docs patch）：`5da0f11` 保留为历史
+> review-evidence amendment，最终 Independent Release Review Baseline
+> 为 `369f09d`（与 Release Gate 一致）。
 
 Spec: `docs/evaluation/MVP_1_BENCHMARK_SPEC.md`
 Benchmark tests: `tests/test_mvp1_benchmark.py`（11 tests）
@@ -165,5 +170,10 @@ Implementation / Verification Gate — PASS 16/16（LOCAL evidence）
 
 Independent Release Review      — [x] EXTERNAL_REVIEW — ACCEPTED
     Review baseline: 369f09d
-    merge master / release tag（不可变发布锚点）尚未执行
+
+Release execution（已执行，见 docs/records/MVP_1/MVP_1_RELEASE.md）:
+
+    master merge:      2871b23c（--no-ff）
+    release closeout:  9c59b4b
+    annotated tag:     v0.1.0
 ```

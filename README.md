@@ -99,6 +99,11 @@ Independent Release Review ACCEPTED（review baseline 369f09d）
 → annotated tag v0.1.0
 ```
 
+Post-Release Audit 已完成：唯一发现为 benchmark report 两处
+current-state drift（Review Baseline anchor + release execution
+state），已由 v0.1.1 docs-only patch candidate 修正（无 capability
+变化），待独立 Post-Release Patch Review 后另行打 tag v0.1.1。
+
 下一步：MVP-2 Real Failure Knowledge — Read-only Planning（另开 Session）。
 
 尚未实现（MVP-1 明确延后，不宣传为已有能力）：
@@ -113,6 +118,7 @@ MCP / Human Review / Failure Propagation / Dynamic FMEA
 ```text
 docs/records/MVP_1/MVP_1_RELEASE.md
 docs/records/MVP_1/MVP_1F_BENCHMARK_RELEASE.md
+docs/records/MVP_1/MVP_1_POST_RELEASE_PATCH.md（v0.1.1 docs patch candidate）
 ```
 
 ## Claude Code 每次新 Session 首先读取
