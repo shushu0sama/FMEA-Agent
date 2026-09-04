@@ -1,10 +1,24 @@
 # MVP-1 — Real System Facts Release Record
 
 Status: RELEASE_CANDIDATE
-Release Candidate Commit: 本文件所在 commit（branch HEAD，MVP-1F
-`test/docs: complete MVP-1F benchmark and release candidate`；
-精确 hash 以 git log 为准）
 Date: 2026-09-04
+
+Commit 锚点（不可变历史基线；Markdown 不保存自身 SHA——自引用问题，
+最终发布锚点是 review 通过后的 merge commit 或 release tag）：
+
+```text
+Implementation Baseline:   30aee28  fix: prevent dangling function allocation
+                                    and component parent ids（1E closeout fix）
+Governance:                389f216  docs: establish development records and
+                                    session governance
+Benchmark RC:              4f73d22  test/docs: complete MVP-1F benchmark and
+                                    release candidate
+Review Evidence Amendment: 5da0f11  docs: add per-item release gate evidence
+                                    to MVP-1F record
+Review Baseline:           5da0f11
+```
+
+Review Baseline 之后的 docs-only consistency amendments 以 git log 为准。
 
 > 尚未独立 release review / merge master / tag。RELEASED 状态在 review
 > 通过后另行记录。
@@ -122,27 +136,41 @@ Human Review / Failure Propagation / Dynamic FMEA
 
 ## Release Gate
 
+Gate 分两层：实现验证在本阶段完成（Implementation / Verification Gate）；
+独立审核尚未进行（Independent Release Review）。
+
+### Implementation / Verification Gate — PASS 16/16（LOCAL evidence）
+
 ```text
-[ ] MVP-0 regression PASS
-[ ] B0 exact mapping PASS
-[ ] OpenSysML contract tests PASS
-[ ] >=1 official external SysML integration PASS
-[ ] source trace PASS
-[ ] Canonical invariants PASS
-[ ] real SysML → workflow E2E PASS
-[ ] pytest PASS
-[ ] ruff PASS
-[ ] mypy strict PASS
-[ ] no orphan sysml-grpc regression
-[ ] no OpenSysML type leakage into domain
-[ ] no hard-coded local workspace paths
-[ ] no KG/RAG/MCP/real LLM scope leakage
-[ ] documentation governance complete
-[ ] MVP-1 Stage Records complete
+[x] MVP-0 regression PASS
+[x] B0 exact mapping PASS
+[x] OpenSysML contract tests PASS
+[x] >=1 official external SysML integration PASS
+[x] source trace PASS
+[x] Canonical invariants PASS
+[x] real SysML → workflow E2E PASS
+[x] pytest PASS
+[x] ruff PASS
+[x] mypy strict PASS
+[x] no orphan sysml-grpc regression
+[x] no OpenSysML type leakage into domain
+[x] no hard-coded local workspace paths
+[x] no KG/RAG/MCP/real LLM scope leakage
+[x] documentation governance complete
+[x] MVP-1 Stage Records complete
 ```
 
-逐项证据：`docs/records/MVP_1/MVP_1F_BENCHMARK_RELEASE.md` §7 与
-Benchmark Report。
+逐项证据：`docs/records/MVP_1/MVP_1F_BENCHMARK_RELEASE.md` §8.1 与
+`docs/evaluation/MVP_1_BENCHMARK_REPORT.md`。
+
+### Independent Release Review — 未完成
+
+```text
+[ ] EXTERNAL_REVIEW
+```
+
+通过后：merge master / release tag（不可变发布锚点）；RELEASED 状态
+另行记录。未通过：CHANGES_REQUIRED。
 
 ## Recommended Next MVP
 

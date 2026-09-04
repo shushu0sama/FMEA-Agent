@@ -2,9 +2,13 @@
 
 Status: PASS
 Date: 2026-09-04
-Release Candidate Commit: 本报告所在 commit（branch HEAD；
-`test/docs: complete MVP-1F benchmark and release candidate`，
-精确 hash 以 git log 为准）
+
+Commits（完整锚点表见 `docs/records/MVP_1/MVP_1_RELEASE.md`）:
+
+```text
+Benchmark RC:   4f73d22  test/docs: complete MVP-1F benchmark and release candidate
+Review Baseline: 5da0f11  docs: add per-item release gate evidence to MVP-1F record
+```
 
 Spec: `docs/evaluation/MVP_1_BENCHMARK_SPEC.md`
 Benchmark tests: `tests/test_mvp1_benchmark.py`（11 tests）
@@ -153,23 +157,12 @@ NONE — B0/B1 均一次通过，无 production bug 暴露，无 gold 修改。
 
 ## Release Gate
 
-```text
-[ ] MVP-0 regression PASS
-[ ] B0 exact mapping PASS
-[ ] OpenSysML contract tests PASS
-[ ] >=1 official external SysML integration PASS
-[ ] source trace PASS
-[ ] Canonical invariants PASS
-[ ] real SysML → workflow E2E PASS
-[ ] pytest PASS
-[ ] ruff PASS
-[ ] mypy strict PASS
-[ ] no orphan sysml-grpc regression
-[ ] no OpenSysML type leakage into domain
-[ ] no hard-coded local workspace paths
-[ ] no KG/RAG/MCP/real LLM scope leakage
-[ ] documentation governance complete
-[ ] MVP-1 Stage Records complete
-```
+Gate 分两层：
 
-Gate 结果与逐项证据见 `docs/records/MVP_1/MVP_1F_BENCHMARK_RELEASE.md`。
+```text
+Implementation / Verification Gate — PASS 16/16（LOCAL evidence）
+    逐项 [x] 与证据：docs/records/MVP_1/MVP_1F_BENCHMARK_RELEASE.md §8.1
+
+Independent Release Review      — [ ] EXTERNAL_REVIEW（未完成）
+    通过后：merge master / release tag（不可变发布锚点）
+```

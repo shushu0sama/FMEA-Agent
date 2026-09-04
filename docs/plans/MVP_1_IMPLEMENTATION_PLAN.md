@@ -73,6 +73,9 @@ selected ActionUsage/performed behavior → Function candidate
 
 ## Completion
 
+> 计划期验收清单（快照，不代表当前验收状态）。
+> 实际执行与验收结果以 Git + `docs/records/MVP_1/` 为准。
+
 ```text
 [ ] Spike GO
 [ ] Snapshot stable

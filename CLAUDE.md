@@ -255,7 +255,8 @@ docs/governance/DEVELOPMENT_WORKFLOW_AND_RECORDS_POLICY.md
   in Stage Records; never rewrite history to match today's state.
 - Anti-drift: check branch/HEAD/scope before a Stage and before declaring
   it done; report scope drift explicitly.
-- Stage status: IMPLEMENTED → independent review → ACCEPTED.
+- Stage status: IMPLEMENTED → READY_FOR_REVIEW → independent review
+  → ACCEPTED / CHANGES_REQUIRED.
   Do not claim COMPLETE/ACCEPTED/PASS without running verification.
 - Mark verification evidence as LOCAL / CI / EXTERNAL_REVIEW
   (no CI is configured yet).

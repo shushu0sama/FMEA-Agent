@@ -41,13 +41,16 @@ Start Commit: `30aee28`（1E closeout fix，1F 基线）
 
 Implementation Commit(s):
 
-- Governance commit（Part A）：
-  `docs: establish development records and session governance`
-- 1F commit（Part B）：
-  `test/docs: complete MVP-1F benchmark and release candidate`
+- `389f216` docs: establish development records and session governance
+  （Part A 治理）
+- `4f73d22` test/docs: complete MVP-1F benchmark and release candidate
+  （Part B：benchmark + release records）
+- `5da0f11` docs: add per-item release gate evidence to MVP-1F record
+  （review evidence amendment）
 
-Final Commit: 1F commit（本文件所在 commit，即 branch HEAD；
-精确 hash 以 git log 为准）
+Final Commit: `5da0f11`（Review Baseline；其后的 docs-only consistency
+amendments 以 git log 为准，最终发布锚点为 Release Review 通过后的
+merge commit 或 release tag）
 
 ## 4. Delivered
 
@@ -107,7 +110,13 @@ git diff --check                PASS
 
 CI：GitHub Actions NOT CONFIGURED。全部为 LOCAL evidence。
 
-## 8. Release Gate（逐项证据）
+## 8. Release Gate
+
+Gate 语义拆为两层：Implementation / Verification Gate 由实现方在本阶段
+完成并逐项验证；Independent Release Review 是尚未完成的独立审核，
+不因实现验证通过而自动满足。
+
+### 8.1 Implementation / Verification Gate（LOCAL evidence，PASS 16/16）
 
 ```text
 [x] MVP-0 regression PASS            — demo run + 历史 tests 全通过
@@ -128,6 +137,19 @@ CI：GitHub Actions NOT CONFIGURED。全部为 LOCAL evidence。
 [x] documentation governance complete — Part A commit 389f216
 [x] MVP-1 Stage Records complete     — docs/records/（MVP_0 + 1A–1F + Release）
 ```
+
+### 8.2 Independent Release Review（未完成）
+
+```text
+[ ] EXTERNAL_REVIEW — 独立 reviewer（人 / 独立 Agent）审查：
+
+    docs/records/MVP_1/MVP_1_RELEASE.md
+    docs/records/MVP_1/MVP_1F_BENCHMARK_RELEASE.md
+    docs/evaluation/MVP_1_BENCHMARK_REPORT.md
+```
+
+通过后：merge master / release tag 作为真正不可变的发布锚点；
+未通过：CHANGES_REQUIRED，回到实现方修改。
 
 ## 9. Problems Found During Development
 

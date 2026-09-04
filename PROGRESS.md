@@ -11,7 +11,7 @@ Architecture baseline: v0.1
 Development mode:      Runnable Vertical Slice First
 FMEA profile:          AIAG-VDA FMEA（七步 workflow shape）
 Current branch:        feature/mvp1-real-system-facts
-Expected HEAD:         1F release-candidate commit（git log 为准）
+Review Baseline:       5da0f11（其后 docs-only amendments 以 git log 为准）
 Current MVP:           MVP-1 Real System Facts
 MVP status:            RELEASE_CANDIDATE
 Current Stage:         1F Benchmark & Release（READY_FOR_REVIEW）

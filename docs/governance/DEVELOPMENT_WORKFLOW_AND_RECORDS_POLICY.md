@@ -76,21 +76,30 @@ Governance policies
 ```text
 NOT_STARTED
 IN_PROGRESS
-IMPLEMENTED      ← 实现 Agent 完成实现 + 验证后可声明
-CHANGES_REQUIRED
+IMPLEMENTED        ← 实现 Agent 完成实现 + 验证后可声明
+READY_FOR_REVIEW   ← 实现 Agent 完成 Stage Record / Release Record，
+                     正式进入独立 review 队列
+CHANGES_REQUIRED   ← reviewer 提出修改要求，回到实现方
 BLOCKED
-ACCEPTED         ← 由独立 review 决定，不由实现 Agent 自封
-COMPLETE         ← 已满足 release/acceptance gate 的阶段（历史用法保留）
+ACCEPTED           ← 由独立 review 决定，不由实现 Agent 自封
+COMPLETE           ← 已满足 release/acceptance gate 的阶段（历史用法保留）
 ```
 
 推荐流程：
 
 ```text
-IMPLEMENTED → independent review → ACCEPTED
+Claude / Codex implementation finished
+        ↓
+IMPLEMENTED → READY_FOR_REVIEW
+        ↓
+independent reviewer（人 / 独立 Agent）
+        ↓
+ACCEPTED 或 CHANGES_REQUIRED
 ```
 
-实现 Agent 可报告 `IMPLEMENTED / READY_FOR_REVIEW`。
+实现 Agent 可声明 `IMPLEMENTED` / `READY_FOR_REVIEW`；
 最终 Acceptance 由独立 review 决定。
+`READY_FOR_REVIEW` 只说明实现验证完成、等待审核，不隐含 Acceptance。
 
 ### 3.2 Stage Definition of Done
 
