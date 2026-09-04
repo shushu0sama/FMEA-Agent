@@ -22,7 +22,7 @@ DEFERRED
 | nested `PartUsage` | `Component` + parent | TENTATIVE | owner/containment 需真实验证 |
 | `ActionDefinition` | behavior/type metadata | NEEDS_RESEARCH | MVP-1 不直接等同 `Function` |
 | named `ActionUsage` | `Function` candidate | TENTATIVE | 验证 intended/performed semantics |
-| performed action usage | `Function` candidate | TENTATIVE | 优先研究 |
+| performed action usage | `Function` candidate | NEEDS_RESEARCH | MVP-1A Spike：public facts 中 typing 链接缺失（C4），禁止发明类型关系 |
 | `RequirementUsage` | `Requirement` | DEFERRED | MVP-1 不实现 |
 | `PortUsage` | `Port` | DEFERRED | MVP-1 不实现 |
 | `InterfaceUsage` | `Interface` | DEFERRED | MVP-1 不实现 |

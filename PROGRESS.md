@@ -14,7 +14,7 @@
 
 ### Milestone 1 — Real System Facts
 
-Status: **PLANNING — FEASIBILITY SPIKE（2026-09-04）**
+Status: **1A Feasibility Spike: COMPLETE — CONDITIONAL_GO（2026-09-04）**
 
 Goal:
 
@@ -61,8 +61,19 @@ MVP-1 阶段：
 - Spike：`docs/research/OPENSYSML_FEASIBILITY_SPIKE.md`
 - Mapping：`docs/architecture/SYSML_TO_CANONICAL_MAPPING.md`
 - Benchmark：`docs/evaluation/MVP_1_BENCHMARK_SPEC.md`
-- ADR-008：`docs/adr/ADR-008-opensysml-file-mode-first.md`
+- ADR-008：`docs/adr/ADR-008-opensysml-file-mode-first.md`（已 ACCEPTED）
 - 语言规范：`docs/governance/LANGUAGE_AND_TERMINOLOGY_POLICY.md`
+
+### MVP-1A Spike 结果
+
+结论：**CONDITIONAL_GO**（报告：`docs/research/OPENSYSML_SPIKE_REPORT.md`）。
+
+Conditions（MVP-1B Snapshot Contracts 必须纳入）：
+
+- **C1** — standalone 单文件子集；用户文件 import 不支持；unresolved import 必须产出显式 `SysMLDiagnostic`。
+- **C2** — pin `opensysml==0.4.0`（PyPI）+ `sysml-grpc v0.4.3` windows-amd64（SHA-256 记录于 Spike 报告）。
+- **C3** — source identity 为 name-derived FQN；rename 改变 source ID；不得宣称为跨版本稳定 Canonical identity。
+- **C4** — performed ActionUsage public facts 不足以推导 function typing；禁止发明类型关系；Mapping 按 UNKNOWN / NEEDS_RESEARCH 处理。
 
 ### Milestone 0 — Runnable Agent Skeleton
 
@@ -76,7 +87,7 @@ Goal:
 
 ### Epic 01 — MVP-1 Real System Facts
 
-Status: **PLANNING — 1A Feasibility Spike 未开始（2026-09-04）**
+Status: **1A COMPLETE — CONDITIONAL_GO（2026-09-04）；1B Snapshot Contracts NEXT**
 
 ### Epic 00 — Bootstrap & Runnable MVP
 
@@ -280,16 +291,22 @@ PROGRESS.md updated           PASS
 
 ## Next Action
 
-执行 MVP-1A OpenSysML Feasibility Spike：
+执行 MVP-1B Snapshot Contracts（见 `docs/plans/MVP_1_IMPLEMENTATION_PLAN.md` Stage 2）：
 
 ```text
-docs/research/OPENSYSML_FEASIBILITY_SPIKE.md
+SysMLSource
+SysMLElementFact
+SysMLRelationshipFact
+SysMLDiagnostic
+SysMLFactSnapshot
 ```
 
-Spike 得到 `GO` / `CONDITIONAL_GO` 之前不得：
+前置：MVP-1A 的 C1–C4 已写入本文件与 ADR-008，MVP-1B 契约必须显式覆盖：
 
-- 实现 production Adapter；
-- 修改 Domain；
-- 接入 Neo4j / RAG / MCP / real LLM。
+- C1 single-file subset 与 unresolved-import diagnostic 契约；
+- C2 版本 pin 的 source-version 字段设计；
+- C3 source_id（FQN）与跨版本 identity 限制声明；
+- C4 performed action 事实缺失的表达方式。
 
-Spike 输出：`docs/research/OPENSYSML_SPIKE_REPORT.md`。
+MVP-1B 之前不得实现 production Adapter / Mapping / Domain 修改。
+Snapshots 不依赖 `opensysml` / gRPC / internal AST（Spike 已验证素材充分）。

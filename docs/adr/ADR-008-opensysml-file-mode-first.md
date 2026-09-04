@@ -1,6 +1,6 @@
 # ADR-008: MVP-1 优先采用 OpenSysML File Mode
 
-**Status:** PROPOSED
+**Status:** ACCEPTED
 
 ## Context
 
@@ -35,3 +35,16 @@ MCP 不进入解析层。
 ## Acceptance
 
 Spike 为 `GO` / `CONDITIONAL_GO` 后再将状态改为 `ACCEPTED`。
+
+## Spike Outcome
+
+MVP-1A Feasibility Spike（2026-09-04）结论：**CONDITIONAL_GO**。
+
+报告：`docs/research/OPENSYSML_SPIKE_REPORT.md`。
+
+Conditions（MVP-1B 之前必须接受并写入 Snapshot 契约）：
+
+- **C1** — MVP-1 第一版限定 standalone 单文件子集（标准库 import 允许；用户文件 import 不支持）。unresolved import 必须产出显式 `SysMLDiagnostic`，不得静默降级。
+- **C2** — 验证版本 pin：`opensysml==0.4.0`（PyPI）+ `sysml-grpc v0.4.3` windows-amd64（GitHub release，SHA-256 已记录于 Spike 报告）。
+- **C3** — OpenSysML source identity 当前为 name-derived FQN；rename 会改变 source ID。不得把该 ID 宣称为跨版本稳定 Canonical identity。
+- **C4** — performed ActionUsage 当前 public facts 不足以可靠推导 function typing。禁止发明类型关系；Mapping 阶段按 UNKNOWN / NEEDS_RESEARCH 处理。
