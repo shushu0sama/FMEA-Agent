@@ -1,6 +1,6 @@
 # SysML Fact Snapshot Contracts (MVP-1B)
 
-> 规范性契约文档 v1.0 — APPROVED（2026-09-04，Revision 2 + 最终 Review 澄清 A–D）
+> 规范性契约文档 v1.1 — APPROVED（2026-09-04，v1.0 Revision 2 + 澄清 A–D；v1.1 修正 `model_hash` 语义为 load-context fingerprint（F1）并登记 1C Adapter Profile）
 > 代码 schema 为准：`src/fmea_agent/adapters/sysml/contracts.py`
 
 ## 1. 目的与定位
@@ -39,7 +39,7 @@
 | `source_type` | `str`（非空） | 必填 | 来源形态。MVP-1 唯一值 `"sysml_file"`；其他值（如 `"sysml_repository"`）延后 |
 | `source_path` | `str \| None` | 条件必填 | 文件路径（原样保留）。`source_type=="sysml_file"` 时必填（V6） |
 | `source_version` | `str \| None` | 可选 | source/repository revision identity（如 repo commit）。File Mode 无可靠版本时填 `None`，不得从文件内容自动推断 |
-| `model_hash` | `str \| None` | 可选 | parser 对当前模型内容提供的内容 hash。OpenSysML 1C 用 `Model.hash` 填充。标识内容，**不是**跨版本 identity |
+| `model_hash` | `str \| None` | 可选 | parser 对本次加载提供的 load-context fingerprint。OpenSysML 1C 用 `Model.hash` **原样**填充（F1：不是纯内容哈希；见 §4） |
 | `parser` | `str`（非空） | 必填 | 底层解析引擎名（如 `"opensysml"`） |
 | `parser_version` | `str \| None` | 可选 | parser client 版本（如 `"0.4.0"`） |
 | `runtime_version` | `str \| None` | 可选 | parser 服务版本（如 `"v0.4.3"`） |
@@ -119,6 +119,12 @@
 - OpenSysML `Symbol.id` 为 name-derived FQN（如 `PerformProbe::hydraulicPump::motor`）— CONFIRMED_RUNTIME；
 - rename/move 改变 id（官方文档："A rename is a delete plus a create"）— CONFIRMED_SOURCE；
 - 因此 OpenSysML source identity 不声称跨版本稳定（C3）。未来其他 SysML Adapter 的 identity 语义由其自身 profile 声明，不修改本契约。
+- **F1 — `Model.hash` 不是纯内容哈希，而是 load-context fingerprint**（1C-0 复现报告）：服务端 digest = SHA256(name + per-file content sha256)，按 name 排序；字节相同的内容以不同路径字符串加载得到不同 hash。`model_hash` 正式语义：
+  - 不是 Canonical ID；
+  - 不是跨路径稳定 identity（路径字符串变化 ⇒ hash 变化）；
+  - 不是跨机器永久稳定 identity（未验证、不作承诺）；
+  - 不得用于判断工程实体跨版本 identity。
+  - Adapter 义务：定义 documented deterministic path normalization / load policy（1C 采用 `expanduser().resolve(strict=True)`，同一绝对路径字符串用于 OpenSysML load 与 `source_path`）；`model_hash` 一律原样记录 `Model.hash` 返回值，禁止自行重实现 hash 算法以求"稳定 hash"。
 
 ## 5. Relationship Semantics
 
@@ -149,16 +155,22 @@
 | V9 | 所有模型 `extra="forbid"`——未知字段 → ValidationError | 类型系统 + 测试 |
 | V10 | 必填字符串非空（`min_length=1`）：source_type/parser/adapter、source_id/metatype、type/source_id/target_id、severity/message | 类型系统 + 测试 |
 
-## 8. OpenSysML Adapter Profile（1C 预定，供参考）
+## 8. OpenSysML Adapter Profile（1C 已实现，2026-09-04）
 
-以下属 MVP-1C `OpenSysMLFileAdapter` extraction policy，**不属于本 parser-neutral 契约**：
+以下属 MVP-1C `OpenSysMLFileAdapter` extraction policy（实现见
+`src/fmea_agent/adapters/sysml/open_sysml_file.py`），**不属于本 parser-neutral 契约**：
 
-- dependency pin：`opensysml==0.4.0`（PyPI）+ `sysml-grpc v0.4.3` windows-amd64（SHA-256 见 Spike 报告）；
+- dependency pin：`opensysml==0.4.0`（PyPI，精确 pin）+ `sysml-grpc v0.4.3` windows-amd64（SHA-256 见 Spike 报告与 Dependency Inventory）；
 - 单文件子集：用户文件 import 不支持，unresolved import 产出 error 诊断 + `load_status="partial"`；
 - `Symbol.children` 是方法（非属性）；
 - owner_id 经真实 traversal/parent context 建立（禁止 FQN 前缀字符串推导）；
-- RootNamespace 排除、元素排序、partial extraction 触发条件由 1C 明确；
-- performed ActionUsage typing facts 缺失：`type_facts=None`，不推断。
+- RootNamespace 不进入 `elements`；元素顺序 = pre-order DFS traversal 顺序；
+- partial extraction：`Connection.load(strict=True)` 抛 `ModelError` 且携带 partial model 时，保留全部 diagnostics 并提取可观察事实，`load_status="partial"`；`ModelError` 无 model 时抛 `SysMLParseError`；
+- performed ActionUsage typing facts 缺失：`type_facts=None`，不推断（C4）；
+- 空串 `declared`/`resolved_id`/`resolved_kind` → `None`；三项全 `None` → 整体 `type_facts=None`；
+- `Model.hash` 原样记录（F1，见 §4）；路径策略 `expanduser().resolve(strict=True)`；
+- relationship 来自真实 `Symbol.specializations`，`target_id` 允许指向 Snapshot 外部（如标准库 `ScalarValues::Real`）；
+- Diagnostic `span` 不泄漏 protobuf object（当前置 `None`）；exception 边界：`SysMLLoadError` / `SysMLParseError` / `UnsupportedSysMLElement`。
 
 ## 9. C1–C4 覆盖
 
@@ -171,8 +183,6 @@
 
 ## 10. Out of Scope
 
-- OpenSysMLFileAdapter（1C）；
 - Canonical Mapping（1D）；
-- 异常边界（`SysMLLoadError` 等，1C）；
 - Repository API / 多文件 import；
 - FMEA / Canonical 字段、SourceReference（canonical 层）。

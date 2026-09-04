@@ -44,7 +44,7 @@ DEFERRED
 | SysML-v2-Pilot-Implementation | https://github.com/Systems-Modeling/SysML-v2-Pilot-Implementation | Reference implementation | R | CANDIDATE | Semantic cross-check |
 | SysML-v2-API-Services | https://github.com/Systems-Modeling/SysML-v2-API-Services | Repository/REST access | D/W | CANDIDATE | Repository Mode |
 | SysML-v2-API-Cookbook | https://github.com/Systems-Modeling/SysML-v2-API-Cookbook | API recipes | D/R | CANDIDATE | Reuse traversal patterns |
-| OpenSysML | https://github.com/Open-MBEE/OpenSysML | `.sysml` runtime/parser/Python-gRPC integration | D/W | CANDIDATE | Preferred File Mode candidate |
+| OpenSysML | https://github.com/Open-MBEE/OpenSysML | `.sysml` runtime/parser/Python-gRPC integration | D/W | STABLE (pinned) | Active — MVP-1C File Mode adapter（record 见下） |
 | SYSMOD SysML v2 | https://github.com/MBSE4U/sysmod-sysmlv2 | Delivery Drone/model examples | D/R | CANDIDATE | Benchmark |
 | SYSMOD SysML v2 API/MCP | https://github.com/Open-MBEE/sysmod-sysmlv2-api | SysML API + MCP pattern | W/R | WIP | Architecture/MCP reference; do not bind core domain |
 | SysML-v2 Applications and Examples | https://github.com/Open-MBEE/SysML-v2-Applications-and-Examples | CubeSat/spacecraft examples | D/R | CANDIDATE | Aerospace benchmark |
@@ -82,6 +82,35 @@ Locked by `uv.lock`. Build backend: hatchling (via `uv`).
 | pytest | 8.4.2 | MIT | Testing |
 | ruff | 0.16.6 | MIT | Lint/format |
 | mypy | 1.20.2 | MIT | Type checking |
+
+## Active Dependency Record — OpenSysML (MVP-1C, integrated 2026-09-04)
+
+Pin rationale and reproduction evidence:
+`docs/research/OPENSYSML_SPIKE_REPORT.md`（1A）+
+`docs/research/OPENSYSML_DEPENDENCY_REPRODUCTION_REPORT.md`（1C-0，PYPI_PIN_CONFIRMED）。
+
+```text
+Python client:  opensysml==0.4.0（PyPI wheel，精确 pin；Apache-2.0）
+                wheel sha256 d3a9cfea481818656ec2f30f432c85ac74c41ab22adb51c5d9095c7cc1da3fca
+                依赖集合与 Spike 记录一致（grpcio 1.83.1 / protobuf 7.36.1）
+
+Runtime:        sysml-grpc v0.4.3 windows-amd64（非 Python dependency）
+                GitHub release Open-MBEE/OpenSysML @ tag v0.4.3
+                asset: sysml-grpc-windows-amd64.exe
+                commit 99e02003c9c49358828b1c491a75de61745646ce
+                sha256 0b188ec140872c0f93618602d5aa880daa864a84c00d4a8806cf97c80e8333fe
+
+Adapter path:       src/fmea_agent/adapters/sysml/open_sysml_file.py
+Contract test path: tests/test_open_sysml_file_adapter.py
+Known limitations:
+  - single-file subset；用户文件 import 不支持（C1，unresolved import 显式诊断）
+  - Model.hash = load-context fingerprint（F1），非跨路径/跨版本稳定 identity
+  - performed ActionUsage 无 typing facts（C4），禁止推断
+  - runtime provisioning：本机缓存 ~/.opensysml/bin；备选 $OPENSYSML_BINARY /
+    $OPENSYSML_GRPC_VERSION；client 0.4.0 digest 表只 pin 到 v0.3.0（自动下载回退）
+Replacement option: sysml-grpc v0.3.0（digest 已在 client pin 表内，可自动校验下载）
+Upgrade policy:    一次只升级一个 major integration；contract tests + MVP-0 regression
+                   通过后才接受（见本文件 Upgrade Policy）
 
 Upgrade policy: one dev-dependency major at a time; run `pytest` + `ruff check .` + `mypy src` before accepting.
 

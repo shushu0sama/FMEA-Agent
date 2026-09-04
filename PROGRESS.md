@@ -14,7 +14,7 @@
 
 ### Milestone 1 — Real System Facts
 
-Status: **1A COMPLETE — CONDITIONAL_GO；1B Snapshot Contracts: COMPLETE（2026-09-04）**
+Status: **1A CONDITIONAL_GO；1B Snapshot Contracts COMPLETE；1C OpenSysML Adapter COMPLETE（2026-09-04）**
 
 Goal:
 
@@ -49,8 +49,8 @@ MVP-1 阶段：
 1A Feasibility Spike          — COMPLETE（CONDITIONAL_GO）
 1B Snapshot Contracts         — COMPLETE
 1C-0 Dependency Reproduction — COMPLETE（PYPI_PIN_CONFIRMED，2026-09-04）
-1C OpenSysML Adapter          — NEXT（implementation not started）
-1D Canonical Mapping
+1C OpenSysML Adapter          — COMPLETE（2026-09-04）
+1D Canonical Mapping          — NEXT（not started）
 1E Workflow Integration
 1F Benchmark & Release
 ```
@@ -101,7 +101,7 @@ Goal:
 
 ### Epic 01 — MVP-1 Real System Facts
 
-Status: **1A COMPLETE — CONDITIONAL_GO；1B Snapshot Contracts COMPLETE（2026-09-04）；1C OpenSysML Adapter NEXT**
+Status: **1A CONDITIONAL_GO；1B Snapshot Contracts COMPLETE；1C OpenSysML Adapter COMPLETE（2026-09-04）；1D Canonical Mapping NEXT**
 
 ### Epic 00 — Bootstrap & Runnable MVP
 
@@ -305,28 +305,77 @@ PROGRESS.md updated           PASS
 
 ## Next Action
 
-1C-0 Dependency Reproduction Gate 已通过（PYPI_PIN_CONFIRMED），允许开始 1C。
-
-执行 MVP-1C OpenSysML Adapter（见 `docs/plans/MVP_1_IMPLEMENTATION_PLAN.md` Stage 3）：
+MVP-1C 已 COMPLETE。执行 MVP-1D Canonical Mapping（见
+`docs/plans/MVP_1_IMPLEMENTATION_PLAN.md` Stage 4）：
 
 ```text
-OpenSysMLFileAdapter
-→ public OpenSysML API（load/Model/Symbol/query/Diagnostic）
-→ SysMLFactSnapshot（MVP-1B 契约，见 docs/architecture/SYSML_FACT_SNAPSHOT_CONTRACTS.md）
+selected root PartUsage → System
+named nested PartUsage → Component
+selected ActionUsage/performed behavior → Function candidate
 ```
 
-1C 必须遵守：
+1D 要点：
 
-- 契约不变：`src/fmea_agent/adapters/sysml/contracts.py` 为 parser-neutral 稳定契约；
-- dependency pin：`opensysml==0.4.0`（PyPI）+ `sysml-grpc v0.4.3` windows-amd64（C2，1C-0 已复现确认）；
-- `Model.hash` 语义（F1）：hash = load context fingerprint（name+content digest），随加载路径字符串变化；adapter 定义 documented deterministic load/path policy；禁止自行重实现 hash 算法；
-- 单文件子集 + unresolved-import 显式诊断（C1）；
-- owner_id 经真实 traversal/parent context 建立，禁止 FQN 前缀字符串推导；
-- performed ActionUsage typing 缺失 → `type_facts=None`，不推断（C4）；
-- exception 边界：`SysMLLoadError` / `SysMLParseError` / `UnsupportedSysMLElement`；
-- contract tests 覆盖版本 pin、`children()` 方法形态、unresolved-import 夹具。
+- 必须有显式 root-selection policy；
+- Mapping 规则登记于 `docs/architecture/SYSML_TO_CANONICAL_MAPPING.md`
+  （CONFIRMED / TENTATIVE / NEEDS_RESEARCH / REJECTED / DEFERRED）；
+- performed ActionUsage（C4）按 UNKNOWN / NEEDS_RESEARCH 处理；
+- Snapshot 不铸 Canonical ID；Canonical ID 与 SourceReference 属 1D 职责；
+- 禁止 `PartDefinition == Component` 式简化。
 
-不得开始 Canonical Mapping（1D）。
+不得开始 Workflow Integration（1E）。
+
+## MVP-1C Completion Record (2026-09-04)
+
+Delivered per TDD（RED → GREEN，先测试后实现）：
+
+- `src/fmea_agent/adapters/sysml/open_sysml_file.py` —
+  `OpenSysMLFileAdapter.load(file_path) -> SysMLFactSnapshot`：
+  `expanduser().resolve(strict=True)` 路径策略；显式
+  `with opensysml.connect(version="v0.4.3")`；`Connection.load(strict=True)`；
+  `ModelError` + partial model → partial Snapshot；真实 `Symbol.children()`
+  traversal（RootNamespace 排除、owner_id 来自真实 parent）；
+  `type_facts` 只取 declared/resolved_id/resolved_kind，空串 → None，
+  全 None → `type_facts=None`（C4 不推断）；
+  relationships 来自真实 `Symbol.specializations`（target open-world）；
+  `Model.hash` 原样记录（F1）；Diagnostic 全字段翻译、`span=None` 不泄漏 protobuf
+- `src/fmea_agent/adapters/sysml/exceptions.py` —
+  `SysMLError` / `SysMLLoadError` / `SysMLParseError` / `UnsupportedSysMLElement`；
+  exception chaining（`raise ... from exc`）；不依赖 grpc status code
+- `pyproject.toml` — `opensysml==0.4.0` 精确 pin；`uv.lock` 经 `uv lock` 更新
+  （grpcio 1.83.1 / protobuf 7.36.1 与 Spike 记录一致）
+- 真实 `.sysml` fixtures（`tests/fixtures/sysml/models/`，Spike/1C-0 验证内容
+  字节级复用）：`perform_probe.sysml` / `invalid_syntax.sysml` /
+  `unresolved_import.sysml`（官方 Training Example 未修改，EPL-2.0，溯源见
+  `tests/fixtures/sysml/README.md`）
+- `tests/test_open_sysml_file_adapter.py` — 28 个 contract/integration tests
+
+Acceptance verified:
+
+```text
+opensysml==0.4.0 精确 pin                       PASS
+uv lock --check / uv sync --frozen              PASS
+runtime = sysml-grpc v0.4.3                     PASS（server_info 实测）
+valid .sysml → ok Snapshot                      PASS
+invalid model → partial + diagnostics           PASS（2 error 诊断保留）
+unresolved import → 4 error 显式诊断            PASS
+RootNamespace 不进入 elements                   PASS
+owner_id 来自真实 traversal parent              PASS
+type_facts 不推断（definitions/performed = None）PASS
+performed ActionUsage 无 fabricated typing       PASS（C4）
+specializations 来自真实 OpenSysML facts         PASS（含 ScalarValues::Real 外部 target）
+Model.hash 原样记录 + 同路径可重复 + 路径上下文相关 PASS（F1）
+Snapshot JSON round-trip 语义相等               PASS
+无 protobuf/grpc object 泄漏（span=None）        PASS
+success/partial/error 后连接正确关闭            PASS
+无 sysml-grpc* orphan process                   PASS（通配符检查 0）
+无 Canonical Mapping / System / Component / Function PASS
+无 KG/RAG/MCP/real LLM                          PASS
+无硬编码本地路径                                 PASS
+pytest 162 passed（134 基线 + 28 新增）          PASS
+ruff / mypy（strict）                           PASS
+MVP-0 demo regression（NOT_EVALUATED/SKIPPED）   PASS
+```
 
 ## MVP-1B Completion Record (2026-09-04)
 
