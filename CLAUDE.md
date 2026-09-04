@@ -231,10 +231,36 @@ Read when relevant:
   `docs/adr/`
 - current feature:
   relevant file under `docs/specs/` and `docs/plans/`
+- stage history / release state:
+  `docs/records/` + `docs/governance/DEVELOPMENT_WORKFLOW_AND_RECORDS_POLICY.md`
 
 Do not read every long document for every trivial change.
 
-## 9. Task Classification
+## 9. Development Records & Session Recovery
+
+Governance policy (full rules):
+
+```text
+docs/governance/DEVELOPMENT_WORKFLOW_AND_RECORDS_POLICY.md
+```
+
+- Before starting a non-trivial Stage, read:
+  `CLAUDE.md` / `PROGRESS.md`, current Spec, current Plan,
+  previous Stage Record (`docs/records/`).
+- One formal Stage ≈ one main session. On session switch, recover state
+  from Git + PROGRESS + Spec + Plan + Stage Records — never from chat memory.
+- `PROGRESS.md` is current state only; execution history lives in
+  `docs/records/` (one Closeout Record per Stage, one Release Record per MVP).
+- Plan ≠ execution record; prompt ≠ source of truth. Record real evolution
+  in Stage Records; never rewrite history to match today's state.
+- Anti-drift: check branch/HEAD/scope before a Stage and before declaring
+  it done; report scope drift explicitly.
+- Stage status: IMPLEMENTED → independent review → ACCEPTED.
+  Do not claim COMPLETE/ACCEPTED/PASS without running verification.
+- Mark verification evidence as LOCAL / CI / EXTERNAL_REVIEW
+  (no CI is configured yet).
+
+## 10. Task Classification
 
 For non-trivial work:
 
@@ -251,7 +277,7 @@ Explore
 
 Do not start implementation before understanding existing code and the current phase.
 
-## 10. Reuse Policy
+## 11. Reuse Policy
 
 Before writing infrastructure:
 
@@ -272,7 +298,7 @@ Reuse generic infrastructure.
 
 Never rewrite a SysML parser, graph database, vector database, MCP protocol, agent runtime, or document parser without a documented reason.
 
-## 11. External Dependency Policy
+## 12. External Dependency Policy
 
 For important third-party projects:
 
@@ -286,7 +312,7 @@ For important third-party projects:
 
 If upstream documentation and executable behavior disagree, record the discrepancy and trust reproducible test evidence.
 
-## 12. Testing
+## 13. Testing
 
 At minimum:
 
@@ -310,7 +336,7 @@ External adapters require contract tests.
 
 LLM-dependent functionality requires deterministic fixtures/mocks for normal tests.
 
-## 13. Definition of Done
+## 14. Definition of Done
 
 Do not claim a task is complete unless relevant items are satisfied:
 
@@ -326,7 +352,7 @@ Do not claim a task is complete unless relevant items are satisfied:
 - `PROGRESS.md` is updated;
 - unresolved risks are explicitly reported.
 
-## 14. FMEA Safety Rules
+## 15. FMEA Safety Rules
 
 Never present an unreviewed candidate as an approved engineering result.
 
@@ -351,7 +377,7 @@ Do not conflate:
 - Failure Mechanism;
 - Failure Effect.
 
-## 15. Phase Discipline
+## 16. Phase Discipline
 
 Do not implement later-phase infrastructure merely because it is interesting.
 
@@ -372,7 +398,7 @@ Runnable MVP first
 → dynamic FMEA
 ```
 
-## 16. Git Discipline
+## 17. Git Discipline
 
 - one clear purpose per branch/worktree;
 - small commits;
@@ -381,7 +407,7 @@ Runnable MVP first
 - keep experiments separate from production code;
 - verification before commit.
 
-## 17. Completion Report
+## 18. Completion Report
 
 When finishing a task, report:
 

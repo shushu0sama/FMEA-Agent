@@ -1,5 +1,13 @@
 # MVP-1 Claude Code 分 Session 提示词
 
+> **Historical Planning Artifact**（2026-09-04 标记）
+>
+> 这是 MVP-1 开始前的 Session 规划。
+> 真实执行历史以 Git + `docs/records/MVP_1/` 为准。
+> 后续 Session 使用 `docs/prompts/CLAUDE_CODE_SESSION_TEMPLATE.md`。
+> 本文件保留原规划内容，不用于判断项目当前状态。
+
+
 ## Session 0 — Read-only planning
 
 ```text
