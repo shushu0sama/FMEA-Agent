@@ -10,10 +10,10 @@
 Architecture baseline: v0.1
 Development mode:      Runnable Vertical Slice First
 FMEA profile:          AIAG-VDA FMEA（七步 workflow shape）
-Current branch:        feature/mvp1-real-system-facts
+Current branch:        master
 Review Baseline:       369f09d
 Current MVP:           MVP-1 Real System Facts
-MVP status:            RELEASE_READY（Independent Release Review ACCEPTED）
+MVP status:            RELEASED（release tag: v0.1.0，annotated）
 Current Stage:         1F Benchmark & Release（ACCEPTED）
 ```
 
@@ -21,8 +21,8 @@ Current Stage:         1F Benchmark & Release（ACCEPTED）
 
 ```text
 MVP-0 COMPLETE（v0.0.1 tagged）
-MVP-1 Real System Facts       — RELEASE_READY（1A–1F ACCEPTED，待 merge master / tag）
-MVP-2 Real Failure Knowledge  — 未开始（MVP-1 Release Review 之后另开 Session）
+MVP-1 Real System Facts       — RELEASED（v0.1.0 tagged）
+MVP-2 Real Failure Knowledge  — NOT_STARTED（另开 Session；禁止提前开始）
 MVP-3 Evidence-grounded LLM
 MVP-4 AIAG-VDA Risk & Semantic Validation
 MVP-5 Human Review
@@ -84,6 +84,8 @@ Dynamic FMEA
 1E Workflow Integration       — ACCEPTED（2026-09-04）
 1F Benchmark & Release        — ACCEPTED（2026-09-04，Independent Release
                                  Review @ 369f09d）
+Release Closeout              — DONE（2026-09-04，master merge 2871b23c
+                                 --no-ff + annotated tag v0.1.0）
 ```
 
 关键文档：
@@ -99,11 +101,11 @@ Dynamic FMEA
 
 ## Current Blockers
 
-No blocker（Independent Release Review @ 369f09d：
-Production / Architecture / Benchmark / Release hygiene 全部 NONE）。
-Release 流程剩余步骤：merge master → master verification → final
-release closeout → tag v0.1.0（另开 Session；不 merge master、不 tag、
-不开 MVP-2）。
+No blocker。MVP-1 = RELEASED（annotated tag v0.1.0，指向 release
+closeout commit）。Release 流程已全部完成：merge master（2871b23c，
+--no-ff）→ master verification（PASS，LOCAL）→ final release closeout
+→ tag v0.1.0。下一 Session：MVP-1 Post-Release Audit（不删除 feature
+branch、不开始 MVP-2）。
 
 ## Current Known Limitations
 
@@ -133,20 +135,20 @@ mypy:            src strict PASS（LOCAL）
 real E2E:        typed_inside_probe.sysml → workflow PASS（suite 内）
 benchmark:       B0 PASS / B1 PASS（docs/evaluation/MVP_1_BENCHMARK_REPORT.md）
 sysml-grpc:      0 orphan processes（LOCAL）
+master verification:
+                 PASS（LOCAL，release closeout @ v0.1.0）
 CI:              GitHub Actions NOT CONFIGURED
 ```
 
 ## Next Action
 
-Independent Release Review 已通过（ACCEPTED @ 369f09d；
-MVP-1 = RELEASE_READY）。Release closeout（另开 Session）：
+MVP-1 = RELEASED（annotated release tag v0.1.0）。Release closeout 已
+完成。后续 Session：
 
 ```text
-1. merge feature/mvp1-real-system-facts → master
-2. master verification
-3. final release closeout
-4. tag v0.1.0
-之后:     另开 Session 规划 MVP-2（禁止本 Session 开始）
+1. MVP-1 Post-Release Audit（另开 Session；不删除 feature branch）
+2. MVP-2 Read-only Planning（另开 Session；MVP-2 = NOT_STARTED）
+禁止:     本 Session 开始 MVP-2 implementation
 ```
 
 ## Historical Records

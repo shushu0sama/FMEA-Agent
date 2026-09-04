@@ -2,7 +2,7 @@
 
 可维护、证据可溯、MBSE 感知的 FMEA Agent。
 
-**当前版本：MVP-1 Real System Facts — RELEASE_READY（2026-09-04）**
+**当前版本：MVP-1 Real System Facts — RELEASED（release tag: v0.1.0，2026-09-04）**
 （MVP-0 Runnable Vertical Slice 已完成并作为回归基线保留）
 
 ## 当前能做什么
@@ -89,20 +89,24 @@ python scripts/verify.py
 
 ## 下一步
 
-MVP-1 处于 **RELEASE_READY** 状态：Independent Release Review 已通过
-（ACCEPTED，review baseline `369f09d`；Production / Architecture /
-Benchmark / Release hygiene blocker 均为 NONE）。
-
-剩余 release closeout 步骤：
+MVP-1 已 **RELEASED**（release tag: `v0.1.0`）：
 
 ```text
-merge feature/mvp1-real-system-facts → master
-master verification
-final release closeout
-tag v0.1.0
+Independent Release Review ACCEPTED（review baseline 369f09d）
+→ merge master（2871b23c，--no-ff）
+→ master verification（PASS，LOCAL）
+→ final release closeout
+→ annotated tag v0.1.0
 ```
 
-完成后才允许开始 MVP-2 Real Failure Knowledge（另开 Session）。
+下一步：MVP-2 Real Failure Knowledge — Read-only Planning（另开 Session）。
+
+尚未实现（MVP-1 明确延后，不宣传为已有能力）：
+
+```text
+Neo4j / RAG / real LLM / AIAG-VDA real S/O/D/AP
+MCP / Human Review / Failure Propagation / Dynamic FMEA
+```
 
 发布状态与历史：
 

@@ -1,10 +1,10 @@
 # MVP-1 — Real System Facts Release Record
 
-Status: RELEASE_READY（NOT RELEASED；merge master / tag 待执行）
+Status: RELEASED（annotated release tag: v0.1.0）
 Date: 2026-09-04
 
 Commit 锚点（不可变历史基线；Markdown 不保存自身 SHA——自引用问题，
-最终发布锚点是 review 通过后的 merge commit 或 release tag）：
+最终发布锚点是 release tag v0.1.0 所指向的 release-closeout commit）：
 
 ```text
 Implementation Baseline:   30aee28  fix: prevent dangling function allocation
@@ -20,10 +20,17 @@ Release Gate Semantics:    d2c1767  docs: clarify release gate semantics,
 Release Hygiene Closeout:  369f09d  docs: fix SysML provenance and
                                     third-party license notices
 Review Baseline:           369f09d
+Feature Release Baseline:  d0f091f  docs: accept MVP-1 independent release
+                                    review
+Master Before Merge:       f7abadd
+Master Merge Commit:       2871b23c Merge branch
+                                    'feature/mvp1-real-system-facts'
+Merge Strategy:            --no-ff
+Release Tag:               v0.1.0    annotated；最终不可变发布锚点
 ```
 
-> Independent Release Review 已通过（ACCEPTED @ `369f09d`）。merge master
-> / tag 尚未执行。RELEASED 状态在 merge/tag 完成后另行记录。
+> Independent Release Review 已通过（ACCEPTED @ `369f09d`）。merge
+> master 与 annotated tag v0.1.0 已完成；执行记录见 §Release Execution。
 
 ## MVP
 
@@ -186,22 +193,58 @@ Benchmark blocker:       NONE
 Release hygiene blocker: NONE
 ```
 
-下一步（review 通过后执行；尚未完成）：
+Review 通过后的执行步骤（已完成，证据见 §Release Execution）：
 
 ```text
-merge feature/mvp1-real-system-facts → master
-master verification
-final release closeout
-tag v0.1.0
+merge feature/mvp1-real-system-facts → master  — 2871b23c（--no-ff）
+master verification                             — PASS（LOCAL）
+final release closeout                          — 本 Record
+tag v0.1.0                                      — annotated
 ```
 
-merge master / release tag（不可变发布锚点）完成后，RELEASED 状态
-另行记录。未通过：CHANGES_REQUIRED（本次未发生）。
+未通过：CHANGES_REQUIRED（本次未发生）。
+
+## Release Execution
+
+```text
+Feature Release Baseline:    d0f091fc616ce6a9498250d78e49c384ae6d85ff
+Independent Review Baseline: 369f09dc2d77a53ebd9f05c792abad66ccc488f5
+Independent Release Review:  ACCEPTED
+Master Before Merge:         f7abaddc53be2d1216e797aa68a5958eb735164b
+Master Merge Commit:         2871b23c30f3b937b7b79b555672a4b009c27938
+Merge Strategy:              --no-ff
+Merge Tree Check:            merge tree == feature HEAD tree（git diff 无输出）
+Release Tag:                 v0.1.0（annotated；指向 release-closeout commit）
+Release Closeout Scope:      仅 release documentation + 最小 version policy；
+                             零 production code / benchmark 语义改动
+```
+
+### Master Verification Evidence — LOCAL
+
+```text
+uv lock --check:   PASS
+uv sync --frozen:  PASS
+pytest:            223 passed
+ruff check .:      PASS
+mypy src strict:   PASS
+MVP-0 demo:        PASS（Risk=NOT_EVALUATED，Optimization=SKIPPED）
+
+B0: PASS
+B1: PASS
+real SysML E2E: PASS
+OpenSysML contract regression: PASS
+Canonical invariants: PASS
+provenance hygiene: PASS
+
+GitHub CI:
+NOT CONFIGURED（全部 evidence 为 LOCAL，非 CI PASS）
+```
 
 ## Recommended Next MVP
 
-MVP-2 Real Failure Knowledge —— 仅在 MVP-1 Release Review 通过并完成
-merge / release baseline decision 之后另开 Session。
+MVP-2 Real Failure Knowledge —— MVP-1 已 RELEASED。下一 Session：
+MVP-1 Post-Release Audit；之后另开 Session 进行 MVP-2 Read-only
+Planning。feature/mvp1-real-system-facts 分支暂不删除。
 
 ## Historical Records
 

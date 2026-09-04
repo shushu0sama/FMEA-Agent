@@ -316,3 +316,28 @@ not independently preserved as Git commit
 - 每个完整 MVP 完成：MVP Release Record（汇总 + 链接，不复制 Stage Record）。
 - 详细证据只在一处（Single Source of Detailed Evidence）：
   Stage Record 引用 research/architecture 文档，不复制内容。
+
+## 13. Pre-1.0 Release Version Policy
+
+版本形态：`v0.x.y`
+
+```text
+minor（x）:  new accepted MVP capability
+patch（y）:  release/baseline correction without major capability
+             expansion
+```
+
+历史：
+
+```text
+v0.0.1 = MVP-0 Runnable Skeleton
+v0.1.0 = MVP-1 Real System Facts
+```
+
+规则：
+
+- Release tag 必须 annotated；禁止 lightweight tag。
+- 禁止覆盖或移动任何已有 tag（禁止 `git tag -f`）。
+- Tag 只指向已通过 Independent Release Review、完成 merge 与 master
+  verification 的 commit（release-closeout commit）。
+- MVP Release Record 记录 tag 名与 merge commit 锚点。
