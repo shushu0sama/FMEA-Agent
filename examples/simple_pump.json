@@ -1,0 +1,53 @@
+{
+  "system": {
+    "id": "hydraulic-system",
+    "name": "Hydraulic System",
+    "description": "Synthetic demo system: a simple hydraulic pump circuit. Fixture data only - not real engineering data.",
+    "source_refs": [
+      {
+        "source_type": "fixture",
+        "source_uri": "examples/simple_pump.json",
+        "source_element_id": "hydraulic-system",
+        "adapter": "json-fixture"
+      }
+    ]
+  },
+  "components": [
+    {
+      "id": "hydraulic-pump",
+      "name": "Hydraulic Pump",
+      "parent_id": "hydraulic-system",
+      "component_type": "pump",
+      "source_refs": [
+        {
+          "source_type": "fixture",
+          "source_uri": "examples/simple_pump.json",
+          "source_element_id": "hydraulic-pump",
+          "adapter": "json-fixture"
+        }
+      ]
+    }
+  ],
+  "functions": [
+    {
+      "id": "provide-pressure",
+      "name": "Provide Hydraulic Pressure",
+      "description": "Deliver hydraulic pressure to the demo circuit outlet.",
+      "allocated_to": ["hydraulic-pump"],
+      "source_refs": [
+        {
+          "source_type": "fixture",
+          "source_uri": "examples/simple_pump.json",
+          "source_element_id": "provide-pressure",
+          "adapter": "json-fixture"
+        }
+      ]
+    }
+  ],
+  "analysis_request": {
+    "title": "MVP-0 Demo FMEA - Synthetic Hydraulic Pump",
+    "system_id": "hydraulic-system",
+    "component_id": "hydraulic-pump",
+    "function_id": "provide-pressure"
+  }
+}

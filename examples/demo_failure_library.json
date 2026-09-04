@@ -1,0 +1,40 @@
+{
+  "entries": [
+    {
+      "item_name": "Hydraulic Pump",
+      "function_name": "Provide Hydraulic Pressure",
+      "failure_modes": [
+        {
+          "value": "Loss of hydraulic pressure",
+          "causes": [
+            {
+              "value": "Demo mechanical failure",
+              "mechanism": "DEMO-ONLY: hypothetical wear of a demo pump part",
+              "evidence": [
+                {
+                  "source": "demo-failure-library:001"
+                }
+              ]
+            }
+          ],
+          "effects": [
+            {
+              "level": "LOCAL",
+              "value": "Required outlet pressure is unavailable",
+              "evidence": [
+                {
+                  "source": "demo-failure-library:001"
+                }
+              ]
+            }
+          ],
+          "evidence": [
+            {
+              "source": "demo-failure-library:001"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

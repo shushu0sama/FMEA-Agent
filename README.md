@@ -1,14 +1,86 @@
 # FMEA Agent
 
-当前仓库已整理为 **FMEA Agent Bootstrap v0.1 / Architecture Baseline v0.1**，可直接作为 Claude Code 的项目根目录使用。
+可维护、证据可溯、MBSE 感知的 FMEA Agent。
 
-## 当前开发目标
+**当前版本：MVP-0 Runnable Vertical Slice — 已完成（2026-09-04）**
 
-当前只开发：
+## 当前能做什么
 
-> **MVP-0 — Runnable Vertical Slice**
+MVP-0 已跑通一个 AIAG-VDA 七阶段形态的端到端可执行工作流：
 
-目标是先用 JSON fixture、InMemory Repository、可替换 Port 和 LangGraph 骨架跑通一个可执行的 AIAG-VDA 形态 FMEA 流程，再逐步替换为真实 SysML、故障知识、LLM、验证、MCP 与动态 FMEA 能力。
+```text
+Input Fixture
+  → Planning & Preparation
+  → Structure Analysis
+  → Function Analysis
+  → Failure Analysis
+  → Risk Analysis (NOT_EVALUATED)
+  → Optimization (SKIPPED)
+  → Results Documentation
+  → Structured Candidate Output
+```
+
+- 使用 JSON fixture + in-memory repositories + LangGraph 骨架，全流程离线，
+  不需要网络、SysML server、Neo4j、向量库、外部 LLM 或 MCP
+- 输出结构化 JSON（非自由文本）：`analysis_id` / `method` / `item` /
+  `function` / `failure_modes` / `risk` / `stage_status`
+- Risk 明确输出 `NOT_EVALUATED`，不编造 S/O/D/AP 值
+- Optimization 明确输出 `SKIPPED`
+- 每个候选带 Evidence，指向 demo fixture（`demo-failure-library:001`）
+- 候选 `item_id` / `function_id` 使用稳定领域 ID，绝不使用显示名
+- 领域模型不依赖 LangGraph / Neo4j / LLM provider；外部技术全部位于
+  ports/adapters 之后
+
+## 当前不能做什么
+
+- 不读取真实 SysML：OpenSysML / SysML Repository API **未接入**
+- 不使用真实故障知识库：Neo4j / Qdrant **未接入**
+- 不调用真实 LLM（默认路径不经过 `LLMClient`）
+- 不计算真实 AIAG-VDA S/O/D/AP 风险等级
+- 没有生产 UI、Human Review、Failure Propagation、Dynamic FMEA、
+  多智能体编排
+
+## 如何运行 Demo
+
+环境要求：Python >= 3.11；安装项目依赖（uv 或 pip）。
+
+```bash
+python -m fmea_agent demo examples/simple_pump.json
+```
+
+可选参数：
+
+```bash
+# 输出写入文件而不是 stdout
+python -m fmea_agent demo examples/simple_pump.json --output out.json
+
+# 指定 failure library（默认取 fixture 同目录下的 demo_failure_library.json）
+python -m fmea_agent demo examples/simple_pump.json \
+    --failure-library examples/demo_failure_library.json
+```
+
+无效输入（文件缺失 / JSON 非法 / 缺必需字段）会输出错误并返回非零退出码。
+
+## 如何运行测试与验证
+
+```bash
+pytest
+
+# 或者一次性执行全部检查（pytest + ruff + mypy，跨平台）
+python scripts/verify.py
+```
+
+## 下一步 — MVP-1 Real System Facts
+
+用真实系统事实替换 fixture：
+
+```text
+OpenSysML / SysML API
+→ SysMLFactSnapshot
+→ Canonical System Model
+```
+
+尚未开始；实现前需要先完成 MVP-1 的 spec/plan。
 
 ## Claude Code 每次新 Session 首先读取
 
@@ -16,30 +88,10 @@
 2. `PROGRESS.md`
 3. 当前 Spec / Plan
 
-MVP-0 当前文件：
-
-- `docs/specs/MVP_0_RUNNABLE_AGENT_SKELETON.md`
-- `docs/plans/MVP_0_IMPLEMENTATION_PLAN.md`
-
-## 第一次启动建议
-
-先进行只读体检，不要立即编码：
-
-```text
-Read CLAUDE.md and PROGRESS.md.
-Then read:
-- docs/specs/MVP_0_RUNNABLE_AGENT_SKELETON.md
-- docs/plans/MVP_0_IMPLEMENTATION_PLAN.md
-
-Do not modify files yet.
-Inspect repository structure, git status, current Python/project state,
-and confirm whether the repository is ready for MVP-0 Tasks 0-2.
-Do not add OpenSysML, Neo4j, Qdrant, Docling or MCP.
-```
-
 ## 本地 Claude Code 配置
 
-`.claude/settings.local.json` 属于本机私有配置，不应提交到 Git，也不随本项目包分发。请使用你的 Claude Code 全局配置或在本地重新创建该文件。
+`.claude/settings.local.json` 属于本机私有配置，不应提交到 Git，也不随本
+项目包分发。请使用你的 Claude Code 全局配置或在本地重新创建该文件。
 
 ## 重要入口
 

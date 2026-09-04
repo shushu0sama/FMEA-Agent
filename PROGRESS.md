@@ -13,6 +13,8 @@
 
 ### Milestone 0 — Runnable Agent Skeleton
 
+Status: **COMPLETE (2026-09-04)**
+
 Goal:
 
 > Run an end-to-end FMEA-shaped workflow using local fixtures and replaceable in-memory adapters before integrating real SysML, KG/RAG or MCP infrastructure.
@@ -21,7 +23,7 @@ Goal:
 
 ### Epic 00 — Bootstrap & Runnable MVP
 
-Status: **IMPLEMENTING — Tasks 0–5 complete (2026-09-04)**
+Status: **COMPLETE — Tasks 0–10 complete; MVP-0 acceptance criteria verified (2026-09-04)**
 
 Data contract clarified (2026-09-04):
 
@@ -34,6 +36,8 @@ Data contract clarified (2026-09-04):
 ## Current MVP
 
 ### MVP-0 — Runnable Vertical Slice
+
+Status: **COMPLETE (2026-09-04)**
 
 Expected command shape:
 
@@ -75,11 +79,11 @@ Structured Candidate Output
 - [x] mock/optional LLM interface (port + MockLLMClient; unused on default path)
 - [x] `RiskStrategy` interface (port + NoOpRiskStrategy)
 - [x] no-op / not-evaluated risk implementation
-- [ ] CLI demo
-- [ ] JSON output
+- [x] CLI demo
+- [x] JSON output
 - [x] unit tests
-- [ ] smoke test
-- [ ] verification script
+- [x] smoke test
+- [x] verification script
 
 ## Explicitly Deferred from MVP-0
 
@@ -169,15 +173,38 @@ Design-change impact and incremental re-analysis.
 
 ## Current Blockers
 
-No architectural blocker for MVP-0.
+No architectural blocker for MVP-1.
+
+## MVP-0 Completion Record (2026-09-04)
+
+Delivered in Tasks 6–10:
+
+- `examples/simple_pump.json` — synthetic system fixture (stable IDs, display
+  names separate, `source_refs` pointing at the fixture file)
+- `examples/demo_failure_library.json` — name-keyed demo failure knowledge
+  with evidence `demo-failure-library:001`
+- `src/fmea_agent/cli/` — `python -m fmea_agent demo <fixture>` with
+  `--failure-library` / `--output`; non-zero exit on invalid input
+- smoke tests via subprocess (`tests/test_smoke_cli.py`) and CLI loader tests
+- `scripts/verify.py` — cross-platform entry running pytest / ruff / mypy
+
+Acceptance verified:
+
+```text
+demo run                      PASS  (python -m fmea_agent demo examples/simple_pump.json)
+pytest 79 passed              PASS
+ruff check .                  PASS
+mypy src (strict)             PASS
+no external services          PASS  (offline by construction)
+risk.status == NOT_EVALUATED  PASS
+optimization == SKIPPED       PASS
+evidence traceable to fixture PASS
+README run instructions       PASS
+PROGRESS.md updated           PASS
+```
 
 ## Next Action
 
-Implement Task 6 of `docs/plans/MVP_0_IMPLEMENTATION_PLAN.md`:
-
-```text
-examples/simple_pump.json
-examples/demo_failure_library.json
-```
-
-Keep fixtures obviously synthetic; do not start Task 7+ until Task 6 is done.
+Plan MVP-1 (`Real System Facts`): OpenSysML / SysML API → SysMLFactSnapshot
+→ Canonical System Model. Do not start MVP-1 implementation without a
+spec/plan. OpenSysML and SysML API remain unintegrated.
