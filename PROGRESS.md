@@ -7,9 +7,62 @@
 **Architecture baseline:** v0.1  
 **Development mode:** Runnable Vertical Slice First  
 **FMEA profile:** AIAG-VDA FMEA  
-**Current software target:** FMEA Agent v0.0.1
+**Released baseline:** FMEA Agent v0.0.1 — MVP-0 COMPLETE
+**Current target:** MVP-1 — Real System Facts
 
 ## Current Milestone
+
+### Milestone 1 — Real System Facts
+
+Status: **PLANNING — FEASIBILITY SPIKE（2026-09-04）**
+
+Goal:
+
+> 用真实 SysML v2 File Mode 替换 MVP-0 的 synthetic system fixture，同时保持 MVP-0 的 Failure Knowledge、Risk、Optimization 和上层 Workflow 尽量不变。
+
+MVP-1 第一版范围：
+
+```text
+OpenSysML File Mode
+SysMLFactSnapshot
+System / Component / Function / SourceReference
+minimal mapping
+minimal benchmark
+```
+
+MVP-1 明确延后：
+
+```text
+SysML Repository API
+Requirement / Port / Interface / Connection / Flow / State / Allocation
+Neo4j / Qdrant / Docling / MCP
+real LLM
+AIAG-VDA S/O/D/AP
+Human Review
+Failure Propagation
+Dynamic FMEA
+```
+
+MVP-1 阶段：
+
+```text
+1A Feasibility Spike
+1B Snapshot Contracts
+1C OpenSysML Adapter
+1D Canonical Mapping
+1E Workflow Integration
+1F Benchmark & Release
+```
+
+关键文档：
+
+- Spec：`docs/specs/MVP_1_REAL_SYSTEM_FACTS.md`
+- Plan：`docs/plans/MVP_1_IMPLEMENTATION_PLAN.md`
+- Spike：`docs/research/OPENSYSML_FEASIBILITY_SPIKE.md`
+- Mapping：`docs/architecture/SYSML_TO_CANONICAL_MAPPING.md`
+- Benchmark：`docs/evaluation/MVP_1_BENCHMARK_SPEC.md`
+- ADR-008：`docs/adr/ADR-008-opensysml-file-mode-first.md`
+- 语言规范：`docs/governance/LANGUAGE_AND_TERMINOLOGY_POLICY.md`
 
 ### Milestone 0 — Runnable Agent Skeleton
 
@@ -20,6 +73,10 @@ Goal:
 > Run an end-to-end FMEA-shaped workflow using local fixtures and replaceable in-memory adapters before integrating real SysML, KG/RAG or MCP infrastructure.
 
 ## Current Epic
+
+### Epic 01 — MVP-1 Real System Facts
+
+Status: **PLANNING — 1A Feasibility Spike 未开始（2026-09-04）**
 
 ### Epic 00 — Bootstrap & Runnable MVP
 
@@ -34,6 +91,19 @@ Data contract clarified (2026-09-04):
 > `*_id` fields.
 
 ## Current MVP
+
+### MVP-1 — Real System Facts
+
+只替换 System Facts 来源；Failure Knowledge / Risk / Optimization / 上层 Workflow 保持 MVP-0 状态：
+
+```text
+真实 .sysml
+→ OpenSysML
+→ SysMLFactSnapshot
+→ Canonical System Model
+→ SystemModelRepository
+→ 现有 LangGraph Workflow
+```
 
 ### MVP-0 — Runnable Vertical Slice
 
@@ -105,6 +175,8 @@ Do NOT block MVP-0 on:
 
 ### MVP-1 — Real System Facts
 
+**当前里程碑（2026-09-04 起）。**
+
 Replace fixture/in-memory system facts with:
 
 ```text
@@ -160,6 +232,7 @@ Design-change impact and incremental re-analysis.
 - [x] Benchmark specification baseline
 - [x] dependency inventory baseline
 - [x] ADR initialization
+- [x] MVP-1 Development Pack（Spec / Plan / ADR-008 / Mapping / Benchmark / Spike / 语言规范）
 
 ## Open Research Questions
 
@@ -205,6 +278,16 @@ PROGRESS.md updated           PASS
 
 ## Next Action
 
-Plan MVP-1 (`Real System Facts`): OpenSysML / SysML API → SysMLFactSnapshot
-→ Canonical System Model. Do not start MVP-1 implementation without a
-spec/plan. OpenSysML and SysML API remain unintegrated.
+执行 MVP-1A OpenSysML Feasibility Spike：
+
+```text
+docs/research/OPENSYSML_FEASIBILITY_SPIKE.md
+```
+
+Spike 得到 `GO` / `CONDITIONAL_GO` 之前不得：
+
+- 实现 production Adapter；
+- 修改 Domain；
+- 接入 Neo4j / RAG / MCP / real LLM。
+
+Spike 输出：`docs/research/OPENSYSML_SPIKE_REPORT.md`。
