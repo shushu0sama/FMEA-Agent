@@ -293,17 +293,18 @@ Do not encode tentative semantic assumptions as irreversible schema rules.
 
 ## 11. MVP-1 SysMLFactSnapshot
 
-Suggested envelope:
+规范契约（2026-09-04 起）：`docs/architecture/SYSML_FACT_SNAPSHOT_CONTRACTS.md`
+（实现：`src/fmea_agent/adapters/sysml/contracts.py`）。
+
+Envelope：
 
 ```json
 {
-  "source": {
-    "adapter": "open_sysml",
-    "model": "SimpleVehicle",
-    "version": "..."
-  },
+  "source": { },
   "elements": [],
-  "relationships": []
+  "relationships": [],
+  "diagnostics": [],
+  "load_status": "ok"
 }
 ```
 

@@ -14,7 +14,7 @@
 
 ### Milestone 1 — Real System Facts
 
-Status: **1A Feasibility Spike: COMPLETE — CONDITIONAL_GO（2026-09-04）**
+Status: **1A COMPLETE — CONDITIONAL_GO；1B Snapshot Contracts: COMPLETE（2026-09-04）**
 
 Goal:
 
@@ -46,9 +46,9 @@ Dynamic FMEA
 MVP-1 阶段：
 
 ```text
-1A Feasibility Spike
-1B Snapshot Contracts
-1C OpenSysML Adapter
+1A Feasibility Spike          — COMPLETE（CONDITIONAL_GO）
+1B Snapshot Contracts         — COMPLETE
+1C OpenSysML Adapter          — NEXT
 1D Canonical Mapping
 1E Workflow Integration
 1F Benchmark & Release
@@ -60,6 +60,7 @@ MVP-1 阶段：
 - Plan：`docs/plans/MVP_1_IMPLEMENTATION_PLAN.md`
 - Spike：`docs/research/OPENSYSML_FEASIBILITY_SPIKE.md`
 - Mapping：`docs/architecture/SYSML_TO_CANONICAL_MAPPING.md`
+- Snapshot 契约：`docs/architecture/SYSML_FACT_SNAPSHOT_CONTRACTS.md`
 - Benchmark：`docs/evaluation/MVP_1_BENCHMARK_SPEC.md`
 - ADR-008：`docs/adr/ADR-008-opensysml-file-mode-first.md`（已 ACCEPTED）
 - 语言规范：`docs/governance/LANGUAGE_AND_TERMINOLOGY_POLICY.md`
@@ -87,7 +88,7 @@ Goal:
 
 ### Epic 01 — MVP-1 Real System Facts
 
-Status: **1A COMPLETE — CONDITIONAL_GO（2026-09-04）；1B Snapshot Contracts NEXT**
+Status: **1A COMPLETE — CONDITIONAL_GO；1B Snapshot Contracts COMPLETE（2026-09-04）；1C OpenSysML Adapter NEXT**
 
 ### Epic 00 — Bootstrap & Runnable MVP
 
@@ -291,22 +292,52 @@ PROGRESS.md updated           PASS
 
 ## Next Action
 
-执行 MVP-1B Snapshot Contracts（见 `docs/plans/MVP_1_IMPLEMENTATION_PLAN.md` Stage 2）：
+执行 MVP-1C OpenSysML Adapter（见 `docs/plans/MVP_1_IMPLEMENTATION_PLAN.md` Stage 3）：
 
 ```text
-SysMLSource
-SysMLElementFact
-SysMLRelationshipFact
-SysMLDiagnostic
-SysMLFactSnapshot
+OpenSysMLFileAdapter
+→ public OpenSysML API（load/Model/Symbol/query/Diagnostic）
+→ SysMLFactSnapshot（MVP-1B 契约，见 docs/architecture/SYSML_FACT_SNAPSHOT_CONTRACTS.md）
 ```
 
-前置：MVP-1A 的 C1–C4 已写入本文件与 ADR-008，MVP-1B 契约必须显式覆盖：
+1C 必须遵守：
 
-- C1 single-file subset 与 unresolved-import diagnostic 契约；
-- C2 版本 pin 的 source-version 字段设计；
-- C3 source_id（FQN）与跨版本 identity 限制声明；
-- C4 performed action 事实缺失的表达方式。
+- 契约不变：`src/fmea_agent/adapters/sysml/contracts.py` 为 parser-neutral 稳定契约；
+- dependency pin：`opensysml==0.4.0`（PyPI）+ `sysml-grpc v0.4.3` windows-amd64（C2）；
+- 单文件子集 + unresolved-import 显式诊断（C1）；
+- owner_id 经真实 traversal/parent context 建立，禁止 FQN 前缀字符串推导；
+- performed ActionUsage typing 缺失 → `type_facts=None`，不推断（C4）；
+- exception 边界：`SysMLLoadError` / `SysMLParseError` / `UnsupportedSysMLElement`；
+- contract tests 覆盖版本 pin、`children()` 方法形态、unresolved-import 夹具。
 
-MVP-1B 之前不得实现 production Adapter / Mapping / Domain 修改。
-Snapshots 不依赖 `opensysml` / gRPC / internal AST（Spike 已验证素材充分）。
+不得开始 Canonical Mapping（1D）。
+
+## MVP-1B Completion Record (2026-09-04)
+
+Delivered per TDD（RED → GREEN）：
+
+- `src/fmea_agent/adapters/sysml/contracts.py` — 六个 parser-neutral 契约模型：
+  `SysMLSource` / `SysMLElementFact`（含 `SysMLTypeFacts`）/ `SysMLRelationshipFact` /
+  `SysMLDiagnostic` / `SysMLFactSnapshot`；`extra="forbid"`；必填字符串 `min_length=1`；
+  `JsonValue` 严格 JSON-safe；`load_status: Literal["ok","partial"]`
+- 校验规则 V1–V10（唯一 source_id、relationship source 可解析 / target open-world、
+  ok⇒无 error 诊断、file mode 必填 path、owner 不强制解析）
+- `tests/test_sysml_contracts.py`（55 tests）+ `tests/fixtures/sysml/snapshot_minimal.json`
+- 规范性文档 `docs/architecture/SYSML_FACT_SNAPSHOT_CONTRACTS.md`
+  （parser-neutral identity/diagnostic 语义；OpenSysML evidence 归 adapter profile）
+- `CANONICAL_SYSTEM_MODEL_SPEC.md` §11 更新指向新契约
+
+Acceptance verified:
+
+```text
+pytest 134 passed（79 MVP-0 + 55 MVP-1B）   PASS
+ruff check .                                PASS
+mypy src                                    PASS
+无 opensysml/grpc/protobuf import           PASS（AST 级测试固化）
+无 FMEA/Canonical 字段                      PASS（schema 白名单测试固化）
+JSON round-trip 语义相等                     PASS
+pyproject.toml 未修改                        PASS
+MVP-0 regression                            PASS
+```
+
+C1–C4 覆盖见 `docs/architecture/SYSML_FACT_SNAPSHOT_CONTRACTS.md` §9。
