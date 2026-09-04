@@ -21,7 +21,15 @@ Goal:
 
 ### Epic 00 — Bootstrap & Runnable MVP
 
-Status: **IMPLEMENTING — Tasks 0–2 complete (2026-09-04)**
+Status: **IMPLEMENTING — Tasks 0–5 complete (2026-09-04)**
+
+Data contract clarified (2026-09-04):
+
+> `FailureModeCandidate.item_id` / `function_id` hold stable domain IDs
+> (e.g. `Component.id` / `Function.id`) — never display names.
+> Fixture failure knowledge stays name-keyed for lookup; the workflow fills
+> IDs from the loaded elements. Ports/adapters must not match names against
+> `*_id` fields.
 
 ## Current MVP
 
@@ -61,12 +69,12 @@ Structured Candidate Output
 - [x] minimal Canonical System Model
 - [x] minimal FMEA Domain Model
 - [x] Evidence / SourceReference
-- [ ] LangGraph workflow skeleton
-- [ ] in-memory system repository
-- [ ] in-memory failure-knowledge repository
-- [x] mock/optional LLM interface (port defined; mock impl in Task 3)
-- [x] `RiskStrategy` interface (port defined; no-op impl in Task 3)
-- [ ] no-op / not-evaluated risk implementation
+- [x] LangGraph workflow skeleton
+- [x] in-memory system repository
+- [x] in-memory failure-knowledge repository
+- [x] mock/optional LLM interface (port + MockLLMClient; unused on default path)
+- [x] `RiskStrategy` interface (port + NoOpRiskStrategy)
+- [x] no-op / not-evaluated risk implementation
 - [ ] CLI demo
 - [ ] JSON output
 - [x] unit tests
@@ -165,13 +173,11 @@ No architectural blocker for MVP-0.
 
 ## Next Action
 
-Implement Task 3 of `docs/plans/MVP_0_IMPLEMENTATION_PLAN.md`:
+Implement Task 6 of `docs/plans/MVP_0_IMPLEMENTATION_PLAN.md`:
 
 ```text
-InMemorySystemModelRepository
-InMemoryFailureKnowledgeRepository
-NoOpRiskStrategy
-MockLLMClient
+examples/simple_pump.json
+examples/demo_failure_library.json
 ```
 
-plus fixture lookup and missing-data tests.
+Keep fixtures obviously synthetic; do not start Task 7+ until Task 6 is done.

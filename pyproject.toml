@@ -9,6 +9,7 @@ description = "Maintainable, evidence-grounded, MBSE-aware FMEA Agent"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
+    "langgraph>=1.2.11",
     "pydantic>=2.9,<3",
 ]
 

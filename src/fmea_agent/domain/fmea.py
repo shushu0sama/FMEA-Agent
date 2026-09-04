@@ -107,7 +107,11 @@ class FailureEffectCandidate(BaseModel):
 
 
 class FailureModeCandidate(BaseModel):
-    """Candidate failure mode: the manner in which an item/function fails to meet intent."""
+    """Candidate failure mode: the manner in which an item/function fails to meet intent.
+
+    `item_id` and `function_id` hold stable domain identifiers (e.g. Component.id,
+    Function.id) — never display names; names belong to the linked objects.
+    """
 
     value: str
     status: KnowledgeStatus = KnowledgeStatus.CANDIDATE

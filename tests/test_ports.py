@@ -41,15 +41,16 @@ class FakeSystemModelRepository:
 
 
 class FakeFailureKnowledgeRepository:
-    def __init__(self, modes: list[FailureModeCandidate]) -> None:
-        self._modes = modes
+    def __init__(
+        self,
+        entries: dict[tuple[str, str], list[FailureModeCandidate]],
+    ) -> None:
+        self._entries = dict(entries)
 
-    def find_failure_modes(self, item_name: str, function_name: str) -> list[FailureModeCandidate]:
-        return [
-            m
-            for m in self._modes
-            if m.item_id == item_name or m.function_id == function_name
-        ]
+    def find_failure_modes(
+        self, item_name: str, function_name: str
+    ) -> list[FailureModeCandidate]:
+        return list(self._entries.get((item_name, function_name), []))
 
 
 class FakeLLMClient:
@@ -87,7 +88,7 @@ def test_fakes_conform_to_ports_structurally() -> None:
     system_repo: SystemModelRepository = FakeSystemModelRepository(
         system, [component], [function]
     )
-    knowledge_repo: FailureKnowledgeRepository = FakeFailureKnowledgeRepository([])
+    knowledge_repo: FailureKnowledgeRepository = FakeFailureKnowledgeRepository({})
     llm: LLMClient = FakeLLMClient()
     risk: RiskStrategy = FakeRiskStrategy()
     assert isinstance(system_repo, SystemModelRepository)
@@ -111,10 +112,12 @@ def test_fake_system_repository_lookup_and_missing_behavior() -> None:
 def test_fake_knowledge_repository_returns_matching_modes() -> None:
     mode = FailureModeCandidate(
         value="Loss of hydraulic pressure",
-        item_id="Hydraulic Pump",
-        function_id="Provide Hydraulic Pressure",
+        item_id="hydraulic-pump",
+        function_id="provide-pressure",
     )
-    repo: FailureKnowledgeRepository = FakeFailureKnowledgeRepository([mode])
+    repo: FailureKnowledgeRepository = FakeFailureKnowledgeRepository(
+        {("Hydraulic Pump", "Provide Hydraulic Pressure"): [mode]}
+    )
     assert repo.find_failure_modes("Hydraulic Pump", "Provide Hydraulic Pressure") == [mode]
     assert repo.find_failure_modes("Other", "Other") == []
 

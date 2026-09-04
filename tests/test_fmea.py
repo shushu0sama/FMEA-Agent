@@ -114,6 +114,19 @@ def test_failure_mode_candidate_with_cause_effect_evidence() -> None:
     assert mode.effects[0].level == EffectLevel.LOCAL
 
 
+def test_failure_mode_ids_are_domain_ids_not_display_names() -> None:
+    component = Component(id="hydraulic-pump", name="Hydraulic Pump")
+    mode = FailureModeCandidate(
+        value="Loss of hydraulic pressure",
+        item_id=component.id,
+        function_id="provide-pressure",
+    )
+    assert mode.item_id == "hydraulic-pump"
+    assert mode.item_id != component.name
+    assert mode.function_id == "provide-pressure"
+    assert mode.function_id != "Provide Hydraulic Pressure"
+
+
 def test_candidate_status_rejects_unknown_value() -> None:
     with pytest.raises(ValidationError):
         FailureModeCandidate(value="x", status="NOT_A_STATUS")  # type: ignore[arg-type]
