@@ -194,7 +194,7 @@ def _walk(
 ) -> Iterator[tuple[opensysml.Symbol | None, opensysml.Symbol]]:
     """Pre-order traversal of the symbol tree, skipping the RootNamespace."""
     stack: list[tuple[opensysml.Symbol | None, opensysml.Symbol]] = [
-        (None, child) for child in root.children()
+        (None, child) for child in reversed(root.children())
     ]
     while stack:
         owner, symbol = stack.pop()

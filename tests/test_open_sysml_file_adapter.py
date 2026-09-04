@@ -31,12 +31,13 @@ from fmea_agent.adapters.sysml.contracts import (
     SysMLFactSnapshot,
     SysMLTypeFacts,
 )
-from fmea_agent.adapters.sysml.open_sysml_file import _load_model
+from fmea_agent.adapters.sysml.open_sysml_file import _load_model, _walk
 
 MODELS_DIR = Path(__file__).resolve().parent / "fixtures" / "sysml" / "models"
 VALID_MODEL = MODELS_DIR / "perform_probe.sysml"
 INVALID_MODEL = MODELS_DIR / "invalid_syntax.sysml"
 UNRESOLVED_IMPORT_MODEL = MODELS_DIR / "unresolved_import.sysml"
+SIBLING_ROOTS_MODEL = MODELS_DIR / "sibling_roots_probe.sysml"
 
 
 def _load_valid() -> SysMLFactSnapshot:
@@ -167,6 +168,45 @@ def test_element_names_are_short_names() -> None:
     assert by_id["PerformProbe"].name == "PerformProbe"
     assert by_id["PerformProbe::hydraulicPump"].name == "hydraulicPump"
     assert by_id["PerformProbe::hydraulicPump::motor::spin"].name == "spin"
+
+
+class _FakeSymbol:
+    def __init__(
+        self,
+        kind: str,
+        name: str,
+        children: list[_FakeSymbol] | None = None,
+    ) -> None:
+        self.kind = kind
+        self.name = name
+        self._children = children or []
+
+    def children(self) -> list[_FakeSymbol]:
+        return self._children
+
+
+def test_walk_preserves_root_children_traversal_order() -> None:
+    a1 = _FakeSymbol("partUsage", "a1")
+    a = _FakeSymbol("package", "a", [a1])
+    b1 = _FakeSymbol("partUsage", "b1")
+    b = _FakeSymbol("package", "b", [b1])
+    root = _FakeSymbol("RootNamespace", "", [a, b])
+    visited = [symbol.name for _, symbol in _walk(root)]
+    assert visited == ["a", "a1", "b", "b1"]
+
+
+def test_snapshot_elements_follow_source_order() -> None:
+    snapshot = OpenSysMLFileAdapter().load(SIBLING_ROOTS_MODEL)
+    assert [e.source_id for e in snapshot.elements] == [
+        "AlphaPackage",
+        "AlphaPackage::Pump",
+        "AlphaPackage::alphaPump",
+        "AlphaPackage::alphaPump::alphaInner",
+        "AlphaPackage::alphaMotor",
+        "BetaPackage",
+        "BetaPackage::Pump",
+        "BetaPackage::betaPump",
+    ]
 
 
 # --- 5. type_facts ---
@@ -353,31 +393,37 @@ def test_model_error_without_model_raises_sysml_parse_error() -> None:
 # The adapter closes its connection on every path (ok / partial / error).
 # All previous tests in this module exercise those paths; if any of them
 # leaked the private sysml-grpc child, it is still alive here.
+#
+# The check compares the current PID set against the set observed at module
+# import time (before any adapter activity), so pre-existing legitimate
+# sysml-grpc processes are not flagged — only newly spawned orphans are.
 
 
-def _count_sysml_grpc_processes() -> int:
+def _sysml_grpc_pids() -> set[str]:
     result = subprocess.run(
         [
             "powershell",
             "-NoProfile",
             "-Command",
-            "@(Get-Process sysml-grpc* -ErrorAction SilentlyContinue).Count",
+            "@(Get-Process sysml-grpc* -ErrorAction SilentlyContinue).Id -join ','",
         ],
         capture_output=True,
         text=True,
         timeout=60,
         check=False,
     )
-    return int(result.stdout.strip())
+    return {pid for pid in result.stdout.strip().split(",") if pid}
 
 
-def test_no_orphan_sysml_grpc_processes_remain() -> None:
+_MODULE_START_PIDS = _sysml_grpc_pids()
+
+
+def test_no_new_orphan_sysml_grpc_processes_remain() -> None:
+    _load_valid()
     deadline = time.monotonic() + 10
-    while time.monotonic() < deadline:
-        if _count_sysml_grpc_processes() == 0:
-            break
+    while time.monotonic() < deadline and (_sysml_grpc_pids() - _MODULE_START_PIDS):
         time.sleep(0.5)
-    assert _count_sysml_grpc_processes() == 0
+    assert not (_sysml_grpc_pids() - _MODULE_START_PIDS)
 
 
 # --- no protobuf span leakage ---
