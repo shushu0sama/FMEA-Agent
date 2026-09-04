@@ -1,167 +1,120 @@
 # FMEA Agent Progress
 
-> Update this file at the end of every meaningful development session.
+> CURRENT PROJECT STATE — 不是完整历史。
+> 历史执行记录：`docs/records/`（Stage Closeout / Release Record）。
+> 治理规则：`docs/governance/DEVELOPMENT_WORKFLOW_AND_RECORDS_POLICY.md`。
 
-## Project Status
+## Project
 
-**Architecture baseline:** v0.1  
-**Development mode:** Runnable Vertical Slice First  
-**FMEA profile:** AIAG-VDA FMEA  
-**Current software target:** FMEA Agent v0.0.1
+```text
+Architecture baseline: v0.1
+Development mode:      Runnable Vertical Slice First
+FMEA profile:          AIAG-VDA FMEA（七步 workflow shape）
+Current branch:        feature/mvp1-real-system-facts
+Review Baseline:       369f09d
+Current MVP:           MVP-1 Real System Facts
+MVP status:            RELEASE_READY（Independent Release Review ACCEPTED）
+Current Stage:         1F Benchmark & Release（ACCEPTED）
+```
 
-## Current Milestone
+## Overall Roadmap
 
-### Milestone 0 — Runnable Agent Skeleton
+```text
+MVP-0 COMPLETE（v0.0.1 tagged）
+MVP-1 Real System Facts       — RELEASE_READY（1A–1F ACCEPTED，待 merge master / tag）
+MVP-2 Real Failure Knowledge  — 未开始（MVP-1 Release Review 之后另开 Session）
+MVP-3 Evidence-grounded LLM
+MVP-4 AIAG-VDA Risk & Semantic Validation
+MVP-5 Human Review
+MVP-6 Failure Propagation
+MVP-7 Aerospace Benchmark
+MVP-8 MCP
+MVP-9 Dynamic FMEA
+```
 
-Status: **COMPLETE (2026-09-04)**
+## Current MVP — MVP-1 Real System Facts
 
 Goal:
 
-> Run an end-to-end FMEA-shaped workflow using local fixtures and replaceable in-memory adapters before integrating real SysML, KG/RAG or MCP infrastructure.
+> 用真实 SysML v2 File Mode 替换 MVP-0 的 synthetic system fixture，
+> 同时保持 MVP-0 的 Failure Knowledge、Risk、Optimization 和上层
+> Workflow 尽量不变。
 
-## Current Epic
-
-### Epic 00 — Bootstrap & Runnable MVP
-
-Status: **COMPLETE — Tasks 0–10 complete; MVP-0 acceptance criteria verified (2026-09-04)**
-
-Data contract clarified (2026-09-04):
-
-> `FailureModeCandidate.item_id` / `function_id` hold stable domain IDs
-> (e.g. `Component.id` / `Function.id`) — never display names.
-> Fixture failure knowledge stays name-keyed for lookup; the workflow fills
-> IDs from the loaded elements. Ports/adapters must not match names against
-> `*_id` fields.
-
-## Current MVP
-
-### MVP-0 — Runnable Vertical Slice
-
-Status: **COMPLETE (2026-09-04)**
-
-Expected command shape:
-
-```bash
-python -m fmea_agent demo examples/simple_pump.json
-```
-
-Expected high-level flow:
+Pipeline（已实现）:
 
 ```text
-Input Fixture
-  ↓
-Planning & Preparation
-  ↓
-Structure Analysis
-  ↓
-Function Analysis
-  ↓
-Failure Analysis
-  ↓
-Risk Analysis (NOT_EVALUATED allowed)
-  ↓
-Optimization (SKIPPED allowed)
-  ↓
-Results Documentation
-  ↓
-Structured Candidate Output
-```
-
-## MVP-0 Required
-
-- [x] installable Python package
-- [x] minimal Canonical System Model
-- [x] minimal FMEA Domain Model
-- [x] Evidence / SourceReference
-- [x] LangGraph workflow skeleton
-- [x] in-memory system repository
-- [x] in-memory failure-knowledge repository
-- [x] mock/optional LLM interface (port + MockLLMClient; unused on default path)
-- [x] `RiskStrategy` interface (port + NoOpRiskStrategy)
-- [x] no-op / not-evaluated risk implementation
-- [x] CLI demo
-- [x] JSON output
-- [x] unit tests
-- [x] smoke test
-- [x] verification script
-
-## Explicitly Deferred from MVP-0
-
-Do NOT block MVP-0 on:
-
-- [ ] OpenSysML
-- [ ] SysML Repository API
-- [ ] Neo4j
-- [ ] Qdrant
-- [ ] Docling
-- [ ] MCP
-- [ ] full AIAG-VDA S/O/D/AP rules
-- [ ] production UI
-- [ ] multi-agent system
-- [ ] dynamic FMEA
-- [ ] failure-propagation research algorithm
-
-## Next MVPs
-
-### MVP-1 — Real System Facts
-
-Replace fixture/in-memory system facts with:
-
-```text
-OpenSysML / SysML API
+真实 .sysml
+→ OpenSysML（opensysml==0.4.0 + sysml-grpc v0.4.3）
 → SysMLFactSnapshot
 → Canonical System Model
+→ CanonicalSystemModelRepository
+→ 现有 LangGraph Workflow
 ```
 
-### MVP-2 — Real Failure Knowledge
-
-Replace fixture failure knowledge with:
+In Scope:
 
 ```text
-Historical FMEA
-+ structured graph/retrieval
+System / Component / Function / SourceReference
+OpenSysML File Mode（单文件子集）
+minimal mapping + notices
+minimal benchmark（1F）
 ```
 
-### MVP-3 — Evidence-grounded LLM Generation
+Out of Scope（MVP-1 明确延后）:
 
-Use real LLM through `LLMClient` while preserving structured candidate output.
+```text
+SysML Repository API
+Requirement / Port / Interface / Connection / Flow / State / Allocation
+Neo4j / Qdrant / Docling / MCP
+real LLM
+AIAG-VDA S/O/D/AP
+Human Review
+Failure Propagation
+Dynamic FMEA
+```
 
-### MVP-4 — AIAG-VDA Risk & Semantic Validation
+## Stage Status
 
-Implement authorized/verified risk rules and stronger FMEA validators.
+```text
+1A Feasibility Spike          — COMPLETE（CONDITIONAL_GO）
+1B Snapshot Contracts         — COMPLETE
+1C-0 Dependency Reproduction  — COMPLETE（PYPI_PIN_CONFIRMED，2026-09-04）
+1C OpenSysML Adapter          — COMPLETE（2026-09-04）
+1D Canonical Mapping          — COMPLETE（2026-09-04）
+1E Workflow Integration       — ACCEPTED（2026-09-04）
+1F Benchmark & Release        — ACCEPTED（2026-09-04，Independent Release
+                                 Review @ 369f09d）
+```
 
-### MVP-5 — Human Review
+关键文档：
 
-Formal interrupt/review/audit workflow.
+- Spec：`docs/specs/MVP_1_REAL_SYSTEM_FACTS.md`
+- Plan：`docs/plans/MVP_1_IMPLEMENTATION_PLAN.md`
+- Spike：`docs/research/OPENSYSML_SPIKE_REPORT.md`
+- 1C-0 复现：`docs/research/OPENSYSML_DEPENDENCY_REPRODUCTION_REPORT.md`
+- Mapping：`docs/architecture/SYSML_TO_CANONICAL_MAPPING.md`
+- Snapshot 契约：`docs/architecture/SYSML_FACT_SNAPSHOT_CONTRACTS.md`
+- Benchmark：`docs/evaluation/MVP_1_BENCHMARK_SPEC.md`
+- ADR-008：`docs/adr/ADR-008-opensysml-file-mode-first.md`
 
-### MVP-6 — Failure Propagation
+## Current Blockers
 
-SysML-aware propagation reasoning.
+No blocker（Independent Release Review @ 369f09d：
+Production / Architecture / Benchmark / Release hygiene 全部 NONE）。
+Release 流程剩余步骤：merge master → master verification → final
+release closeout → tag v0.1.0（另开 Session；不 merge master、不 tag、
+不开 MVP-2）。
 
-### MVP-7 — Aerospace Benchmark
+## Current Known Limitations
 
-Delivery Drone / CubeSat / spacecraft validation.
+- 单文件子集；用户文件 import 不支持（C1，unresolved import 显式诊断）。
+- `Model.hash` = load-context fingerprint（F1），非跨路径/跨版本稳定 identity。
+- performed ActionUsage 无 typing facts（C4），禁止推断。
+- `Component.component_type` 保持 `None`（无证据规则）。
+- system-level Function 暂不被 workflow 分析目标使用。
+- partial Snapshot 的 workflow 接入行为未单独覆盖。
 
-### MVP-8 — MCP Capability Layer
-
-Expose stable capabilities through MCP.
-
-### MVP-9 — Dynamic FMEA
-
-Design-change impact and incremental re-analysis.
-
-## Completed Planning Artifacts
-
-- [x] FMEA Agent Foundation Guide
-- [x] Staged Development & Reuse Guide
-- [x] Bootstrap Pack v0.1
-- [x] AIAG-VDA profile decision
-- [x] Canonical model design direction
-- [x] Benchmark specification baseline
-- [x] dependency inventory baseline
-- [x] ADR initialization
-
-## Open Research Questions
+## Current Open Research Questions
 
 1. Exact canonical identity strategy across SysML commits.
 2. Final SysML-v2 → FMEA semantic mapping rules.
@@ -171,40 +124,40 @@ Design-change impact and incremental re-analysis.
 6. Best KG/vector fusion strategy after MVP-1/2.
 7. Propagation semantics across flow, interface, state and function.
 
-## Current Blockers
-
-No architectural blocker for MVP-1.
-
-## MVP-0 Completion Record (2026-09-04)
-
-Delivered in Tasks 6–10:
-
-- `examples/simple_pump.json` — synthetic system fixture (stable IDs, display
-  names separate, `source_refs` pointing at the fixture file)
-- `examples/demo_failure_library.json` — name-keyed demo failure knowledge
-  with evidence `demo-failure-library:001`
-- `src/fmea_agent/cli/` — `python -m fmea_agent demo <fixture>` with
-  `--failure-library` / `--output`; non-zero exit on invalid input
-- smoke tests via subprocess (`tests/test_smoke_cli.py`) and CLI loader tests
-- `scripts/verify.py` — cross-platform entry running pytest / ruff / mypy
-
-Acceptance verified:
+## Current Acceptance Baseline
 
 ```text
-demo run                      PASS  (python -m fmea_agent demo examples/simple_pump.json)
-pytest 79 passed              PASS
-ruff check .                  PASS
-mypy src (strict)             PASS
-no external services          PASS  (offline by construction)
-risk.status == NOT_EVALUATED  PASS
-optimization == SKIPPED       PASS
-evidence traceable to fixture PASS
-README run instructions       PASS
-PROGRESS.md updated           PASS
+pytest:          223 passed（LOCAL，Windows；212 基线 + 11 benchmark）
+ruff:            check . PASS（LOCAL）
+mypy:            src strict PASS（LOCAL）
+real E2E:        typed_inside_probe.sysml → workflow PASS（suite 内）
+benchmark:       B0 PASS / B1 PASS（docs/evaluation/MVP_1_BENCHMARK_REPORT.md）
+sysml-grpc:      0 orphan processes（LOCAL）
+CI:              GitHub Actions NOT CONFIGURED
 ```
 
 ## Next Action
 
-Plan MVP-1 (`Real System Facts`): OpenSysML / SysML API → SysMLFactSnapshot
-→ Canonical System Model. Do not start MVP-1 implementation without a
-spec/plan. OpenSysML and SysML API remain unintegrated.
+Independent Release Review 已通过（ACCEPTED @ 369f09d；
+MVP-1 = RELEASE_READY）。Release closeout（另开 Session）：
+
+```text
+1. merge feature/mvp1-real-system-facts → master
+2. master verification
+3. final release closeout
+4. tag v0.1.0
+之后:     另开 Session 规划 MVP-2（禁止本 Session 开始）
+```
+
+## Historical Records
+
+```text
+docs/records/MVP_0/MVP_0_CLOSEOUT.md
+docs/records/MVP_1/MVP_1A_OPENSYSML_SPIKE.md
+docs/records/MVP_1/MVP_1B_SNAPSHOT_CONTRACTS.md
+docs/records/MVP_1/MVP_1C_OPENSYSML_ADAPTER.md
+docs/records/MVP_1/MVP_1D_CANONICAL_MAPPING.md
+docs/records/MVP_1/MVP_1E_WORKFLOW_INTEGRATION.md
+docs/records/MVP_1/MVP_1F_BENCHMARK_RELEASE.md
+docs/records/MVP_1/MVP_1_RELEASE.md
+```

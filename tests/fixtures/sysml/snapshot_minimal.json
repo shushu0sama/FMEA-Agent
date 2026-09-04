@@ -1,0 +1,86 @@
+{
+  "source": {
+    "source_type": "sysml_file",
+    "source_path": "examples/minimal.sysml",
+    "source_version": null,
+    "model_hash": "illustrative-model-hash",
+    "parser": "opensysml",
+    "parser_version": "0.4.0",
+    "runtime_version": "v0.4.3",
+    "adapter": "open_sysml_file"
+  },
+  "elements": [
+    {
+      "source_id": "PerformProbe",
+      "metatype": "package",
+      "name": "PerformProbe",
+      "owner_id": null,
+      "type_facts": null,
+      "properties": {}
+    },
+    {
+      "source_id": "PerformProbe::Pump",
+      "metatype": "partDef",
+      "name": "Pump",
+      "owner_id": "PerformProbe",
+      "type_facts": null,
+      "properties": {}
+    },
+    {
+      "source_id": "PerformProbe::hydraulicPump",
+      "metatype": "partUsage",
+      "name": "hydraulicPump",
+      "owner_id": "PerformProbe",
+      "type_facts": {
+        "declared": "Pump",
+        "resolved_id": "PerformProbe::Pump",
+        "resolved_kind": "partDef"
+      },
+      "properties": {}
+    },
+    {
+      "source_id": "PerformProbe::hydraulicPump::motor",
+      "metatype": "partUsage",
+      "name": "motor",
+      "owner_id": "PerformProbe::hydraulicPump",
+      "type_facts": null,
+      "properties": {}
+    },
+    {
+      "source_id": "PerformProbe::spin",
+      "metatype": "actionUsage",
+      "name": "spin",
+      "owner_id": "PerformProbe",
+      "type_facts": {
+        "declared": "Spin",
+        "resolved_id": "PerformProbe::Spin",
+        "resolved_kind": "actionDef"
+      },
+      "properties": {}
+    },
+    {
+      "source_id": "PerformProbe::hydraulicPump::motor::spin",
+      "metatype": "actionUsage",
+      "name": "spin",
+      "owner_id": "PerformProbe::hydraulicPump::motor",
+      "type_facts": null,
+      "properties": {}
+    }
+  ],
+  "relationships": [
+    {
+      "type": "typing",
+      "source_id": "PerformProbe::hydraulicPump",
+      "target_id": "PerformProbe::Pump",
+      "properties": {}
+    },
+    {
+      "type": "typing",
+      "source_id": "PerformProbe::spin",
+      "target_id": "PerformProbe::Spin",
+      "properties": {}
+    }
+  ],
+  "diagnostics": [],
+  "load_status": "ok"
+}
