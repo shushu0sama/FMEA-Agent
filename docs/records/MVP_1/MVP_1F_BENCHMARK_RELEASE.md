@@ -158,6 +158,28 @@ Gate 语义拆为两层：Implementation / Verification Gate 由实现方在本�
   记录 discrepancy 并在 1F release documentation 中更新 README。
 - 无 production bug 暴露；无 benchmark RED。
 
+### Closeout Fixes（Independent Release Review — release-hygiene closeout）
+
+Independent Release Review found:
+
+- incorrect upstream commit transcription in fixture/source catalog
+- stale fixture-count wording
+- third-party EPL-2.0 license packaging hygiene
+
+Resolved in release-hygiene closeout：
+
+- 3 处 upstream commit 转写错误（缺位）→ 统一修正为正确
+  `29a3d2acdd496…`（`tests/fixtures/sysml/README.md` ×2、
+  `docs/research/SYSML_SOURCE_CATALOG.md` ×1）；
+  全仓库 grep 确认无残留；benchmark 测试/report 中的 hash 原本正确，未动 gold。
+- fixtures README "All three `.sysml` fixtures" → 与数量无关的描述
+  （"The `.sysml` fixtures in this directory…" + per-file 溯源表）。
+- 新增 `third_party/licenses/EPL-2.0.txt`（upstream LICENSE @
+  `29a3d2acdd496…` 的 verbatim 副本，SHA256 字节级一致）+
+  `THIRD_PARTY_NOTICES.md`（upstream repo / exact commit / EPL-2.0 /
+  两个 fixture 路径 / license text path）。
+  不将 FMEA-Agent 项目自身声明为 EPL-2.0。
+
 ## 10. Known Limitations
 
 见 Benchmark Report §Known Limitations：

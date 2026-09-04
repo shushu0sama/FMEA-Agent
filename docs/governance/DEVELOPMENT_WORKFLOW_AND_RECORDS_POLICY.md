@@ -261,6 +261,15 @@ reference environment only
 must not be hard-coded
 ```
 
+复制进仓库的第三方 source/test fixtures 必须保留精确 provenance：
+
+```text
+upstream repository + exact commit
+license identity
+license 文本副本（third_party/licenses/，verbatim，不修改）
+THIRD_PARTY_NOTICES.md 登记（fixture 路径 + license text path）
+```
+
 ## 9. CI Evidence 分类
 
 当前仓库没有独立 CI status。所有验证记录区分：

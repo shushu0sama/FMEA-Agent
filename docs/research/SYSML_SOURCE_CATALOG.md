@@ -51,7 +51,7 @@ External source records used in MVP-1 (MVP-1F, 2026-09-04):
 
 ```text
 repository: https://github.com/Systems-Modeling/SysML-v2-Release
-commit:     29a3d2acdd96cff872e7a55962a40400f3335 (tag 2026-07)
+commit:     29a3d2acdd49600cff872e7a55962a40400f3335 (tag 2026-07)
 license:    EPL-2.0
 
 model 1 (1C contract fixture, unmodified copy):

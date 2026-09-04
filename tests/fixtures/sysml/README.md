@@ -1,10 +1,11 @@
 # SysML fixture provenance (MVP-1C)
 
-All three `.sysml` fixtures are byte-for-byte copies of files already
-verified against OpenSysML 0.4.0 + sysml-grpc v0.4.3 during the MVP-1A
-spike and the 1C-0 dependency reproduction gate
+The `.sysml` fixtures in this directory are byte-for-byte copies of files
+already verified against OpenSysML 0.4.0 + sysml-grpc v0.4.3 during the
+MVP-1A spike and the 1C-0 dependency reproduction gate
 (see `docs/research/OPENSYSML_SPIKE_REPORT.md` and
 `docs/research/OPENSYSML_DEPENDENCY_REPRODUCTION_REPORT.md`).
+Origin and provenance for each file are listed in the table below.
 
 Do not "fix" or prettify these files: the adapter contract tests assert
 the exact diagnostic messages and element trees they produce.
@@ -24,7 +25,7 @@ External source record for `unresolved_import.sysml`
 
 ```text
 repository: https://github.com/Systems-Modeling/SysML-v2-Release
-commit:     29a3d2acdd96cff872e7a55962a40400f3335 (tag 2026-07)
+commit:     29a3d2acdd49600cff872e7a55962a40400f3335 (tag 2026-07)
 model:      sysml/src/training/18. Action Performance/Action Performance Example.sysml
 license:    EPL-2.0
 ```
@@ -34,7 +35,7 @@ External source record for `parts_example_2_official.sysml`
 
 ```text
 repository: https://github.com/Systems-Modeling/SysML-v2-Release
-commit:     29a3d2acdd96cff872e7a55962a40400f3335 (tag 2026-07)
+commit:     29a3d2acdd49600cff872e7a55962a40400f3335 (tag 2026-07)
 model:      sysml/src/training/07. Parts/Parts Example-2.sysml
 license:    EPL-2.0
 sha256:     F3CD762F65D6D51E970CAC2FD597D0785949A3566066FE8B7D6C9679A9D8E491
