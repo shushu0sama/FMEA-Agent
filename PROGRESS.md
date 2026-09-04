@@ -180,10 +180,12 @@ Do NOT block MVP-0 on:
 Replace fixture/in-memory system facts with:
 
 ```text
-OpenSysML / SysML API
+OpenSysML File Mode
 → SysMLFactSnapshot
 → Canonical System Model
 ```
+
+SysML Repository API deferred to a later MVP-1.x iteration.
 
 ### MVP-2 — Real Failure Knowledge
 
