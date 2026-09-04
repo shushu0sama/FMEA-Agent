@@ -31,6 +31,7 @@ DEFERRED
 | Pydantic | https://github.com/pydantic/pydantic | Domain/data contracts | D | STABLE | Use |
 | pytest | https://github.com/pytest-dev/pytest | Testing | D | STABLE | Use |
 | Ruff | https://github.com/astral-sh/ruff | Lint/format | D | STABLE | Use |
+| mypy | https://github.com/python/mypy | Static type checking | D | STABLE | Use |
 | LangGraph | https://github.com/langchain-ai/langgraph | Stateful workflow orchestration | D/W | STABLE/CANDIDATE | Baseline orchestrator |
 | MCP Python SDK | https://github.com/modelcontextprotocol/python-sdk | MCP protocol | D | STABLE | Phase 8; do not reimplement |
 | langchain-mcp-adapters | https://github.com/langchain-ai/langchain-mcp-adapters | Consume MCP from LangChain/LangGraph | D/W | CANDIDATE | Pin and contract-test when adopted |
@@ -70,6 +71,19 @@ DEFERRED
 | Qdrant MCP | https://github.com/qdrant/mcp-server-qdrant | Vector-search MCP | D/W | CANDIDATE | Reuse if MCP vector access needed |
 | Docling MCP | https://github.com/docling-project/docling-mcp | Document-processing MCP | D/W | CANDIDATE | Reuse if agent-facing doc processing needed |
 | SYSMOD SysML MCP | https://github.com/Open-MBEE/sysmod-sysmlv2-api | SysML/SYSMOD agent tools | W/R | WIP | Study/wrap; methodology-specific |
+
+## Active Dependency Records (MVP-0, integrated 2026-09-04)
+
+Locked by `uv.lock`. Build backend: hatchling (via `uv`).
+
+| Package | Selected version | License | Role |
+|---|---|---|---|
+| pydantic | 2.13.5 | MIT | Domain/data contracts |
+| pytest | 8.4.2 | MIT | Testing |
+| ruff | 0.16.6 | MIT | Lint/format |
+| mypy | 1.20.2 | MIT | Type checking |
+
+Upgrade policy: one dev-dependency major at a time; run `pytest` + `ruff check .` + `mypy src` before accepting.
 
 ## Integration Record Template
 

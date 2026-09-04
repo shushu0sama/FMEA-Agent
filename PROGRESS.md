@@ -21,7 +21,7 @@ Goal:
 
 ### Epic 00 — Bootstrap & Runnable MVP
 
-Status: **PLANNING / READY FOR IMPLEMENTATION**
+Status: **IMPLEMENTING — Tasks 0–2 complete (2026-09-04)**
 
 ## Current MVP
 
@@ -57,19 +57,19 @@ Structured Candidate Output
 
 ## MVP-0 Required
 
-- [ ] installable Python package
-- [ ] minimal Canonical System Model
-- [ ] minimal FMEA Domain Model
-- [ ] Evidence / SourceReference
+- [x] installable Python package
+- [x] minimal Canonical System Model
+- [x] minimal FMEA Domain Model
+- [x] Evidence / SourceReference
 - [ ] LangGraph workflow skeleton
 - [ ] in-memory system repository
 - [ ] in-memory failure-knowledge repository
-- [ ] mock/optional LLM interface
-- [ ] `RiskStrategy` interface
+- [x] mock/optional LLM interface (port defined; mock impl in Task 3)
+- [x] `RiskStrategy` interface (port defined; no-op impl in Task 3)
 - [ ] no-op / not-evaluated risk implementation
 - [ ] CLI demo
 - [ ] JSON output
-- [ ] unit tests
+- [x] unit tests
 - [ ] smoke test
 - [ ] verification script
 
@@ -165,10 +165,13 @@ No architectural blocker for MVP-0.
 
 ## Next Action
 
-Implement:
+Implement Task 3 of `docs/plans/MVP_0_IMPLEMENTATION_PLAN.md`:
 
-`docs/specs/MVP_0_RUNNABLE_AGENT_SKELETON.md`
+```text
+InMemorySystemModelRepository
+InMemoryFailureKnowledgeRepository
+NoOpRiskStrategy
+MockLLMClient
+```
 
-following:
-
-`docs/plans/MVP_0_IMPLEMENTATION_PLAN.md`
+plus fixture lookup and missing-data tests.
