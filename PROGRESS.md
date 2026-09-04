@@ -11,16 +11,17 @@ Architecture baseline: v0.1
 Development mode:      Runnable Vertical Slice First
 FMEA profile:          AIAG-VDA FMEA（七步 workflow shape）
 Current branch:        feature/mvp1-real-system-facts
-Expected HEAD:         30aee28（1F 开始基线）
+Expected HEAD:         1F release-candidate commit（git log 为准）
 Current MVP:           MVP-1 Real System Facts
-Current Stage:         1F Benchmark & Release（IN_PROGRESS）
+MVP status:            RELEASE_CANDIDATE
+Current Stage:         1F Benchmark & Release（READY_FOR_REVIEW）
 ```
 
 ## Overall Roadmap
 
 ```text
 MVP-0 COMPLETE（v0.0.1 tagged）
-MVP-1 Real System Facts       — 1A–1E 完成，1F IN_PROGRESS
+MVP-1 Real System Facts       — RELEASE_CANDIDATE（1A–1F 完成，待独立 review）
 MVP-2 Real Failure Knowledge  — 未开始（MVP-1 Release Review 之后另开 Session）
 MVP-3 Evidence-grounded LLM
 MVP-4 AIAG-VDA Risk & Semantic Validation
@@ -81,7 +82,7 @@ Dynamic FMEA
 1C OpenSysML Adapter          — COMPLETE（2026-09-04）
 1D Canonical Mapping          — COMPLETE（2026-09-04）
 1E Workflow Integration       — ACCEPTED（2026-09-04）
-1F Benchmark & Release        — IN_PROGRESS
+1F Benchmark & Release        — READY_FOR_REVIEW（2026-09-04）
 ```
 
 关键文档：
@@ -97,7 +98,8 @@ Dynamic FMEA
 
 ## Current Blockers
 
-No architectural blocker for MVP-1 release.
+No architectural blocker. Release 流程阻塞点：等待 Independent Release
+Review（不 merge master、不 tag、不开 MVP-2）。
 
 ## Current Known Limitations
 
@@ -121,26 +123,26 @@ No architectural blocker for MVP-1 release.
 ## Current Acceptance Baseline
 
 ```text
-pytest:          212 passed（LOCAL，Windows，HEAD 30aee28）
+pytest:          223 passed（LOCAL，Windows；212 基线 + 11 benchmark）
 ruff:            check . PASS（LOCAL）
 mypy:            src strict PASS（LOCAL）
-real E2E:        typed_inside_probe.sysml → workflow PASS
-benchmark:       1F 进行中（B0/B1 见 docs/evaluation/MVP_1_BENCHMARK_REPORT.md）
+real E2E:        typed_inside_probe.sysml → workflow PASS（suite 内）
+benchmark:       B0 PASS / B1 PASS（docs/evaluation/MVP_1_BENCHMARK_REPORT.md）
+sysml-grpc:      0 orphan processes（LOCAL）
 CI:              GitHub Actions NOT CONFIGURED
 ```
 
 ## Next Action
 
-完成 MVP-1F Benchmark & Release：
+Independent Release Review（MVP-1 RELEASE_CANDIDATE）：
 
 ```text
-B0 exact mapping benchmark（typed_inside_probe.sysml）
-B1 官方外部模型 benchmark（Parts Example-2.sysml，root=vehicle）
-Release Gate 全项验证
-Benchmark Report + 1F Stage Record + MVP-1 Release Record
+review: docs/records/MVP_1/MVP_1_RELEASE.md
+        docs/records/MVP_1/MVP_1F_BENCHMARK_RELEASE.md
+        docs/evaluation/MVP_1_BENCHMARK_REPORT.md
+decision: merge / release baseline（通过后才允许 merge master / tag）
+之后:     另开 Session 规划 MVP-2（禁止本 Session 开始）
 ```
-
-之后：Independent Release Review（不 merge master、不 tag、不开 MVP-2）。
 
 ## Historical Records
 
@@ -151,6 +153,6 @@ docs/records/MVP_1/MVP_1B_SNAPSHOT_CONTRACTS.md
 docs/records/MVP_1/MVP_1C_OPENSYSML_ADAPTER.md
 docs/records/MVP_1/MVP_1D_CANONICAL_MAPPING.md
 docs/records/MVP_1/MVP_1E_WORKFLOW_INTEGRATION.md
-docs/records/MVP_1/MVP_1F_BENCHMARK_RELEASE.md（1F 完成后）
-docs/records/MVP_1/MVP_1_RELEASE.md（1F 完成后）
+docs/records/MVP_1/MVP_1F_BENCHMARK_RELEASE.md
+docs/records/MVP_1/MVP_1_RELEASE.md
 ```

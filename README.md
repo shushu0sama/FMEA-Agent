@@ -2,7 +2,8 @@
 
 可维护、证据可溯、MBSE 感知的 FMEA Agent。
 
-**当前版本：MVP-0 Runnable Vertical Slice — 已完成（2026-09-04）**
+**当前版本：MVP-1 Real System Facts — RELEASE_CANDIDATE（2026-09-04）**
+（MVP-0 Runnable Vertical Slice 已完成并作为回归基线保留）
 
 ## 当前能做什么
 
@@ -31,14 +32,30 @@ Input Fixture
 - 领域模型不依赖 LangGraph / Neo4j / LLM provider；外部技术全部位于
   ports/adapters 之后
 
+MVP-1 已把系统事实来源替换为真实 SysML v2：
+
+```text
+真实 .sysml
+→ OpenSysML（opensysml==0.4.0 + sysml-grpc v0.4.3，File Mode）
+→ SysMLFactSnapshot（parser-neutral contracts）
+→ Canonical System Model（System / Component / Function / SourceReference）
+→ CanonicalSystemModelRepository
+→ 现有 LangGraph Workflow
+```
+
+- 显式 root-selection policy；多候选 root 报错并列出候选
+- 不静默丢弃任何元素：未映射元素产出 `MappingNotice`
+- Function 分配基于真实 owner traversal 证据（禁止 name/FQN 匹配）
+- B0/B1 benchmark 通过（`docs/evaluation/MVP_1_BENCHMARK_REPORT.md`）
+
 ## 当前不能做什么
 
-- 不读取真实 SysML：OpenSysML / SysML Repository API **未接入**
+- 不读取多文件 / import 模型（单文件子集，unresolved import 显式诊断）
 - 不使用真实故障知识库：Neo4j / Qdrant **未接入**
 - 不调用真实 LLM（默认路径不经过 `LLMClient`）
 - 不计算真实 AIAG-VDA S/O/D/AP 风险等级
 - 没有生产 UI、Human Review、Failure Propagation、Dynamic FMEA、
-  多智能体编排
+  多智能体编排、SysML Repository API
 
 ## 如何运行 Demo
 
@@ -70,23 +87,24 @@ pytest
 python scripts/verify.py
 ```
 
-## 下一步 — MVP-1 Real System Facts
+## 下一步
 
-用真实系统事实替换 fixture：
+MVP-1 处于 **RELEASE_CANDIDATE** 状态，等待 Independent Release Review。
+Review 通过后才允许 merge master / tag / 开始 MVP-2 Real Failure
+Knowledge（另开 Session）。
+
+发布状态与历史：
 
 ```text
-OpenSysML / SysML API
-→ SysMLFactSnapshot
-→ Canonical System Model
+docs/records/MVP_1/MVP_1_RELEASE.md
+docs/records/MVP_1/MVP_1F_BENCHMARK_RELEASE.md
 ```
-
-尚未开始；实现前需要先完成 MVP-1 的 spec/plan。
 
 ## Claude Code 每次新 Session 首先读取
 
-1. `CLAUDE.md`
+1. `CLAUDE.md` / `AGENTS.md`
 2. `PROGRESS.md`
-3. 当前 Spec / Plan
+3. 当前 Spec / Plan / Previous Stage Record（`docs/records/`）
 
 ## 本地 Claude Code 配置
 
@@ -102,3 +120,5 @@ OpenSysML / SysML API
 - Benchmark：`docs/evaluation/BENCHMARK_SPEC.md`
 - 依赖清单：`docs/research/DEPENDENCY_INVENTORY.md`
 - ADR：`docs/adr/`
+- 治理规则：`docs/governance/DEVELOPMENT_WORKFLOW_AND_RECORDS_POLICY.md`
+- 执行历史：`docs/records/`

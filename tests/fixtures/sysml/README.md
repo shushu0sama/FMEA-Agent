@@ -17,6 +17,7 @@ the exact diagnostic messages and element trees they produce.
 | `models/sibling_roots_probe.sysml` | self-built during MVP-1D (syntax from official Training Examples); verified against OpenSysML 0.4.0 + sysml-grpc v0.4.3 | valid model; two top-level packages (multiple root children) for traversal-order regression and multi-candidate root selection |
 | `models/no_usage_probe.sysml` | self-built during MVP-1D; verified against OpenSysML 0.4.0 + sysml-grpc v0.4.3 | valid model with definitions only; no PartUsage candidate for system root |
 | `models/typed_inside_probe.sysml` | self-built during MVP-1E; verified against OpenSysML 0.4.0 + sysml-grpc v0.4.3 (runtime probe: named typed ActionUsages nested in PartUsages carry real `type_facts` and real owner traversal) | valid model; typed ActionUsages directly under the root partUsage and under a nested partUsage — allocation evidence for `Function.allocated_to` |
+| `models/parts_example_2_official.sysml` | official SysML-v2-Release training example `sysml/src/training/07. Parts/Parts Example-2.sysml`, unmodified (byte-identical, SHA-256 `F3CD762F…`); MVP-1F B1 benchmark fixture | valid model; multi-root model — explicit root selection required (`vehicle`); `eng`/`cyl` nested components; `smallVehicle`/`bigVehicle` outside selected root → DEFERRED; no functions |
 
 External source record for `unresolved_import.sysml`
 (see `docs/research/SYSML_SOURCE_CATALOG.md`):
@@ -26,6 +27,17 @@ repository: https://github.com/Systems-Modeling/SysML-v2-Release
 commit:     29a3d2acdd96cff872e7a55962a40400f3335 (tag 2026-07)
 model:      sysml/src/training/18. Action Performance/Action Performance Example.sysml
 license:    EPL-2.0
+```
+
+External source record for `parts_example_2_official.sysml`
+(MVP-1F B1 benchmark; see `docs/evaluation/MVP_1_BENCHMARK_REPORT.md`):
+
+```text
+repository: https://github.com/Systems-Modeling/SysML-v2-Release
+commit:     29a3d2acdd96cff872e7a55962a40400f3335 (tag 2026-07)
+model:      sysml/src/training/07. Parts/Parts Example-2.sysml
+license:    EPL-2.0
+sha256:     F3CD762F65D6D51E970CAC2FD597D0785949A3566066FE8B7D6C9679A9D8E491
 ```
 
 `snapshot_minimal.json` (MVP-1B) is a project-owned synthetic snapshot
