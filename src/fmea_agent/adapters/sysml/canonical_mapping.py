@@ -16,9 +16,15 @@ Mapping rules v1 (registered in
   (parent = nearest mapped partUsage ancestor);
 - partUsage outside that subtree -> notice (DEFERRED);
 - named actionUsage with typing evidence (``type_facts.resolved_id`` plus
-  ``resolved_kind == "actionDef"``) -> ``Function``;
-- actionUsage without such evidence (C4) -> notice (NEEDS_RESEARCH), never
-  fabricated;
+  ``resolved_kind == "actionDef"``) whose nearest partUsage ancestor is
+  inside the selected root subtree -> ``Function`` with
+  ``allocated_to = [canonical id of that ancestor]`` (evidence: real owner
+  traversal, never name/FQN matching);
+- typed actionUsage with no partUsage ancestor (package/file-level) ->
+  notice (NEEDS_RESEARCH, attribution unconfirmed) — not silently added;
+- typed actionUsage under another part tree -> notice (DEFERRED);
+- actionUsage without typing evidence (C4) -> notice (NEEDS_RESEARCH),
+  never fabricated;
 - partDef / actionDef / package / other metatypes -> notices only.
 
 Canonical ids are generated here (``system-1``, ``component-N``,
@@ -155,16 +161,7 @@ class CanonicalSystemMapper:
                             message="actionUsage has no name; Function requires a name",
                         )
                     )
-                elif _typing_to_action_def(element):
-                    function_counter += 1
-                    functions.append(
-                        Function(
-                            id=f"function-{function_counter}",
-                            name=element.name,
-                            source_refs=[_source_ref(snapshot, element)],
-                        )
-                    )
-                else:
+                elif not _typing_to_action_def(element):
                     notices.append(
                         MappingNotice(
                             source_id=element.source_id,
@@ -173,6 +170,21 @@ class CanonicalSystemMapper:
                                 "actionUsage typing to an actionDef is not "
                                 "confirmed (C4); not mapped to Function"
                             ),
+                        )
+                    )
+                else:
+                    allocated_to = self._function_allocation(
+                        elements, root, element, component_ids, system.id, notices
+                    )
+                    if allocated_to is None:
+                        continue
+                    function_counter += 1
+                    functions.append(
+                        Function(
+                            id=f"function-{function_counter}",
+                            name=element.name,
+                            allocated_to=[allocated_to],
+                            source_refs=[_source_ref(snapshot, element)],
                         )
                     )
             elif element.metatype == "partDef":
@@ -221,6 +233,64 @@ class CanonicalSystemMapper:
             functions=functions,
             notices=notices,
         )
+
+    def _function_allocation(
+        self,
+        elements: dict[str, SysMLElementFact],
+        root: SysMLElementFact,
+        element: SysMLElementFact,
+        component_ids: dict[str, str],
+        system_id: str,
+        notices: list[MappingNotice],
+    ) -> str | None:
+        """Resolve the canonical allocation target of a typed actionUsage.
+
+        Returns the canonical id of the nearest mapped partUsage ancestor,
+        or None (with a notice appended) when attribution cannot be
+        confirmed. Never derives allocation from names or FQN strings.
+        """
+        ancestors = _part_usage_ancestors(elements, element)
+        if not ancestors:
+            notices.append(
+                MappingNotice(
+                    source_id=element.source_id,
+                    status="NEEDS_RESEARCH",
+                    message=(
+                        "actionUsage has no partUsage ancestor; attribution to "
+                        "the selected system cannot be confirmed; not mapped "
+                        "to Function"
+                    ),
+                )
+            )
+            return None
+        nearest = ancestors[0]
+        if nearest.source_id == root.source_id:
+            return system_id
+        if nearest.source_id in component_ids:
+            return component_ids[nearest.source_id]
+        if _in_subtree(elements, root, nearest):
+            notices.append(
+                MappingNotice(
+                    source_id=element.source_id,
+                    status="NEEDS_RESEARCH",
+                    message=(
+                        "actionUsage partUsage ancestor cannot be represented "
+                        "(unnamed or unmapped partUsage)"
+                    ),
+                )
+            )
+            return None
+        notices.append(
+            MappingNotice(
+                source_id=element.source_id,
+                status="DEFERRED",
+                message=(
+                    "actionUsage belongs to a partUsage outside the selected "
+                    "system root's containment subtree; not mapped in MVP-1D"
+                ),
+            )
+        )
+        return None
 
     def _select_root(
         self, elements: dict[str, SysMLElementFact], root_source_id: str | None

@@ -16,6 +16,7 @@ the exact diagnostic messages and element trees they produce.
 | `models/unresolved_import.sysml` | official SysML-v2-Release training example `sysml/src/training/18. Action Performance/Action Performance Example.sysml`, unmodified (SHA-256 `0dc8639f…`, byte-identical to the upstream file) | 4 error diagnostics from the unresolved user-file import (C1); partial snapshot |
 | `models/sibling_roots_probe.sysml` | self-built during MVP-1D (syntax from official Training Examples); verified against OpenSysML 0.4.0 + sysml-grpc v0.4.3 | valid model; two top-level packages (multiple root children) for traversal-order regression and multi-candidate root selection |
 | `models/no_usage_probe.sysml` | self-built during MVP-1D; verified against OpenSysML 0.4.0 + sysml-grpc v0.4.3 | valid model with definitions only; no PartUsage candidate for system root |
+| `models/typed_inside_probe.sysml` | self-built during MVP-1E; verified against OpenSysML 0.4.0 + sysml-grpc v0.4.3 (runtime probe: named typed ActionUsages nested in PartUsages carry real `type_facts` and real owner traversal) | valid model; typed ActionUsages directly under the root partUsage and under a nested partUsage — allocation evidence for `Function.allocated_to` |
 
 External source record for `unresolved_import.sysml`
 (see `docs/research/SYSML_SOURCE_CATALOG.md`):

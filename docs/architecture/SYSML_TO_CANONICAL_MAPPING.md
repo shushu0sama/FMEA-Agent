@@ -23,7 +23,9 @@ DEFERRED
 | unnamed `PartUsage` | not mapped | NEEDS_RESEARCH | `System`/`Component` 要求 name；1D：产出 notice，不伪造 |
 | `PartUsage` outside selected root subtree | not mapped | DEFERRED | 多系统模型延后；1D：产出 DEFERRED notice |
 | `ActionDefinition` | behavior/type metadata | NEEDS_RESEARCH | MVP-1 不直接等同 `Function`；1D：产出 notice |
-| named `ActionUsage`（typed → actionDef） | `Function` | **CONFIRMED**（1D） | 需 `type_facts.resolved_id` + `resolved_kind == "actionDef"` 证据 |
+| named `ActionUsage`（typed → actionDef，最近 partUsage 祖先位于 selected root 子树） | `Function`（`allocated_to` = 该祖先的 canonical id） | **CONFIRMED**（1E） | typing 证据 + 真实 owner traversal；禁止 name/FQN 匹配 |
+| typed `ActionUsage`（无 partUsage 祖先，package/file-level） | not mapped | NEEDS_RESEARCH | 归属 selected System 无法确认；1E：产出 notice，不静默加入 |
+| typed `ActionUsage`（位于其他 part 子树） | not mapped | DEFERRED | 不归属 selected System；1E：产出 notice |
 | performed action usage | `Function` candidate | NEEDS_RESEARCH | MVP-1A Spike：public facts 中 typing 链接缺失（C4），禁止发明类型关系；1D：产出 notice，不映射 |
 | unnamed `ActionUsage` | not mapped | NEEDS_RESEARCH | `Function` 要求 name；1D：产出 notice |
 | other metatypes（`attributeUsage` 等） | not mapped | DEFERRED | 1D：产出 DEFERRED notice，不静默丢弃 |
@@ -89,16 +91,52 @@ root_source_id 显式提供时：
 - partial Snapshot（`load_status == "partial"`）仍映射已观察事实，并附
   model-level notice。
 
-## 1D Implementation Record（TENTATIVE → CONFIRMED 证据）
+## Function Scope & Allocation Policy v1.1（1E 已实现，2026-09-04）
+
+v1.0 曾把所有 typed actionUsage 映射为 `Function`（`allocated_to=[]`）——
+无法满足 `SystemModelRepository.list_functions(element_id)`（依赖
+`allocated_to`）的现有 workflow 契约（1E-0 Gate 失败证据见 PROGRESS.md）。
+
+v1.1 规则（runtime probe 证据：`tests/fixtures/sysml/models/typed_inside_probe.sysml`，
+named typed ActionUsage 嵌于 PartUsage 内，OpenSysML 0.4.0 + sysml-grpc
+v0.4.3 实测 ok=True，owner 经真实 traversal）：
+
+```text
+named typed ActionUsage（type_facts.resolved_id + resolved_kind == "actionDef"）
+├─ 无 partUsage 祖先（package/file-level）
+│     → NEEDS_RESEARCH notice（归属无法确认，不映射）
+├─ 最近 partUsage 祖先位于 selected root 子树
+│     ├─ 祖先 = root              → Function.allocated_to = [System.id]
+│     ├─ 祖先已映射为 Component   → Function.allocated_to = [Component.id]
+│     └─ 祖先无法表示（unnamed）  → NEEDS_RESEARCH notice
+└─ 最近 partUsage 祖先在其他 part 子树
+      → DEFERRED notice（不归属 selected System，不映射）
+```
+
+禁止：
+
+```text
+按名字匹配 Function 和 Component
+按 FQN 字符串猜 owner
+把 package-level action 自动分配给 part
+补全 performed ActionUsage 的缺失 typing（C4）
+```
+
+`CanonicalSystemModel` 只包含能归属 selected System 的 Function。
+
+## Implementation Record（TENTATIVE → CONFIRMED 证据）
 
 | Rule | source repo / commit | source model path | observed OpenSysML representation | expected canonical output | test case |
 |---|---|---|---|---|---|
 | selected root `PartUsage` → `System` | PyPI `opensysml==0.4.0`（Apache-2.0）+ `sysml-grpc v0.4.3`（`99e02003…`） | `tests/fixtures/sysml/models/perform_probe.sysml` | `Symbol.kind='partUsage'`，`id='PerformProbe::hydraulicPump'`（FQN），`owner_id='PerformProbe'` | `System(id='system-1', name='hydraulicPump')` + SourceReference | `test_perform_probe_maps_end_to_end` |
 | nested `PartUsage` → `Component` + parent | 同上 | 同上 | `…::hydraulicPump::motor`，owner 经 traversal = `…::hydraulicPump` | `Component(id='component-1', name='motor', parent_id='system-1')` | `test_perform_probe_maps_end_to_end` / `test_nested_part_usage_maps_to_component_with_parent` |
-| named `ActionUsage`（typed → actionDef）→ `Function` | 同上 | 同上 | `…::spin`：`TypeFacts(declared='Spin', resolved_id='PerformProbe::Spin', resolved_kind='actionDef')` | `Function(id='function-1', name='spin', allocated_to=[])` | `test_typed_action_usage_maps_to_function` / E2E |
+| named `ActionUsage`（typed → actionDef）→ `Function` | 同上 | 同上 | `…::spin`：`TypeFacts(declared='Spin', resolved_id='PerformProbe::Spin', resolved_kind='actionDef')` | `Function(id='function-1', name='spin', allocated_to=[])`（v1.0，已由 1E 修订为 scope+allocated_to 规则） | `test_typed_action_usage_maps_to_function`（1D） |
+| named typed `ActionUsage`（subtree 内）→ `Function` + `allocated_to` | 同上 | `tests/fixtures/sysml/models/typed_inside_probe.sysml`（runtime probe：ok=True） | `…::hydraulicPump::motor::spin`：`TypeFacts(declared='Spin', resolved_id='TypedInsideProbe::Spin', resolved_kind='actionDef')` + owner traversal = `…::motor`（partUsage） | `Function(name='spin', allocated_to=['component-1'])`；`pumpSpin` → `allocated_to=['system-1']` | `test_typed_inside_probe_maps_allocation_end_to_end` / `test_workflow_runs_end_to_end_on_real_sysml_model` |
 | 多候选 / 无候选 → `CanonicalMappingError` | 同上 | `tests/fixtures/sysml/models/sibling_roots_probe.sysml` / `no_usage_probe.sysml` | 三个 top-level partUsage（`alphaPump`/`alphaMotor`/`betaPump`）；defs only | `CanonicalMappingError`（列出候选 / no candidate） | `test_sibling_roots_model_requires_explicit_root` / `test_no_usage_model_raises_canonical_mapping_error` |
 
-1D 实现：`src/fmea_agent/adapters/sysml/canonical_mapping.py`
+实现：`src/fmea_agent/adapters/sysml/canonical_mapping.py`
 （`CanonicalSystemMapper`）；aggregate 与 `MappingNotice`：
 `src/fmea_agent/domain/system_model.py`；`CanonicalMappingError`：
-`src/fmea_agent/adapters/sysml/exceptions.py`。
+`src/fmea_agent/adapters/sysml/exceptions.py`；canonical-backed
+repository：`src/fmea_agent/adapters/inmemory/system_model.py`
+（`CanonicalSystemModelRepository`，1E）。

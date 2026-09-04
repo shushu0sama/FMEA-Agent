@@ -14,7 +14,7 @@
 
 ### Milestone 1 — Real System Facts
 
-Status: **1A CONDITIONAL_GO；1B Snapshot Contracts COMPLETE；1C OpenSysML Adapter COMPLETE；1D Canonical Mapping COMPLETE（2026-09-04）**
+Status: **1A CONDITIONAL_GO；1B Snapshot Contracts COMPLETE；1C OpenSysML Adapter COMPLETE；1D Canonical Mapping COMPLETE；1E Workflow Integration COMPLETE（2026-09-04）**
 
 Goal:
 
@@ -51,8 +51,8 @@ MVP-1 阶段：
 1C-0 Dependency Reproduction — COMPLETE（PYPI_PIN_CONFIRMED，2026-09-04）
 1C OpenSysML Adapter          — COMPLETE（2026-09-04）
 1D Canonical Mapping          — COMPLETE（2026-09-04）
-1E Workflow Integration       — NEXT（not started）
-1F Benchmark & Release
+1E Workflow Integration       — COMPLETE（2026-09-04）
+1F Benchmark & Release        — NEXT（not started）
 ```
 
 关键文档：
@@ -101,7 +101,7 @@ Goal:
 
 ### Epic 01 — MVP-1 Real System Facts
 
-Status: **1A CONDITIONAL_GO；1B Snapshot Contracts COMPLETE；1C OpenSysML Adapter COMPLETE；1D Canonical Mapping COMPLETE（2026-09-04）；1E Workflow Integration NEXT**
+Status: **1A CONDITIONAL_GO；1B Snapshot Contracts COMPLETE；1C OpenSysML Adapter COMPLETE；1D Canonical Mapping COMPLETE；1E Workflow Integration COMPLETE（2026-09-04）；1F Benchmark & Release NEXT**
 
 ### Epic 00 — Bootstrap & Runnable MVP
 
@@ -305,25 +305,75 @@ PROGRESS.md updated           PASS
 
 ## Next Action
 
-MVP-1D 已 COMPLETE。执行 MVP-1E Workflow Integration（见
-`docs/plans/MVP_1_IMPLEMENTATION_PLAN.md` Stage 5）：
+MVP-1E 已 COMPLETE。执行 MVP-1F Benchmark & Release（见
+`docs/plans/MVP_1_IMPLEMENTATION_PLAN.md` Stage 6）：
 
 ```text
-OpenSysML/canonical-backed SystemModelRepository
-→ 接入现有 workflow
-→ 真实 .sysml E2E
+B0 minimal fixture benchmark
+至少一个 external official model
+更新 PROGRESS / README / Dependency Inventory / Mapping Matrix
+完整验证
 ```
 
-1E 要点：
+1F 要点：
 
-- 不改变 Failure Knowledge / Risk / Optimization；
-- 不重写现有上层 workflow；
-- 1D 的 `CanonicalSystemModel`（`system`/`components`/`functions`）为
-  repository 输入；
-- `Function.allocated_to` / `Component.component_type` 填充规则尚未实现
-  （1D 置空），1E 如需使用需先补 Mapping 规则并登记矩阵。
+- `docs/evaluation/MVP_1_BENCHMARK_SPEC.md` 为基准规范；
+- 官方 Training Example 单文件 PASS 名单见 Spike 报告（5 个）；
+- `Component.component_type` 仍为 `None`（无证据规则，不要为“完整”补）；
+- 不改 Mapping/Repository 职责；不合并 master。
 
-不得开始 Benchmark & Release（1F）。
+## MVP-1E Completion Record (2026-09-04)
+
+**1E-0 Gate：PASS**（先 RED 固化接口缺口：1D 的 `allocated_to=[]` 无法满足
+`list_functions(element_id)` 契约，9 个 RED 测试记录于
+`tests/test_canonical_mapping.py`；runtime probe 证实 evidence 存在后实现）。
+
+Delivered per TDD（RED → GREEN → REFACTOR）：
+
+- **Function allocation 证据**（runtime probe，OpenSysML 0.4.0 + sysml-grpc
+  v0.4.3 实测）：named typed ActionUsage 嵌于 PartUsage 内时，public facts
+  同时提供 `type_facts(declared='Spin', resolved_id=…, resolved_kind='actionDef')`
+  + 真实 owner traversal 指向所属 PartUsage —— 新 fixture
+  `tests/fixtures/sysml/models/typed_inside_probe.sysml`（ok=True）
+- **Function scope & allocation policy v1.1**（`canonical_mapping.py`）：
+  typed named ActionUsage 的最近 partUsage 祖先在 selected root 子树内 →
+  `Function.allocated_to = [该祖先 canonical id]`（root → `System.id`，
+  Component → 其 id）；无 partUsage 祖先（package-level）→ NEEDS_RESEARCH
+  notice；其他 part 子树 → DEFERRED notice；unnamed 祖先 → NEEDS_RESEARCH
+  notice。禁止 name/FQN 匹配；C4 不伪造不变。perform_probe 的 package-level
+  `spin` 按新政策不再映射为 Function（归属无法确认，notice 记录）
+- `CanonicalSystemModelRepository`（`adapters/inmemory/system_model.py`）：
+  输入 `CanonicalSystemModel`，实现现有 `SystemModelRepository` Protocol
+  四方法；不重新解析 SysML、不依赖 runtime object
+- 真实 E2E：`typed_inside_probe.sysml` → adapter → snapshot → mapper →
+  repository → 现有 LangGraph workflow → 结构化输出（`tests/test_canonical_repository.py`，
+  8 tests：gate / contract / integration / 错误路径）
+- 文档：mapping matrix（Function policy v1.1 + 证据行）、fixtures README
+
+Acceptance verified:
+
+```text
+1E-0 Gate（allocated_to 缺口 RED 固化）      PASS
+runtime probe（typing + owner traversal）    PASS（ok=True）
+Function scope（package-level / 其他子树）   PASS（notice，不静默加入）
+Function.allocated_to（System / Component）  PASS（真实 + synthetic）
+canonical-backed repository 契约             PASS（Protocol 四方法）
+真实 .sysml → workflow E2E                  PASS（motor/spin 候选输出）
+Failure Knowledge fixture（name-keyed）      PASS（未改机制）
+Risk = NOT_EVALUATED / Optimization = SKIPPED PASS
+MVP-0 demo regression                       PASS
+pytest 209 passed（196 基线 + 13 新增）      PASS
+ruff / mypy（strict）                       PASS
+无 Neo4j/Qdrant/RAG/MCP/real LLM             PASS
+无 workflow 结构修改（零 diff）              PASS
+```
+
+已知限制：
+
+- `Component.component_type` 保持 `None`（无证据规则，未为“完整”补规则）；
+- system-level Function（`allocated_to=[System.id]`）现 workflow 只按
+  component 查函数，系统级函数暂不被任何分析目标使用（未改 workflow）；
+- partial Snapshot 的 workflow 接入行为未单独覆盖（映射层已支持）。
 
 ## MVP-1D Completion Record (2026-09-04)
 
