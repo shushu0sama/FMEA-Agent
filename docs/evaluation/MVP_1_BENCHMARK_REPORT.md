@@ -26,8 +26,8 @@ Mapping:         src/fmea_agent/adapters/sysml/canonical_mapping.py（1D/1E）
 ```
 
 Evidence classification：全部验证为本机执行（LOCAL）；GitHub Actions
-NOT CONFIGURED（无 CI evidence）；benchmark 与 Release Gate 待独立 review
-（EXTERNAL_REVIEW）。
+NOT CONFIGURED（无 CI evidence）；benchmark 与 Release Gate 已通过独立
+release review（EXTERNAL_REVIEW — ACCEPTED，review baseline 369f09d）。
 
 ## B0 — Project-owned Minimal Fixture（exact mapping）
 
@@ -163,6 +163,7 @@ Gate 分两层：
 Implementation / Verification Gate — PASS 16/16（LOCAL evidence）
     逐项 [x] 与证据：docs/records/MVP_1/MVP_1F_BENCHMARK_RELEASE.md §8.1
 
-Independent Release Review      — [ ] EXTERNAL_REVIEW（未完成）
-    通过后：merge master / release tag（不可变发布锚点）
+Independent Release Review      — [x] EXTERNAL_REVIEW — ACCEPTED
+    Review baseline: 369f09d
+    merge master / release tag（不可变发布锚点）尚未执行
 ```

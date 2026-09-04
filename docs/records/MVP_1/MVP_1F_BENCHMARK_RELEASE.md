@@ -1,6 +1,6 @@
 # MVP-1F — Benchmark & Release Closeout Record
 
-Status: READY_FOR_REVIEW
+Status: ACCEPTED
 Date: 2026-09-04
 
 ## 1. Objective
@@ -47,10 +47,13 @@ Implementation Commit(s):
   （Part B：benchmark + release records）
 - `5da0f11` docs: add per-item release gate evidence to MVP-1F record
   （review evidence amendment）
+- `d2c1767` docs: clarify release gate semantics, status vocabulary and
+  commit anchors（docs-only consistency amendment）
+- `369f09d` docs: fix SysML provenance and third-party license notices
+  （release-hygiene closeout，见 §9 Closeout Fixes）
 
-Final Commit: `5da0f11`（Review Baseline；其后的 docs-only consistency
-amendments 以 git log 为准，最终发布锚点为 Release Review 通过后的
-merge commit 或 release tag）
+Final Commit: `369f09d`（Independent Release Review Baseline；最终发布
+锚点为 review 通过后的 merge commit 或 release tag）
 
 ## 4. Delivered
 
@@ -138,18 +141,43 @@ Gate 语义拆为两层：Implementation / Verification Gate 由实现方在本�
 [x] MVP-1 Stage Records complete     — docs/records/（MVP_0 + 1A–1F + Release）
 ```
 
-### 8.2 Independent Release Review（未完成）
+### 8.2 Independent Release Review — PASS
 
 ```text
-[ ] EXTERNAL_REVIEW — 独立 reviewer（人 / 独立 Agent）审查：
+[x] EXTERNAL_REVIEW — ACCEPTED
+Review baseline: 369f09d
 
-    docs/records/MVP_1/MVP_1_RELEASE.md
-    docs/records/MVP_1/MVP_1F_BENCHMARK_RELEASE.md
-    docs/evaluation/MVP_1_BENCHMARK_REPORT.md
+审查对象：
+docs/records/MVP_1/MVP_1_RELEASE.md
+docs/records/MVP_1/MVP_1F_BENCHMARK_RELEASE.md
+docs/evaluation/MVP_1_BENCHMARK_REPORT.md
+
+结论：
+MVP-1A ACCEPTED
+MVP-1B ACCEPTED
+MVP-1C ACCEPTED
+MVP-1D ACCEPTED
+MVP-1E ACCEPTED
+MVP-1F ACCEPTED
+MVP-1 Real System Facts = RELEASE_READY
+
+Production blocker:      NONE
+Architecture blocker:    NONE
+Benchmark blocker:       NONE
+Release hygiene blocker: NONE
 ```
 
-通过后：merge master / release tag 作为真正不可变的发布锚点；
-未通过：CHANGES_REQUIRED，回到实现方修改。
+下一步（review 通过后执行；本 Session 不执行）：
+
+```text
+merge feature/mvp1-real-system-facts → master
+master verification
+final release closeout
+tag v0.1.0
+```
+
+merge master / release tag 作为真正不可变的发布锚点，尚未执行；
+未通过：CHANGES_REQUIRED，回到实现方修改（本次未发生）。
 
 ## 9. Problems Found During Development
 
@@ -212,10 +240,18 @@ README.md
 
 ## 13. Final Assessment
 
-READY_FOR_REVIEW（最终 Acceptance 由独立 release review 决定）
+ACCEPTED（Independent Release Review @ `369f09d`；merge master / tag
+尚未执行，RELEASED 状态另行记录）
 
 ## 14. Next Stage
 
-Independent Release Review（MVP-1）。
-进入条件：本 Record + MVP-1 Release Record + Benchmark Report 就绪；
-review 通过后才允许 merge master / tag / 规划 MVP-2。
+Release closeout（另开 Session）：
+
+```text
+merge feature/mvp1-real-system-facts → master
+master verification
+final release closeout
+tag v0.1.0
+```
+
+MVP-2 规划仅在 release closeout 完成后另开 Session。

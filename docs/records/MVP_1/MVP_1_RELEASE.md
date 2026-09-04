@@ -1,6 +1,6 @@
 # MVP-1 — Real System Facts Release Record
 
-Status: RELEASE_CANDIDATE
+Status: RELEASE_READY（NOT RELEASED；merge master / tag 待执行）
 Date: 2026-09-04
 
 Commit 锚点（不可变历史基线；Markdown 不保存自身 SHA——自引用问题，
@@ -15,13 +15,15 @@ Benchmark RC:              4f73d22  test/docs: complete MVP-1F benchmark and
                                     release candidate
 Review Evidence Amendment: 5da0f11  docs: add per-item release gate evidence
                                     to MVP-1F record
-Review Baseline:           5da0f11
+Release Gate Semantics:    d2c1767  docs: clarify release gate semantics,
+                                    status vocabulary and commit anchors
+Release Hygiene Closeout:  369f09d  docs: fix SysML provenance and
+                                    third-party license notices
+Review Baseline:           369f09d
 ```
 
-Review Baseline 之后的 docs-only consistency amendments 以 git log 为准。
-
-> 尚未独立 release review / merge master / tag。RELEASED 状态在 review
-> 通过后另行记录。
+> Independent Release Review 已通过（ACCEPTED @ `369f09d`）。merge master
+> / tag 尚未执行。RELEASED 状态在 merge/tag 完成后另行记录。
 
 ## MVP
 
@@ -76,7 +78,7 @@ Plan：`docs/plans/MVP_1_IMPLEMENTATION_PLAN.md`
 1C OpenSysML Adapter          COMPLETE（含 1C-0 PYPI_PIN_CONFIRMED）
 1D Canonical Mapping          COMPLETE
 1E Workflow Integration       ACCEPTED（含 closeout fix）
-1F Benchmark & Release        READY_FOR_REVIEW
+1F Benchmark & Release        ACCEPTED
 ```
 
 Stage Records：见 §Historical Records。
@@ -163,14 +165,38 @@ Gate 分两层：实现验证在本阶段完成（Implementation / Verification 
 逐项证据：`docs/records/MVP_1/MVP_1F_BENCHMARK_RELEASE.md` §8.1 与
 `docs/evaluation/MVP_1_BENCHMARK_REPORT.md`。
 
-### Independent Release Review — 未完成
+### Independent Release Review — PASS
 
 ```text
-[ ] EXTERNAL_REVIEW
+[x] EXTERNAL_REVIEW — ACCEPTED
+Review baseline: 369f09d
+
+结论：
+MVP-1A ACCEPTED
+MVP-1B ACCEPTED
+MVP-1C ACCEPTED
+MVP-1D ACCEPTED
+MVP-1E ACCEPTED
+MVP-1F ACCEPTED
+MVP-1 Real System Facts = RELEASE_READY
+
+Production blocker:      NONE
+Architecture blocker:    NONE
+Benchmark blocker:       NONE
+Release hygiene blocker: NONE
 ```
 
-通过后：merge master / release tag（不可变发布锚点）；RELEASED 状态
-另行记录。未通过：CHANGES_REQUIRED。
+下一步（review 通过后执行；尚未完成）：
+
+```text
+merge feature/mvp1-real-system-facts → master
+master verification
+final release closeout
+tag v0.1.0
+```
+
+merge master / release tag（不可变发布锚点）完成后，RELEASED 状态
+另行记录。未通过：CHANGES_REQUIRED（本次未发生）。
 
 ## Recommended Next MVP
 

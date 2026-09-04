@@ -11,17 +11,17 @@ Architecture baseline: v0.1
 Development mode:      Runnable Vertical Slice First
 FMEA profile:          AIAG-VDA FMEA（七步 workflow shape）
 Current branch:        feature/mvp1-real-system-facts
-Review Baseline:       5da0f11（其后 docs-only amendments 以 git log 为准）
+Review Baseline:       369f09d
 Current MVP:           MVP-1 Real System Facts
-MVP status:            RELEASE_CANDIDATE
-Current Stage:         1F Benchmark & Release（READY_FOR_REVIEW）
+MVP status:            RELEASE_READY（Independent Release Review ACCEPTED）
+Current Stage:         1F Benchmark & Release（ACCEPTED）
 ```
 
 ## Overall Roadmap
 
 ```text
 MVP-0 COMPLETE（v0.0.1 tagged）
-MVP-1 Real System Facts       — RELEASE_CANDIDATE（1A–1F 完成，待独立 review）
+MVP-1 Real System Facts       — RELEASE_READY（1A–1F ACCEPTED，待 merge master / tag）
 MVP-2 Real Failure Knowledge  — 未开始（MVP-1 Release Review 之后另开 Session）
 MVP-3 Evidence-grounded LLM
 MVP-4 AIAG-VDA Risk & Semantic Validation
@@ -82,7 +82,8 @@ Dynamic FMEA
 1C OpenSysML Adapter          — COMPLETE（2026-09-04）
 1D Canonical Mapping          — COMPLETE（2026-09-04）
 1E Workflow Integration       — ACCEPTED（2026-09-04）
-1F Benchmark & Release        — READY_FOR_REVIEW（2026-09-04）
+1F Benchmark & Release        — ACCEPTED（2026-09-04，Independent Release
+                                 Review @ 369f09d）
 ```
 
 关键文档：
@@ -98,8 +99,11 @@ Dynamic FMEA
 
 ## Current Blockers
 
-No architectural blocker. Release 流程阻塞点：等待 Independent Release
-Review（不 merge master、不 tag、不开 MVP-2）。
+No blocker（Independent Release Review @ 369f09d：
+Production / Architecture / Benchmark / Release hygiene 全部 NONE）。
+Release 流程剩余步骤：merge master → master verification → final
+release closeout → tag v0.1.0（另开 Session；不 merge master、不 tag、
+不开 MVP-2）。
 
 ## Current Known Limitations
 
@@ -134,13 +138,14 @@ CI:              GitHub Actions NOT CONFIGURED
 
 ## Next Action
 
-Independent Release Review（MVP-1 RELEASE_CANDIDATE）：
+Independent Release Review 已通过（ACCEPTED @ 369f09d；
+MVP-1 = RELEASE_READY）。Release closeout（另开 Session）：
 
 ```text
-review: docs/records/MVP_1/MVP_1_RELEASE.md
-        docs/records/MVP_1/MVP_1F_BENCHMARK_RELEASE.md
-        docs/evaluation/MVP_1_BENCHMARK_REPORT.md
-decision: merge / release baseline（通过后才允许 merge master / tag）
+1. merge feature/mvp1-real-system-facts → master
+2. master verification
+3. final release closeout
+4. tag v0.1.0
 之后:     另开 Session 规划 MVP-2（禁止本 Session 开始）
 ```
 
