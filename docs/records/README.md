@@ -19,6 +19,8 @@ Release Record
 ```text
 docs/records/
 ├── README.md                        ← 本文件
+├── bootstrap/
+│   └── PROJECT_CLEANUP_REPORT.md
 ├── MVP_0/
 │   └── MVP_0_CLOSEOUT.md
 ├── MVP_1/
@@ -30,6 +32,7 @@ docs/records/
 │   ├── MVP_1F_BENCHMARK_RELEASE.md
 │   └── MVP_1_RELEASE.md
 └── templates/
+    ├── SESSION_HANDOFF_TEMPLATE.md
     ├── STAGE_CLOSEOUT_TEMPLATE.md
     └── MVP_RELEASE_TEMPLATE.md
 ```
@@ -42,5 +45,7 @@ docs/records/
 - 详细证据只在一处：Stage Record 引用 `docs/research/` /
   `docs/architecture/` 报告，不复制内容。
 - 记录真实演化：Plan 与执行不一致时记录演化，不重写历史。
+- Session handoff 仅用于同一正式 Stage 因上下文过长需要换 Session；
+  Stage 完成后以 Closeout Record 为正式历史。
 - 治理规则见：
   `docs/governance/DEVELOPMENT_WORKFLOW_AND_RECORDS_POLICY.md`。

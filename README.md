@@ -106,6 +106,8 @@ drift）→ docs-only patch → Independent Patch Review ACCEPTED
 ```
 
 下一步：MVP-2 Real Failure Knowledge — Read-only Planning（另开 Session）。
+Pre-MVP-2 governance/spec baseline is prepared as documentation only;
+production implementation remains `NOT_STARTED`.
 
 尚未实现（MVP-1 明确延后，不宣传为已有能力）：
 
@@ -122,11 +124,12 @@ docs/records/MVP_1/MVP_1F_BENCHMARK_RELEASE.md
 docs/records/MVP_1/MVP_1_POST_RELEASE_PATCH.md（v0.1.1 docs patch release）
 ```
 
-## Claude Code 每次新 Session 首先读取
+## 每次新 Session 首先读取
 
-1. `CLAUDE.md` / `AGENTS.md`
+1. `AGENTS.md`（canonical）/ `CLAUDE.md`（Claude Code compatibility）
 2. `PROGRESS.md`
-3. 当前 Spec / Plan / Previous Stage Record（`docs/records/`）
+3. `docs/README.md`
+4. 当前 Spec / Plan（存在时）/ Previous Stage Record（`docs/records/`）
 
 ## 本地 Claude Code 配置
 
@@ -135,8 +138,13 @@ docs/records/MVP_1/MVP_1_POST_RELEASE_PATCH.md（v0.1.1 docs patch release）
 
 ## 重要入口
 
-- 长期架构原则：`docs/foundation/FMEA_AGENT_FOUNDATION_GUIDE.md`
-- 分阶段开发与复用：`docs/foundation/FMEA_AGENT_STAGED_DEVELOPMENT_AND_REUSE_GUIDE.md`
+- 文档导航：`docs/README.md`
+- V1 产品边界：`docs/product/FMEA_AGENT_V1.md`
+- V1 架构边界：`docs/architecture/FMEA_AGENT_V1_ARCHITECTURE.md`
+- MVP-2 Spec：`docs/specs/MVP_2_REAL_FAILURE_KNOWLEDGE.md`
+- Neo4j baseline：`docs/research/NEO4J_FAILURE_KNOWLEDGE_BASELINE.md`
+- 长期架构原则（REFERENCE）：`docs/foundation/FMEA_AGENT_FOUNDATION_GUIDE.md`
+- 分阶段开发与复用（REFERENCE）：`docs/foundation/FMEA_AGENT_STAGED_DEVELOPMENT_AND_REUSE_GUIDE.md`
 - FMEA 方法：`docs/domain/FMEA_PROFILE_V1.md`
 - Canonical Model：`docs/architecture/CANONICAL_SYSTEM_MODEL_SPEC.md`
 - Benchmark：`docs/evaluation/BENCHMARK_SPEC.md`

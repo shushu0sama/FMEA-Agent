@@ -20,6 +20,17 @@ Git         = 实际实现历史（最底层事实）
 CLAUDE/AGENTS= 开发时必须遵守的规则
 ```
 
+文档 lifecycle 状态：
+
+```text
+ACTIVE      当前 operational source of truth
+REFERENCE   长期背景 / evidence，按需读取
+HISTORICAL  历史计划或执行记录，不代表当前状态
+SUPERSEDED  保留追溯，但已被新文档取代
+```
+
+`docs/README.md` 是文档 lifecycle 与最小读取集的导航入口。
+
 原则：
 
 ```text

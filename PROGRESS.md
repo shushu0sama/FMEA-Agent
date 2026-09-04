@@ -12,7 +12,8 @@ Development mode:      Runnable Vertical Slice First
 FMEA profile:          AIAG-VDA FMEA（七步 workflow shape）
 Current branch:        master
 Review Baseline:       369f09d
-Current MVP:           MVP-1 Real System Facts
+Current MVP:           MVP-1 Real System Facts（stable） /
+                       Pre-MVP-2 Governance Baseline（planning docs）
 MVP status:            RELEASED（v0.1.0 = original capability release；
                        v0.1.1 = current stable docs-only patch）
 Current Stage:         1F Benchmark & Release（ACCEPTED）
@@ -25,7 +26,8 @@ Post-Release Patch:    DONE（Independent Patch Review = ACCEPTED；
 ```text
 MVP-0 COMPLETE（v0.0.1 tagged）
 MVP-1 Real System Facts       — RELEASED（v0.1.0 capability；v0.1.1 stable patch）
-MVP-2 Real Failure Knowledge  — NOT_STARTED（另开 Session；禁止提前开始）
+MVP-2 Real Failure Knowledge  — NOT_STARTED（PLANNING ONLY；
+                                  Spec baseline prepared for review）
 MVP-3 Evidence-grounded LLM
 MVP-4 AIAG-VDA Risk & Semantic Validation
 MVP-5 Human Review
@@ -119,6 +121,14 @@ current-state drift）→ v0.1.1 docs-only patch → Independent Patch
 Review ACCEPTED → annotated tag v0.1.1（current stable patch）
 ```
 
+MVP-2 implementation blocker:
+
+```text
+Implementation Plan NOT_STARTED pending independent review of
+docs/specs/MVP_2_REAL_FAILURE_KNOWLEDGE.md.
+Production implementation NOT_STARTED.
+```
+
 ## Current Known Limitations
 
 - 单文件子集；用户文件 import 不支持（C1，unresolved import 显式诊断）。
@@ -137,6 +147,8 @@ Review ACCEPTED → annotated tag v0.1.1（current stable patch）
 5. Licensed/authorized source for AIAG-VDA risk tables and AP rules.
 6. Best KG/vector fusion strategy after MVP-1/2.
 7. Propagation semantics across flow, interface, state and function.
+8. MVP-2 entity-resolution strategy for the existing name-only Neo4j graph.
+9. Credential/configuration policy for future read-only Neo4j adapter.
 
 ## Current Acceptance Baseline
 
@@ -161,9 +173,13 @@ DONE（Independent Patch Review ACCEPTED；annotated tag v0.1.1）。
 后续 Session：
 
 ```text
-1. MVP-2 Real Failure Knowledge — Read-only Planning
-   （另开 Session；MVP-2 = NOT_STARTED）
-禁止:     开始 MVP-2 implementation
+1. Independent review of Pre-MVP-2 governance/spec baseline:
+   - `docs/product/FMEA_AGENT_V1.md`
+   - `docs/architecture/FMEA_AGENT_V1_ARCHITECTURE.md`
+   - `docs/research/NEO4J_FAILURE_KNOWLEDGE_BASELINE.md`
+   - `docs/specs/MVP_2_REAL_FAILURE_KNOWLEDGE.md`
+2. After review acceptance, create `docs/plans/MVP_2_IMPLEMENTATION_PLAN.md`.
+禁止:     开始 MVP-2 production implementation before spec review
 ```
 
 Patch 详情：`docs/records/MVP_1/MVP_1_POST_RELEASE_PATCH.md`。

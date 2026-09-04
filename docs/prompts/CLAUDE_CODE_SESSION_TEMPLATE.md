@@ -1,6 +1,9 @@
-# Claude Code Session Template
+# Coding Agent Session Template
 
-> 新的正式开发 Session 的 Prompt 以本模板生成。
+> Lifecycle: SUPERSEDED for normal session startup.
+> 新的正式开发 Session 优先使用 `docs/README.md` 的最小读取集。
+> 同一 Stage 因上下文过长需要交接时使用
+> `docs/records/templates/SESSION_HANDOFF_TEMPLATE.md`。
 > 具体 Prompt 是 execution aid，不是历史事实；
 > 真实执行历史以 Git + `docs/records/` 为准。
 
@@ -20,8 +23,9 @@ expected HEAD commit:
 
 ## 2. Required Reading
 
-- CLAUDE.md / AGENTS.md
+- AGENTS.md / CLAUDE.md
 - PROGRESS.md
+- docs/README.md
 - docs/governance/DEVELOPMENT_WORKFLOW_AND_RECORDS_POLICY.md
 - 当前 Spec：docs/specs/...
 - 当前 Plan：docs/plans/...

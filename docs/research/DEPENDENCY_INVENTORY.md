@@ -113,6 +113,22 @@ Upgrade policy:    一次只升级一个 major integration；contract tests + MV
                    通过后才接受（见本文件 Upgrade Policy）
 
 Upgrade policy: one dev-dependency major at a time; run `pytest` + `ruff check .` + `mypy src` before accepting.
+```
+
+## Reference Baseline — Existing Neo4j Failure Knowledge (Pre-MVP-2, 2026-09-04)
+
+Detailed baseline:
+`docs/research/NEO4J_FAILURE_KNOWLEDGE_BASELINE.md`.
+
+```text
+Neo4j version: 5.26.0
+Role:          existing Legacy Failure Knowledge Graph
+MVP-2 status:  planning baseline only; future read-only adapter
+Driver:        not installed in current project dependencies
+Write-back:    out of scope for MVP-2
+Security:      legacy importer is reference evidence only; do not copy secrets
+               or run destructive import behavior against production
+```
 
 ## Integration Record Template
 

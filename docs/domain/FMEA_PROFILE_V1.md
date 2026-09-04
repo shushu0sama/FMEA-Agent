@@ -156,9 +156,16 @@ PREVENTION
 DETECTION
 ```
 
+Historical controls retrieved from a source record must be distinguishable from
+agent-generated recommendations.
+
 ### 3.9 RecommendedAction
 
 Represents a candidate or approved optimization action.
+
+Recommended actions are analysis outputs. They must not be confused with
+historical prevention or detection controls unless source evidence explicitly
+supports that interpretation.
 
 ### 3.10 Evidence
 
@@ -215,12 +222,36 @@ Rules must not be invented by the LLM.
 
 ## 5. Field Authority
 
-Recommended status types:
+Current implementation uses `KnowledgeStatus` values to keep unsupported claims
+explicit. Long-term semantics should separate three axes instead of collapsing
+them into one field:
+
+```text
+Origin axis:
+FACT
+RETRIEVED_KNOWLEDGE
+INFERENCE
+UNKNOWN
+
+Analysis lifecycle axis:
+CANDIDATE
+NOT_EVALUATED
+
+Review lifecycle axis:
+REVIEWED
+APPROVED
+```
+
+The current enum/code does not need to change until a later implementation
+stage. The semantic requirement is that documentation and output must not treat
+retrieved knowledge, inference, candidate analysis and approval as equivalent.
+
+Recommended status vocabulary:
 
 ```text
 FACT
-RETRIEVED
-INFERRED
+RETRIEVED_KNOWLEDGE
+INFERENCE
 CANDIDATE
 REVIEWED
 APPROVED
