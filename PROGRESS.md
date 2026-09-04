@@ -14,7 +14,7 @@
 
 ### Milestone 1 — Real System Facts
 
-Status: **1A CONDITIONAL_GO；1B Snapshot Contracts COMPLETE；1C OpenSysML Adapter COMPLETE（2026-09-04）**
+Status: **1A CONDITIONAL_GO；1B Snapshot Contracts COMPLETE；1C OpenSysML Adapter COMPLETE；1D Canonical Mapping COMPLETE（2026-09-04）**
 
 Goal:
 
@@ -50,8 +50,8 @@ MVP-1 阶段：
 1B Snapshot Contracts         — COMPLETE
 1C-0 Dependency Reproduction — COMPLETE（PYPI_PIN_CONFIRMED，2026-09-04）
 1C OpenSysML Adapter          — COMPLETE（2026-09-04）
-1D Canonical Mapping          — NEXT（not started）
-1E Workflow Integration
+1D Canonical Mapping          — COMPLETE（2026-09-04）
+1E Workflow Integration       — NEXT（not started）
 1F Benchmark & Release
 ```
 
@@ -101,7 +101,7 @@ Goal:
 
 ### Epic 01 — MVP-1 Real System Facts
 
-Status: **1A CONDITIONAL_GO；1B Snapshot Contracts COMPLETE；1C OpenSysML Adapter COMPLETE（2026-09-04）；1D Canonical Mapping NEXT**
+Status: **1A CONDITIONAL_GO；1B Snapshot Contracts COMPLETE；1C OpenSysML Adapter COMPLETE；1D Canonical Mapping COMPLETE（2026-09-04）；1E Workflow Integration NEXT**
 
 ### Epic 00 — Bootstrap & Runnable MVP
 
@@ -305,25 +305,78 @@ PROGRESS.md updated           PASS
 
 ## Next Action
 
-MVP-1C 已 COMPLETE。执行 MVP-1D Canonical Mapping（见
-`docs/plans/MVP_1_IMPLEMENTATION_PLAN.md` Stage 4）：
+MVP-1D 已 COMPLETE。执行 MVP-1E Workflow Integration（见
+`docs/plans/MVP_1_IMPLEMENTATION_PLAN.md` Stage 5）：
 
 ```text
-selected root PartUsage → System
-named nested PartUsage → Component
-selected ActionUsage/performed behavior → Function candidate
+OpenSysML/canonical-backed SystemModelRepository
+→ 接入现有 workflow
+→ 真实 .sysml E2E
 ```
 
-1D 要点：
+1E 要点：
 
-- 必须有显式 root-selection policy；
-- Mapping 规则登记于 `docs/architecture/SYSML_TO_CANONICAL_MAPPING.md`
-  （CONFIRMED / TENTATIVE / NEEDS_RESEARCH / REJECTED / DEFERRED）；
-- performed ActionUsage（C4）按 UNKNOWN / NEEDS_RESEARCH 处理；
-- Snapshot 不铸 Canonical ID；Canonical ID 与 SourceReference 属 1D 职责；
-- 禁止 `PartDefinition == Component` 式简化。
+- 不改变 Failure Knowledge / Risk / Optimization；
+- 不重写现有上层 workflow；
+- 1D 的 `CanonicalSystemModel`（`system`/`components`/`functions`）为
+  repository 输入；
+- `Function.allocated_to` / `Component.component_type` 填充规则尚未实现
+  （1D 置空），1E 如需使用需先补 Mapping 规则并登记矩阵。
 
-不得开始 Workflow Integration（1E）。
+不得开始 Benchmark & Release（1F）。
+
+## MVP-1D Completion Record (2026-09-04)
+
+Delivered per TDD（RED → GREEN → REFACTOR，先测试后实现）：
+
+- `src/fmea_agent/adapters/sysml/canonical_mapping.py` —
+  `CanonicalSystemMapper.map_snapshot(snapshot, *, root_source_id=None)`
+  → `CanonicalSystemModel`；显式 root-selection policy（显式
+  `root_source_id` 或唯一 named top-level partUsage 候选；0/多候选 →
+  `CanonicalMappingError` 列出候选）；subtree 内的 named PartUsage →
+  `Component`（parent = 最近已映射 partUsage 祖先）；typed（`resolved_id`
+  + `resolved_kind == "actionDef"`）named ActionUsage → `Function`；
+  performed/untyped ActionUsage 不映射（C4，NEEDS_RESEARCH notice）；
+  partDef/actionDef/package/其他 metatype 一律 notice，不静默丢弃
+- `src/fmea_agent/domain/system_model.py` —
+  `CanonicalSystemModel` aggregate（id 唯一、parent 可解析校验）+
+  `MappingNotice`（CONFIRMED/TENTATIVE/NEEDS_RESEARCH/REJECTED/DEFERRED）
+- `src/fmea_agent/adapters/sysml/exceptions.py` — `CanonicalMappingError`
+- Canonical ID 由 Mapping 层生成（`system-1`/`component-N`/`function-N`，
+  per-kind 计数器按 Snapshot 顺序；同 Snapshot 映射确定相等）；禁止把
+  `Symbol.id` 当 Canonical ID；source identity 保留于
+  `SourceReference.source_element_id`
+- partial Snapshot 映射已观察事实 + model-level NEEDS_RESEARCH notice
+- `tests/test_canonical_mapping.py` — 32 tests（unit 用 parser-neutral
+  synthetic snapshots；integration 经真实 sysml-grpc v0.4.3 加载
+  perform_probe / sibling_roots_probe / no_usage_probe / invalid_syntax）
+- 新 fixtures：`sibling_roots_probe.sysml`（多顶层 package + 多候选 root）、
+  `no_usage_probe.sysml`（defs only）
+- 1C 小修正：`_walk()` 顶层 sibling 顺序修正为 `root.children()` 源顺序 +
+  regression tests；orphan 检查改为 PID 集合比对（不误伤已有合法进程）
+- 文档：`SYSML_TO_CANONICAL_MAPPING.md`（root-selection / canonical
+  identity / notice 语义 + TENTATIVE→CONFIRMED 证据记录）、
+  `CANONICAL_SYSTEM_MODEL_SPEC.md` §15、fixtures README
+
+Acceptance verified:
+
+```text
+真实 .sysml → Snapshot → Canonical E2E         PASS（perform_probe 实测输出）
+System / Component / Function 提取              PASS
+SourceReference 可追溯                          PASS（source_element_id + 绝对路径）
+Canonical ID ≠ source identity                 PASS（测试固化）
+performed ActionUsage 不伪造 typing            PASS（C4）
+unsupported concept 有 notice                   PASS（package/defs/attribute）
+0 / 多候选 root → CanonicalMappingError        PASS
+partial Snapshot → 已观察事实 + notice         PASS
+Snapshot 遍历顺序 = 源文件顺序                 PASS（1C 修正 + regression）
+orphan 检查 = PID 集合比对                     PASS
+MVP-0 demo regression                          PASS（NOT_EVALUATED / SKIPPED）
+pytest 196 passed（164 基线 + 32 新增）        PASS
+ruff / mypy（strict）                          PASS
+无 SystemModelRepository / workflow 修改       PASS
+无 Neo4j/Qdrant/MCP/real LLM                   PASS
+```
 
 ## MVP-1C Completion Record (2026-09-04)
 

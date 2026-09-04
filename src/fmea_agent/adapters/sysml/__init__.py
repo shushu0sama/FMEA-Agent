@@ -1,5 +1,6 @@
-"""SysML source-fact contracts and the OpenSysML file-mode adapter."""
+"""SysML source-fact contracts, the OpenSysML file-mode adapter and the canonical mapping."""
 
+from fmea_agent.adapters.sysml.canonical_mapping import CanonicalSystemMapper
 from fmea_agent.adapters.sysml.contracts import (
     SysMLDiagnostic,
     SysMLElementFact,
@@ -9,6 +10,7 @@ from fmea_agent.adapters.sysml.contracts import (
     SysMLTypeFacts,
 )
 from fmea_agent.adapters.sysml.exceptions import (
+    CanonicalMappingError,
     SysMLError,
     SysMLLoadError,
     SysMLParseError,
@@ -17,6 +19,8 @@ from fmea_agent.adapters.sysml.exceptions import (
 from fmea_agent.adapters.sysml.open_sysml_file import OpenSysMLFileAdapter
 
 __all__ = [
+    "CanonicalMappingError",
+    "CanonicalSystemMapper",
     "OpenSysMLFileAdapter",
     "SysMLDiagnostic",
     "SysMLElementFact",

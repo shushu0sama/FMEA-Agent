@@ -19,3 +19,7 @@ class SysMLParseError(SysMLError):
 
 class UnsupportedSysMLElement(SysMLError):
     """A non-root symbol could not be represented in the snapshot contracts."""
+
+
+class CanonicalMappingError(SysMLError):
+    """Snapshot facts could not be mapped into the Canonical System Model."""
