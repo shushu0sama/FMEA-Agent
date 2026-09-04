@@ -44,6 +44,7 @@ from fmea_agent.adapters.sysml.contracts import (
 from fmea_agent.domain.system_model import (
     CanonicalSystemModel,
     Component,
+    Function,
     System,
 )
 
@@ -375,6 +376,62 @@ def test_typed_action_usage_under_unnamed_part_ancestor_gets_notice() -> None:
     assert ("S::wrap::spin", "NEEDS_RESEARCH") in _notice_pairs(model)
 
 
+def test_typed_action_under_unmapped_named_part_gets_no_dangling_allocation() -> None:
+    """Regression: a named partUsage under an unnamed ancestor never becomes a
+    Component, so a typed actionUsage under it must not allocate to its
+    precomputed component id."""
+    snapshot = make_snapshot(
+        elements=[
+            make_element("S", "partUsage", name="s"),
+            make_element("S::Spin", "actionDef", name="Spin", owner_id="S"),
+            make_element("S::wrap", "partUsage", owner_id="S"),
+            make_element(
+                "S::wrap::motor", "partUsage", name="motor", owner_id="S::wrap"
+            ),
+            make_element(
+                "S::wrap::motor::spin",
+                "actionUsage",
+                name="spin",
+                owner_id="S::wrap::motor",
+                type_facts=SysMLTypeFacts(
+                    declared="Spin", resolved_id="S::Spin", resolved_kind="actionDef"
+                ),
+            ),
+        ]
+    )
+    model = CanonicalSystemMapper().map_snapshot(snapshot)
+    assert model.components == []
+    assert model.functions == []
+    notice_pairs = _notice_pairs(model)
+    assert ("S::wrap::motor", "NEEDS_RESEARCH") in notice_pairs
+    assert ("S::wrap::motor::spin", "NEEDS_RESEARCH") in notice_pairs
+
+
+def test_named_part_under_unnamed_grandparent_maps_no_dangling_parent() -> None:
+    """Regression: a chain under an unnamed ancestor must not produce a
+    Component whose parent_id points at a never-mapped Component."""
+    snapshot = make_snapshot(
+        elements=[
+            make_element("S", "partUsage", name="s"),
+            make_element("S::wrap", "partUsage", owner_id="S"),
+            make_element(
+                "S::wrap::mid", "partUsage", name="mid", owner_id="S::wrap"
+            ),
+            make_element(
+                "S::wrap::mid::motor",
+                "partUsage",
+                name="motor",
+                owner_id="S::wrap::mid",
+            ),
+        ]
+    )
+    model = CanonicalSystemMapper().map_snapshot(snapshot)
+    assert model.components == []
+    notice_pairs = _notice_pairs(model)
+    assert ("S::wrap::mid", "NEEDS_RESEARCH") in notice_pairs
+    assert ("S::wrap::mid::motor", "NEEDS_RESEARCH") in notice_pairs
+
+
 # --- 8. multiple roots / no root -> CanonicalMappingError ---
 
 
@@ -514,6 +571,16 @@ def test_canonical_system_model_requires_parent_to_resolve() -> None:
         CanonicalSystemModel(
             system=System(id="system-1", name="s"),
             components=[Component(id="component-1", name="c", parent_id="nope")],
+        )
+
+
+def test_canonical_system_model_requires_function_allocation_to_resolve() -> None:
+    """Invariant: Function.allocated_to must resolve to System.id or an
+    existing Component.id — no dangling allocations from any mapper."""
+    with pytest.raises(ValidationError):
+        CanonicalSystemModel(
+            system=System(id="system-1", name="s"),
+            functions=[Function(id="function-1", name="f", allocated_to=["ghost"])],
         )
 
 

@@ -97,6 +97,10 @@ class CanonicalSystemMapper:
         components: list[Component] = []
         functions: list[Function] = []
         function_counter = 0
+        # source_id -> canonical id of Components actually created; membership
+        # here (not in the precomputed ``component_ids``) is the only evidence
+        # that a Component exists for parent/allocated_to resolution.
+        mapped_component_ids: dict[str, str] = {}
         for element in snapshot.elements:
             if element.source_id == root.source_id:
                 continue
@@ -128,8 +132,8 @@ class CanonicalSystemMapper:
                 parent = _part_usage_ancestors(elements, element)[0]
                 if parent.source_id == root.source_id:
                     parent_id: str | None = system.id
-                elif parent.source_id in component_ids:
-                    parent_id = component_ids[parent.source_id]
+                elif parent.source_id in mapped_component_ids:
+                    parent_id = mapped_component_ids[parent.source_id]
                 else:
                     parent_id = None
                 if parent_id is None:
@@ -152,6 +156,7 @@ class CanonicalSystemMapper:
                         source_refs=[_source_ref(snapshot, element)],
                     )
                 )
+                mapped_component_ids[element.source_id] = component_ids[element.source_id]
             elif element.metatype == "actionUsage":
                 if element.name is None:
                     notices.append(
@@ -174,7 +179,7 @@ class CanonicalSystemMapper:
                     )
                 else:
                     allocated_to = self._function_allocation(
-                        elements, root, element, component_ids, system.id, notices
+                        elements, root, element, mapped_component_ids, system.id, notices
                     )
                     if allocated_to is None:
                         continue
@@ -239,15 +244,17 @@ class CanonicalSystemMapper:
         elements: dict[str, SysMLElementFact],
         root: SysMLElementFact,
         element: SysMLElementFact,
-        component_ids: dict[str, str],
+        mapped_component_ids: dict[str, str],
         system_id: str,
         notices: list[MappingNotice],
     ) -> str | None:
         """Resolve the canonical allocation target of a typed actionUsage.
 
-        Returns the canonical id of the nearest mapped partUsage ancestor,
-        or None (with a notice appended) when attribution cannot be
-        confirmed. Never derives allocation from names or FQN strings.
+        Returns the canonical id of the nearest actually-mapped partUsage
+        ancestor, or None (with a notice appended) when attribution cannot
+        be confirmed. Membership in ``mapped_component_ids`` (not in the
+        precomputed id assignment) is the evidence that a Component exists.
+        Never derives allocation from names or FQN strings.
         """
         ancestors = _part_usage_ancestors(elements, element)
         if not ancestors:
@@ -266,8 +273,8 @@ class CanonicalSystemMapper:
         nearest = ancestors[0]
         if nearest.source_id == root.source_id:
             return system_id
-        if nearest.source_id in component_ids:
-            return component_ids[nearest.source_id]
+        if nearest.source_id in mapped_component_ids:
+            return mapped_component_ids[nearest.source_id]
         if _in_subtree(elements, root, nearest):
             notices.append(
                 MappingNotice(

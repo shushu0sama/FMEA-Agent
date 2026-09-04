@@ -100,6 +100,13 @@ class CanonicalSystemModel(BaseModel):
                     f"component {component.id!r} parent_id "
                     f"{component.parent_id!r} does not resolve"
                 )
+        for function in self.functions:
+            for target in function.allocated_to:
+                if target not in resolvable:
+                    errors.append(
+                        f"function {function.id!r} allocated_to "
+                        f"{target!r} does not resolve"
+                    )
         if errors:
             raise ValueError("; ".join(errors))
         return self

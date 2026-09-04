@@ -375,6 +375,20 @@ ruff / mypy（strict）                       PASS
   component 查函数，系统级函数暂不被任何分析目标使用（未改 workflow）；
 - partial Snapshot 的 workflow 接入行为未单独覆盖（映射层已支持）。
 
+Closeout fix（2026-09-04，同分支）：
+
+- 修复 dangling allocation：`_function_allocation` / Component parent 解析
+  曾以“预生成 component id”为已映射证据——unnamed 祖先导致 named PartUsage
+  无法映射时，其下 typed ActionUsage 仍被分配 `allocated_to=["component-N"]`
+  （悬空）；深层链条还会让 Component.parent_id 悬空并触发 validator 崩溃。
+  现改为 `mapped_component_ids`（Component 实际创建后才登记）作为唯一证据；
+  无法确认归属 → NEEDS_RESEARCH notice。
+- 域层 invariant（`CanonicalSystemModel` validator）：每个
+  `Function.allocated_to` target 必须解析到 `System.id` 或已存在的
+  `Component.id`——未来任何 Mapper/Repository 都无法制造悬空分配。
+- 3 个 regression tests（dangling allocation / dangling parent /
+  allocated_to validator）；212 passed；真实 E2E 与 MVP-0 demo 无退化。
+
 ## MVP-1D Completion Record (2026-09-04)
 
 Delivered per TDD（RED → GREEN → REFACTOR，先测试后实现）：

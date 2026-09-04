@@ -124,6 +124,12 @@ named typed ActionUsage（type_facts.resolved_id + resolved_kind == "actionDef"�
 
 `CanonicalSystemModel` 只包含能归属 selected System 的 Function。
 
+Invariant（2026-09-04 closeout fix，domain validator 强制）：`Function.allocated_to`
+的每个 target 必须解析到 `System.id` 或实际存在于 `components` 的
+`Component.id`。Mapper 只以“Component 已实际创建”为分配证据——预生成的
+`component-N` id 不作为证据（如 unnamed 祖先导致 named PartUsage 无法映射时，
+其下的 typed ActionUsage 产出 NEEDS_RESEARCH notice，不分配）。
+
 ## Implementation Record（TENTATIVE → CONFIRMED 证据）
 
 | Rule | source repo / commit | source model path | observed OpenSysML representation | expected canonical output | test case |
