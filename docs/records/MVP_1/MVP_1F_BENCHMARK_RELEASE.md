@@ -107,27 +107,49 @@ git diff --check                PASS
 
 CI：GitHub Actions NOT CONFIGURED。全部为 LOCAL evidence。
 
-## 8. Problems Found During Development
+## 8. Release Gate（逐项证据）
+
+```text
+[x] MVP-0 regression PASS            — demo run + 历史 tests 全通过
+[x] B0 exact mapping PASS            — tests/test_mvp1_benchmark.py（4 tests）
+[x] OpenSysML contract tests PASS    — test_open_sysml_file_adapter.py 等（suite 内）
+[x] >=1 official external SysML PASS — B1 Parts Example-2（7 tests）
+[x] source trace PASS                — source_element_id 与 gold 精确一致（B0/B1）
+[x] Canonical invariants PASS        — domain validator + mapping regression tests
+[x] real SysML → workflow E2E PASS   — test_canonical_repository.py（suite 内）
+[x] pytest PASS                      — 223 passed（LOCAL，Windows）
+[x] ruff PASS                        — check .（LOCAL）
+[x] mypy strict PASS                 — src 24 files（LOCAL）
+[x] no orphan sysml-grpc regression  — 0 进程（LOCAL 实测）
+[x] no OpenSysML type leakage        — 1B AST 级 import 测试固化（suite 内）
+[x] no hard-coded local paths        — 生产代码无 D:\ 路径；本地工作区仅
+                                       存在于历史研究记录（reference only）
+[x] no KG/RAG/MCP/real LLM leakage   — 本阶段零生产代码改动（仅 tests/docs）
+[x] documentation governance complete — Part A commit 389f216
+[x] MVP-1 Stage Records complete     — docs/records/（MVP_0 + 1A–1F + Release）
+```
+
+## 9. Problems Found During Development
 
 - README.md 漂移（发现并修复）：README 仍称 "MVP-1 尚未开始"，与
   Git/tests 实际状态（1A–1E 完成）矛盾 —— 按 Implementation Truth 原则
   记录 discrepancy 并在 1F release documentation 中更新 README。
 - 无 production bug 暴露；无 benchmark RED。
 
-## 9. Known Limitations
+## 10. Known Limitations
 
 见 Benchmark Report §Known Limitations：
 
 - 单文件子集（C1）；F1 hash 语义；`component_type=None`；
   B1 Function metrics N/A。
 
-## 10. Deferred
+## 11. Deferred
 
 - B2 Vehicle Example（定义/用法区分、更大模型）—— 延后。
 - GitHub Actions 最小 CI —— 建议在 Independent Release Review 中评估
   （本任务不擅自新增 CI）。
 
-## 11. Files / Contracts Affected
+## 12. Files / Contracts Affected
 
 ```text
 tests/test_mvp1_benchmark.py（新增）
@@ -144,11 +166,11 @@ CLAUDE.md / AGENTS.md（治理章节）
 README.md
 ```
 
-## 12. Final Assessment
+## 13. Final Assessment
 
 READY_FOR_REVIEW（最终 Acceptance 由独立 release review 决定）
 
-## 13. Next Stage
+## 14. Next Stage
 
 Independent Release Review（MVP-1）。
 进入条件：本 Record + MVP-1 Release Record + Benchmark Report 就绪；
