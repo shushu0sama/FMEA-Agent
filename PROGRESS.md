@@ -18,7 +18,7 @@ Current MVP:           MVP-1 Real System Facts（stable） /
                        Demo V1 End-to-End FMEA（D1 input pack）
 MVP status:            RELEASED（v0.1.0 = original capability release；
                        v0.1.1 = current stable docs-only patch）
-Current Stage:         Demo D1 固定案例与演示资料（READY_FOR_REVIEW）
+Current Stage:         Demo D1 固定案例与演示资料（ACCEPTED）
 Post-Release Patch:    DONE（Independent Patch Review = ACCEPTED；
                        annotated tag v0.1.1）
 ```
@@ -33,7 +33,7 @@ Demo 不替代或重编号 MVP，也不等同于 FMEA 方法七步法。当前�
 ```text
 MVP-0 COMPLETE（v0.0.1 tagged）
 MVP-1 Real System Facts       — RELEASED（v0.1.0 capability；v0.1.1 stable patch）
-Demo V1 End-to-End FMEA       — D0 ACCEPTED；D1 READY_FOR_REVIEW；D2–D7 NOT_STARTED
+Demo V1 End-to-End FMEA       — D0/D1 ACCEPTED；D2–D7 NOT_STARTED
 MVP-2 Real Failure Knowledge  — NOT_STARTED（PLANNING ONLY；
                                   原草案作为完整检索阶段参考）
 MVP-3 Evidence-grounded LLM
@@ -138,7 +138,7 @@ MVP-2 规划与实现边界：
 C-1 final re-review: ACCEPTED（仅限 credential remediation）。
 Standalone MVP-2 G0B: NOT_STARTED（完整检索阶段未单独开工）。
 Demo D0: ACCEPTED；新增 Demo Spec / Plan，复审决定见 D0 记录。
-Demo D1 implementation: READY_FOR_REVIEW；D2–D7: NOT_STARTED。
+Demo D1 implementation: ACCEPTED；D2–D7: NOT_STARTED。
 ```
 
 ## 当前已知限制
@@ -173,7 +173,9 @@ Demo D1 implementation: READY_FOR_REVIEW；D2–D7: NOT_STARTED。
   其中新增 10 项 D1 测试，真实重读演示模型通过；既有 B0/B1 与 orphan 回归包含在全套中。
 - LOCAL：`mypy src scripts/build_demo_inputs.py` PASS（25 source files）；
   `uv lock --check --offline` PASS。src、依赖与既有基准 gold 未改动。
-- EXTERNAL_REVIEW：待独立 D1 审核；D1 资料包已创建，D2–D7 未实现。
+- EXTERNAL_REVIEW：独立 Agent `/root/d1_independent_review` 于 `d1868a1` 判定 D1 ACCEPTED，
+  CRITICAL=0 / IMPORTANT=0 / MINOR=0；独立 pytest 233 passed、Ruff/mypy PASS。
+  额外三种 Git 换行配置及源覆盖保护验证通过，详情见 D1 记录。D2–D7 未实现。
 - 真实 DeepSeek/Neo4j/UI 与工程质量验收不在 D1 完成范围，本次未调用或验收。
 
 ## MVP-1 验收基线（既有发布能力）
@@ -248,7 +250,9 @@ SysML 与 Neo4j 案例仍独立；无匹配、相关但适用性待确认、推�
 Demo 可用自动测试减少人工准备，但不以同源派生资料或模型自己生成的答案验证工程正确率。
 历史讨论见 [信息对齐台账](docs/product/MVP_2_PREPLANNING_ALIGNMENT.md)，现为 HISTORICAL。
 
-下一步：完成 D1 独立审核与收尾后，进入 D2 输入/证据契约与旧导出修复；不重复规划前问卷。
+下一步：D1 独立审核已通过；新主会话进入 D2 输入/证据契约与旧导出修复，不重复规划前问卷。
+实施基线包含 `740279c`、路线澄清 `9d5c0a7`、D1 实现 `d1868a1` 及后续 D1 收尾提交；
+按实际 Git 最新记录恢复，不从旧 master 遗漏这些提交。
 约一周为可放宽目标窗口；真实API/图/前端接入状态分别记录，不能以mock通过替代live验收。
 
 Patch 详情：`docs/records/MVP_1/MVP_1_POST_RELEASE_PATCH.md`。

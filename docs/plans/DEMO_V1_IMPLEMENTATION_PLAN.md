@@ -15,7 +15,7 @@ LangGraph 负责明确的 Demo 状态转换；Streamlit 仅作为应用入口。
 
 Lifecycle: ACTIVE
 Status: ACCEPTED（D0 独立计划审查）
-Implementation: D1 READY_FOR_REVIEW；D2–D7 NOT_STARTED
+Implementation: D1 ACCEPTED；D2–D7 NOT_STARTED
 起点与本次准备证据：[D0 记录](../records/DEMO_V1/D0_SPEC_AND_PLAN.md)。
 
 D0–D7 是 Demo V1 的内部工作步骤，保留原 MVP 能力路线；对应关系与收尾归入原则以
@@ -91,7 +91,7 @@ def test_pack_preserves_model_and_unknown_quantity(tmp_path):
 - [x] 加入第二次生成字节相同、源 hash 不符时拒绝、source==output 不能覆盖原模型的测试。
 - [x] 执行 `python scripts/build_demo_inputs.py --source tests/fixtures/sysml/models/typed_inside_probe.sysml --output examples/demo_v1`。
   用真实 adapter 重读 `system.sysml`；断言 system=hydraulicPump、motor/spin 可定位，pumpSpin 排除。
-- [ ] 运行目标测试及 `python scripts/verify.py`；记录 D1 来源/hash/真实 parser 证据并提交。
+- [x] 运行目标测试及 `python scripts/verify.py`；记录 D1 来源/hash/真实 parser 证据并提交。
 
 D1 执行与审核证据见 [D1 记录](../records/DEMO_V1/D1_FIXED_CASE_AND_INPUT_PACK.md)。
 

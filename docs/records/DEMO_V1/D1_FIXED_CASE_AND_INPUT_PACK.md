@@ -1,7 +1,7 @@
 # Demo V1 D1 — 固定案例与演示资料包
 
 日期：2026-09-05
-Stage status: READY_FOR_REVIEW
+Stage status: ACCEPTED（独立审核，仅 D1）
 Scope: Demo V1 / D1（A01、A02），不是正式 MVP-2 或完整 Demo 验收。
 
 ## 1. 目标与依据
@@ -37,8 +37,12 @@ Scope: Demo V1 / D1（A01、A02），不是正式 MVP-2 或完整 Demo 验收。
   （`docs: clarify Demo steps versus formal MVP milestones`）。此提交不是本实现 Agent 创建。
   已读取其完整差异：仅澄清 Demo 与正式 MVP 的对应/验收关系，不改变 D1。
   保留全部更新，收尾以此最新记录为依据；原 `740279c` 仍在祖先链中。
-- D1 实现提交与审核基线：提交后在本节补记；本记录当前用于送审准备。
-- 不合并到 master，不创建或移动发布 tag；提交/推送与独立审核状态在后续收尾追加真实证据。
+- D1 实现提交与审核基线：`d1868a12d6b774da83bd5e7b712bb8a6c3e189cd`
+  （`feat: build traceable fixed SysML demo input pack`），12 个变更文件。
+  实现验证后提交，状态 READY_FOR_REVIEW；独立审核通过后本次仅更新状态与证据。
+- 分支已成功推送 `origin/codex/demo-v1-d1-input-pack`；审核后实查本地 HEAD 与 upstream
+  均为 `d1868a1`，工作区干净。包含本节的后续文档收尾提交沿同一分支保存，具体 SHA 以 Git 历史为准。
+- 不合并到 master，不创建或移动发布 tag；D2 尚未实现。
 
 范围漂移：NO。新增 `.gitattributes` 是固定 A01 字节来源的必要支撑，未扩展功能阶段。
 基线发生上述文档前移，明确记录，不把它写成 D1 自身实现。
@@ -128,7 +132,27 @@ CI = NOT_CONFIGURED；DeepSeek/Neo4j live = NOT_RUN（D1 不涉及）；UI = NOT
 
 ## 7. EXTERNAL_REVIEW
 
-待独立审核；实现方不自封 ACCEPTED。审核的基线、发现、修复与决定在此追加。
+独立 reviewer：`/root/d1_independent_review`。未继承实现会话推理历史，按明确的 Spec/Plan/Git
+范围独立只读审核；未修改工作树、index、HEAD、分支或文档。
+
+审核范围：`9d5c0a7a9d6c67db799bb5b5ba4b8445c4b67534` →
+`d1868a12d6b774da83bd5e7b712bb8a6c3e189cd`，12 个变更文件。
+决定：**ACCEPTED**；CRITICAL=0 / IMPORTANT=0 / MINOR=0，无待修复发现。
+
+EXTERNAL_REVIEW 本机实际证据：
+
+- pytest：233 passed in 13.09s；Ruff `--no-cache` PASS；mypy src + 新脚本 25 files PASS；
+  range `git diff --check` PASS。
+- `core.autocrlf=false/true/input` 三种设置，每种原夹具与五个包工件 checkout 全部逐字一致。
+- 修改源、LF 源、源路径/父目录覆盖、五个输出位置分别硬链接至源、warning 诊断均拒绝，
+  原文件与已有资料包保持不变。
+- 真实 adapter/mapper 重读 hydraulicPump → motor/spin，0 diagnostics；pumpSpin 保留并明确排除。
+  临时目录重新生成与提交工件逐字一致；数量/工况保持未知，hash/CSM/source IDs 可追溯。
+- 既有 src/依赖/原夹具/benchmark/gold 无变化；全套包含已有回归。
+
+此决定只接受 Demo V1 / D1 的 A01/A02 实现，不扩展为完整 Demo、正式 MVP-2/3 或工程质量验收。
+未测试跨操作系统、并发写入或崩溃原子性；未调用 DeepSeek/Neo4j 或运行 UI。
+本次后续收尾只更新治理记录/状态，不修改被审实现与资料包，不将独立审核重复计作 CI。
 
 ## 8. 限制与下一步
 
@@ -137,4 +161,4 @@ CI = NOT_CONFIGURED；DeepSeek/Neo4j live = NOT_RUN（D1 不涉及）；UI = NOT
   一个 checkout/输出目录保持单写入者；I/O 中断后应重新生成并验证。
 - 同源 BOM/说明只用于演示资料准备；无独立工程审核或失效分析质量验收。
 - 包是输入资料，不是 CandidateReport；报告/输入契约及来源导出修复属于 D2 以后。
-- 下一项建议任务：D1 独立审核通过后，在新主会话按既有 Plan 开始 D2。
+- 下一项建议任务：D1 已独立审核通过，在新主会话按既有 Plan 开始 D2。
