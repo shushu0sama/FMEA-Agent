@@ -1,8 +1,8 @@
 # Demo V1 D5 — 可补问、可恢复及请求幂等的受控工作流
 
 日期：2026-09-05
-Stage status: READY_FOR_REVIEW
-Closeout status: READY_FOR_REVIEW
+Stage status: ACCEPTED（仅 Demo V1 / D5 技术范围）
+Closeout status: ACCEPTED（实现及独立审核通过；最终治理提交随 D5 分支保存）
 Scope: Demo V1 / D5（A04、A07、A10 的服务基础）；D6 UI/导出、D7 验收未实现。
 
 ## 1. 依据、起点与范围
@@ -124,9 +124,33 @@ graph_used=false，未读取或发送私有工程图正文。不是 Neo4j 与外
 
 ## 6. EXTERNAL_REVIEW 与 Git 收尾
 
-当前状态 READY_FOR_REVIEW，尚无本次独立接受结论。
-代码与本记录验证后提交，独立 reviewer 将检查固定 `90ef7d1..实施提交` 范围，
-重要发现修复并复验后再回填 ACCEPTED；不能将 LOCAL PASS 代替独立审核。
+代码与本记录验证后提交为 `c9878bb`，当时状态 READY_FOR_REVIEW。
+独立 reviewer `/root/d5_independent_review` 审核固定范围
+`90ef7d15c0472398c762595236282a4a8f82104e..c9878bbc6b9e122f6ff261df9867c2221850fc44`。
+最终结论 **ACCEPTED（仅 Demo V1 / D5 技术范围）**；
+未解决 CRITICAL=0 / IMPORTANT=0 / MINOR=0。此次首审接受，无审核后代码修复。
+
+EXTERNAL_REVIEW 独立证据：
+
+- `pytest -q` → **498 passed in 21.17s**；Ruff PASS；mypy src 43 files PASS。
+- 离线依赖锁 PASS（78 packages）；固定提交范围及工作区 `git diff --check` PASS。
+- 额外 12 组 stdin 边界探查全部通过：并发 start、不同请求 ID 并发 analyze、跨操作签名冲突、
+  对话快照篡改无效、相同摘要下 CSM 修改被拒绝、intake 的 KeyboardInterrupt/SystemExit、
+  检索中断禁止重放、首次请求明确降级、提前 analyze 的请求保留、原输入深复制、
+  空 start 不伪造用户证据、两轮后问题冻结。
+- 审核前后 HEAD 为 `c9878bb`；仅主代理维护的四份治理文档有差异，没有代码漂移。
+  reviewer 未修改源码、index、HEAD 或分支，未读取配置/凭证或调用外部服务。
+
+真实 DeepSeek 验证仍是第 5 节的 LOCAL 证据，独立审核不扩大为真实图与模型完整集成、
+工程正确率或 D6/D7 验收。最终回填仅改 PROGRESS、Plan、导航与本记录，不改变被审代码。
+
+Git 保存：前两次标准 push 返回 TLS unexpected EOF；一次仅命令级 schannel/HTTP 1.1
+尝试同样握手失败。没有关闭证书校验、改写永久 Git 配置或 force push。
+之后公开 GitHub HTTPS 探查恢复 200，标准 push 成功，远端创建同名 D5 分支并建立 upstream，
+实施提交 `c9878bb` 已推送。失败历史保留，不记为首次成功。
+
+最终治理提交锚点用 `git log -1 --format=%H -- docs/records/DEMO_V1/D5_CONTROLLED_WORKFLOW.md`
+查回，避免自引用 SHA。收尾复核中文文档、本地链接和代码围栏，确认仍在 D5 分支且包含 D4 交接。
 
 ## 7. 限制与下一步
 
@@ -134,4 +158,4 @@ graph_used=false，未读取或发送私有工程图正文。不是 Neo4j 与外
 客户端使用独立新实例，真实 HTTP 请求上限继续由 D4 执行。无跨进程事务保证或自动失败重放。
 补问解析仍是 LLM 输出，精确来源校验不证明工程语义真实性；所有生成内容待工程审核。
 没有新增依赖、评分、批准、知识写回、UI 或导出器，正式 MVP-2/3/5 尚未因此验收。
-下一任务在 D5 独立接受后进入 D6 报告与本机 UI，不提前宣布 D7 或整个 Demo 完成。
+下一任务为 D6 报告与本机 UI，本会话止于 D5，不提前宣布 D7 或整个 Demo 完成。

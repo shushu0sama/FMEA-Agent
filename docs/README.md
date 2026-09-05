@@ -20,7 +20,8 @@
 
 当前入口为 Demo V1：读完 `AGENTS.md` 与 `PROGRESS.md` 后，读取
 [Demo 规格](specs/DEMO_V1_END_TO_END_FMEA.md)、[实施计划](plans/DEMO_V1_IMPLEMENTATION_PLAN.md)
-及最近的 [D4 记录](records/DEMO_V1/D4_DEEPSEEK_AND_GENERATION_VALIDATION.md)；
+及最近的 [D5 记录](records/DEMO_V1/D5_CONTROLLED_WORKFLOW.md)；
+[D4 记录](records/DEMO_V1/D4_DEEPSEEK_AND_GENERATION_VALIDATION.md)保留模型调用与生成校验；
 [D3 记录](records/DEMO_V1/D3_READONLY_NEO4J_RETRIEVAL.md)保留只读检索、审计与排除规则；
 [D2 记录](records/DEMO_V1/D2_INPUT_EVIDENCE_AND_LEGACY_EXPORT.md)保留输入/证据契约，
 [D1 记录](records/DEMO_V1/D1_FIXED_CASE_AND_INPUT_PACK.md)保留固定资料的来源与审核，
@@ -41,7 +42,7 @@ git rev-parse HEAD
 git log -5 --oneline
 ```
 
-当前恢复预期分支见 `PROGRESS.md`；最近起点与分支来源见 D4 记录第 1 节。
+当前恢复预期分支见 `PROGRESS.md`；最近起点与分支来源见 D5 记录第 1 节。
 若实际分支/提交不一致，先查明是否在旧 master、新 worktree 或未同步副本中；
 不要自动切换、reset 或把旧文档当成当前状态。确认 checkout 含最新文档提交后再继续。
 同一工作区切换聊天不会自动删除文件，但新工作树、换机器或只读取已发布 tag 不保证拥有最新本地收尾。
@@ -114,6 +115,7 @@ Codex 的项目指令加载和 worktree 隔离机制参见
 - [Demo D0 记录](records/DEMO_V1/D0_SPEC_AND_PLAN.md) — 规划起点、真实准备核查和独立审核。
 - [Demo D1 记录](records/DEMO_V1/D1_FIXED_CASE_AND_INPUT_PACK.md) — 固定资料包、生成器、验证与独立审核。
 - [Demo D4 记录](records/DEMO_V1/D4_DEEPSEEK_AND_GENERATION_VALIDATION.md) — DeepSeek、输入解析、生成校验与审核。
+- [Demo D5 记录](records/DEMO_V1/D5_CONTROLLED_WORKFLOW.md) — 受控工作流、会话恢复、幂等、验证与审核。
 - [Demo D3 记录](records/DEMO_V1/D3_READONLY_NEO4J_RETRIEVAL.md) — 只读检索、关系证据、验证与审核。
 - [Demo D2 记录](records/DEMO_V1/D2_INPUT_EVIDENCE_AND_LEGACY_EXPORT.md) — 输入/证据契约、文件载入、旧导出与审核。
 

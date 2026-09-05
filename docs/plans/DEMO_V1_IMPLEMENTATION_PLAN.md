@@ -15,7 +15,7 @@ LangGraph 负责明确的 Demo 状态转换；Streamlit 仅作为应用入口。
 
 Lifecycle: ACTIVE
 Status: ACCEPTED（D0 独立计划审查）
-Implementation: D1/D2 ACCEPTED；D3 ACCEPTED；D4 ACCEPTED；D5–D7 NOT_STARTED
+Implementation: D1/D2 ACCEPTED；D3 ACCEPTED；D4 ACCEPTED；D5 ACCEPTED；D6–D7 NOT_STARTED
 起点与本次准备证据：[D0 记录](../records/DEMO_V1/D0_SPEC_AND_PLAN.md)。
 
 D0–D7 是 Demo V1 的内部工作步骤，保留原 MVP 能力路线；对应关系与收尾归入原则以
@@ -302,20 +302,25 @@ answer(session:DemoSession, message:str, request_id:str, continue_unknown:bool=F
 analyze(session:DemoSession, request_id:str, allow_without_retrieval:bool=False) -> DemoSession
 ```
 
-- [ ] 用实现 `generate/usage` 的顺序 fake client，准备 intake 与 generation JSON；
+- [x] 用实现 `generate/usage` 的顺序 fake client，准备 intake 与 generation JSON；
   先测 WAITING_INPUT 不调用检索、同 request_id 重提不增加调用次数，再写图实现。
-- [ ] LangGraph 节点 `intake -> needs_input? -> retrieve -> generate -> document`；
+- [x] LangGraph 节点 `intake -> needs_input? -> retrieve -> generate -> document`；
   WAITING_INPUT 以类型化状态结束该次 invoke，answer 后从 intake/ready 恢复，不保存长运行阻塞等待。
   CLOSED 的 HTTP/Neo4j 连接不放入 state；服务持有适配器，state 只放中立数据。
-- [ ] 2轮补问后未知保持问题清单，用户选择 continue_unknown 时允许按缺失事实生成；
+- [x] 2轮补问后未知保持问题清单，用户选择 continue_unknown 时允许按缺失事实生成；
   CSM冲突/partial/不存在ID始终BLOCKED。retrieval ERROR 需显式 allow_without_retrieval 才能降级，且报告保留ERROR。
-- [ ] 失效生成/验证失败时 phase=FAILED，构建DiagnosticReport保存输入快照/安全错误和usage，
+- [x] 失效生成/验证失败时 phase=FAILED，构建DiagnosticReport保存输入快照/安全错误和usage，
   report=None，可导出诊断摘要，不输出“成功 FMEA”；
   完成但无候选时显示“未生成候选”，不宣称系统无失效。
-- [ ] 文件 input_digest 变化后要求新session；预算和已有处理 request ID 不跨会话复用。
+- [x] 文件 input_digest 变化后要求新session；预算和已有处理 request ID 不跨会话复用。
   空回答不生成新事实，取消/重试后不得重复提交分析副作用。
-- [ ] 运行 D5 场景及原 workflow/CLI/benchmark；确认原 `build_workflow_graph` 行为除D2附加字段外一致。
+- [x] 运行 D5 场景及原 workflow/CLI/benchmark；确认原 `build_workflow_graph` 行为除D2附加字段外一致。
   写 D5 记录并提交。
+
+D5 当前实现与接口细化见 [D5 记录](../records/DEMO_V1/D5_CONTROLLED_WORKFLOW.md)。
+LOCAL 498 项测试/Ruff/mypy 通过；真实 DeepSeek 公开资料补问/恢复 smoke 通过，检索为显式 fake。
+独立审核 `c9878bb` ACCEPTED，未解决发现为 0；EXTERNAL_REVIEW 498 项测试及 12 组边界探查通过。
+该结论不代表真实图与模型完整集成或 D7 验收，详细范围及 Git 演化保留在 D5 记录。
 
 ## D6 — 报告与本机 UI（A09、A10、A12）
 
