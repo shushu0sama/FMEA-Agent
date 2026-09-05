@@ -204,11 +204,16 @@ DONE（独立补丁审核 ACCEPTED；附注 tag 为 v0.1.1）。
 已确认事实、待答问题及本轮文档盘点集中在
 [规划前信息对齐](docs/product/MVP_2_PREPLANNING_ALIGNMENT.md)；Alignment status 为 `IN_PROGRESS`。
 
+MVP-2 预期方向已确认：**真实知识检索可靠，无适用知识时正确返回无匹配**。
+已完成本机 Neo4j、两份经用户确认由工程师审核的 Excel 及主要 SysML 来源目录的只读盘点，见
+[输入数据盘点](docs/research/MVP_2_INPUT_DATA_INVENTORY_2026_09_05.md)。两表属不同分析层次／案例，同时保留；
+用户协调小组样例人工核对。图表逐行对账、方法分类/评分版本、验收样例和输出细节仍待对齐。
+
 讨论参考：`docs/research/FMEA_INTELLIGENCE_REFERENCE_REVIEW_2026_09_05.md`（REFERENCE；
 不替代 Spec / Plan，不表示已采用外部项目或已验证两组数据的工程对应关系）。
 
 ```text
-1. 澄清两组数据各自的内容、来源、用途及 MVP-2 的预期验收目标。
+1. 核对原表与图的来源覆盖，准备应命中、不适用、信息不足的待审核检索样例。
 2. 区分知识检索、身份解析和跨案例适用性；未回答的需求保持待定。
 3. 信息对齐后修订和审查 MVP-2 Spec，再进入 G0B 并创建 Implementation Plan。
 禁止: 开始 MVP-2 production implementation before spec / plan gates。
