@@ -1,7 +1,8 @@
 # Demo V1 D2 — 输入/证据契约与旧导出修复
 
 日期：2026-09-05
-Stage status: READY_FOR_REVIEW
+Stage status: ACCEPTED（仅 D2 独立技术审核）
+Closeout status: PENDING_PUSH（本地提交已保存；远端推送失败，未声明正式 COMPLETE）
 Scope: Demo V1 / D2（A03、A08、A09 的基础），不是完整 Demo 或正式 MVP-2/3 验收。
 
 ## 1. 目标与依据
@@ -41,7 +42,11 @@ D1 工件/原夹具/benchmark gold 不变；D3–D7 图/LLM/新工作流/报告/
 - 本阶段没有观察到其他并行提交/修改；范围限定 D2，不从旧 master 漏掉交接。
 - 首次送审实现提交：`bdbdedea03429ff1aeeacbfca229a2a408b3a5f4`。
   当前远端推送因 GitHub TLS 握手/连接超时未成功；没有禁用证书验证或修改永久 Git 配置。
-  修复提交与最终保存状态于收尾补记。
+  修复提交：`dde80fda741602483e7f4a34e8572fa9d5af4841`，独立复审基线。
+  后续治理提交只回填复审与保存状态，不改被审代码。
+- 多次标准 push 与一次仅命令级 schannel/HTTP 1.1 尝试均失败；GitHub HTTPS HEAD 探测也超时。
+  最后标准推送仍返回 `TLS connect error: unexpected eof while reading`。
+  按治理 §3.2 `Push complete` 条件，远端收尾保持 PENDING_PUSH；技术审核通过不代替远端保存。
 - 不合并到 master，不创建或移动发布 tag。
 
 范围变化：没有进入其他 D 阶段。Spec §3.1 本轮记录以下实施细化，随本次独立审查：
@@ -143,6 +148,23 @@ Ruff/mypy 初次指出长行/导入及局部变量类型复用，限定新增文
 修复后 LOCAL 全套：`scripts/verify.py` → **334 passed in 18.87s**，Ruff PASS、mypy 32 files PASS；
 新增共 101 项（47 契约/目标 + 53 文件 + 1 旧导出）。`uv lock --check --offline` 与 `git diff --check` PASS。
 
+最终独立复审：同一 reviewer，基线 `dde80fda741602483e7f4a34e8572fa9d5af4841`；
+总范围 `35aa066` → `dde80fd`，重点 `bdbdede` → `dde80fd`。
+决定 **ACCEPTED（仅 D2 技术范围）**；未解决 CRITICAL=0 / IMPORTANT=0 / MINOR=0，首次两项均关闭。
+
+EXTERNAL_REVIEW 复审证据：
+
+- 全套 **334 passed in 20.14s**，包含 B0/B1、CLI、SysML、D1、orphan 和新增负例。
+- Ruff `--no-cache` PASS；mypy src PASS（32 files，临时缓存）；uv lock 76 packages PASS；总范围 diff PASS。
+- 独立公共入口：第 10,000 行成功且物理定位不变；第 10,001 / 1,000,000,000 行返回 LIMIT_EXCEEDED，
+  分别约 2.60 / 2.61 秒。第 64 列空白允许，BM/ZZZ 超限、AAAA 非法列安全拒绝。
+- 原 ZIP 加密标志负例改为 ENCRYPTED；未知压缩方法和损坏压缩数据安全拒绝。
+- 审核前后 branch/HEAD/index 一致、工作区干净，reviewer 未修改仓库；来源往返、旧导出和领域边界结论仍适用。
+
+收尾 LOCAL 文档/范围检查：7 份 Markdown 围栏和 55 条本地链接通过；
+原规划 `740279c` 与 D1 收尾 `35aa066` 均为祖先；D1 工件/夹具/benchmark 未改变。
+本次治理回填没有扩大技术验收至 D3–D7、真实服务、UI、工程正确率或远端保存。
+
 ## 8. 已知限制与下一步
 
 - 结构性引用校验只证明引用存在，不证明原文支持工程结论；source 文件 hash 也不是真实性认证。
@@ -152,4 +174,5 @@ Ruff/mypy 初次指出长行/导入及局部变量类型复用，限定新增文
 - Pydantic 数据仍可被 Python 调用方修改；对外接入/导出须使用正常验证入口，不使用 model_construct
   或未验证 model_copy 晋升数据。D4 的生成语义/原文支持校验与 D6 导出尚未实现。
 - 旧 JSON 来源缺失问题按 D2 清单补齐，但旧 CLI 不等于自包含的 CandidateReport。
-- D2 审核通过后，下一主会话按 Plan 进入 D3 可独立验证的只读 Neo4j 检索。
+- 下一步先在网络恢复后推送 `codex/demo-v1-d2-input-contracts` 并更新保存状态；随后在新主会话
+  按 Plan 进入 D3 可独立验证的只读 Neo4j 检索，不重复 D2 实现或需求问卷。

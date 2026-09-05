@@ -18,7 +18,7 @@ Current MVP:           MVP-1 Real System Facts（stable） /
                        Demo V1 End-to-End FMEA（D2 input/evidence contracts）
 MVP status:            RELEASED（v0.1.0 = original capability release；
                        v0.1.1 = current stable docs-only patch）
-Current Stage:         Demo D2 输入/证据契约与旧导出修复（READY_FOR_REVIEW）
+Current Stage:         Demo D2 输入/证据契约与旧导出修复（技术审核 ACCEPTED；PENDING_PUSH）
 Post-Release Patch:    DONE（Independent Patch Review = ACCEPTED；
                        annotated tag v0.1.1）
 ```
@@ -33,7 +33,7 @@ Demo 不替代或重编号 MVP，也不等同于 FMEA 方法七步法。当前�
 ```text
 MVP-0 COMPLETE（v0.0.1 tagged）
 MVP-1 Real System Facts       — RELEASED（v0.1.0 capability；v0.1.1 stable patch）
-Demo V1 End-to-End FMEA       — D0/D1 ACCEPTED；D2 READY_FOR_REVIEW；D3–D7 NOT_STARTED
+Demo V1 End-to-End FMEA       — D0/D1 ACCEPTED；D2 技术审核 ACCEPTED / PENDING_PUSH；D3–D7 NOT_STARTED
 MVP-2 Real Failure Knowledge  — NOT_STARTED（PLANNING ONLY；
                                   原草案作为完整检索阶段参考）
 MVP-3 Evidence-grounded LLM
@@ -138,7 +138,7 @@ MVP-2 规划与实现边界：
 C-1 final re-review: ACCEPTED（仅限 credential remediation）。
 Standalone MVP-2 G0B: NOT_STARTED（完整检索阶段未单独开工）。
 Demo D0: ACCEPTED；新增 Demo Spec / Plan，复审决定见 D0 记录。
-Demo D1: ACCEPTED；D2: READY_FOR_REVIEW；D3–D7: NOT_STARTED。
+Demo D1: ACCEPTED；D2: 技术审核 ACCEPTED / PENDING_PUSH；D3–D7: NOT_STARTED。
 ```
 
 ## 当前已知限制
@@ -173,9 +173,10 @@ Demo D1: ACCEPTED；D2: READY_FOR_REVIEW；D3–D7: NOT_STARTED。
   新增 101 项 D2 测试；既有 CLI、SysML、B0/B1、D1 及 orphan 回归通过。
 - 新增 optional extra `demo`：pypdf 6.17.0、openpyxl 3.1.5，传递 et-xmlfile 2.0.0；
   既有锁定版本未升级，`uv lock --check --offline` PASS。
-- EXTERNAL_REVIEW：首次 CHANGES_REQUIRED（0 CRITICAL / 1 IMPORTANT / 1 MINOR），
-  稀疏 XLSX 扫描及 ZIP 异常已修复并补测；当前 READY_FOR_REVIEW，等待复审。
-- Git：首次实现 `bdbdede` 已本地提交；远端推送遇到 TLS 握手/连接超时，尚未成功。
+- EXTERNAL_REVIEW：首次 CHANGES_REQUIRED 的两项发现已关闭；复审 `dde80fd` → 技术范围 ACCEPTED，
+  0 CRITICAL / 0 IMPORTANT / 0 MINOR；334 passed in 20.14s，Ruff/mypy/lock/diff 及独立行列/ZIP 边界通过。
+- Git：实现 `bdbdede`、修复 `dde80fd` 已本地提交；远端推送多次遇到 TLS 握手/连接超时，尚未成功。
+  阶段远端收尾为 PENDING_PUSH，未满足治理 §3.2 的 Push complete 条件，不声明正式 COMPLETE。
 - D3–D7 未实现；本次没有调用 DeepSeek/Neo4j，也不宣布完整 Demo 或工程质量通过。
 
 ## D1 验证与审核基线（已接受）
@@ -263,7 +264,8 @@ SysML 与 Neo4j 案例仍独立；无匹配、相关但适用性待确认、推�
 Demo 可用自动测试减少人工准备，但不以同源派生资料或模型自己生成的答案验证工程正确率。
 历史讨论见 [信息对齐台账](docs/product/MVP_2_PREPLANNING_ALIGNMENT.md)，现为 HISTORICAL。
 
-下一步：完成 D2 独立审核与收尾后，进入 D3 可独立验证的只读检索，不重复规划前问卷。
+下一步：网络恢复后完成 D2 分支推送及保存记录，再在新主会话进入 D3 可独立验证的只读检索，
+不重复规划前问卷。D2 实现与独立技术审核已通过，不需重做实现。
 实施基线包含 `740279c`、路线澄清 `9d5c0a7`、D1 实现 `d1868a1`、D1 收尾 `35aa066` 及后续 D2 提交；
 按实际 Git 最新记录恢复，不从旧 master 遗漏这些提交。
 约一周为可放宽目标窗口；真实API/图/前端接入状态分别记录，不能以mock通过替代live验收。
