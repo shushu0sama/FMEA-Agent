@@ -99,4 +99,14 @@ CI：NOT_CONFIGURED。人工用户使用复验与工程质量验收不由技术�
 单进程会话，异常/重启需新建，未增加持久恢复；不承诺跨进程 exactly-once。
 所有报告仍 CANDIDATE/INFERENCE，风险 NOT_EVALUATED、优化 SKIPPED；无评分、批准或知识写回。
 下一步：完成技术独立复审后，请用户独立跑一个支持案例，记录使用阻塞；再按反馈推进第二批。
-不合并 master、不创建或移动发布 tag；提交和推送结果完成后记录。
+不合并 master、不创建或移动发布 tag。
+
+## 6. Git 交付
+
+实施 `eab2606`，问题修复/独立技术审核基线 `71950e1`，验证记录 `d51e044`。
+已非 force 推送 `codex/demo-v1-ux-flow` 并建立 upstream；ls-remote 核对本地/远端一致。
+D7 远端仍为 `a914f463fa3237e3958be654c8dd786637f5dccf`，基线没有漂移。
+复用 D7 已验证的本机网络路径，仅为当次 Git 命令使用系统已有 HTTPS 代理及 schannel；
+未输出代理或配置值、修改永久配置或关闭 TLS 验证。命令均退出 0。
+最后文档提交仅回填已完成的推送事实，其 SHA 以本分支 Git log/upstream 为准，避免自引用。
+LOCAL 文档检查：88 个本地 Markdown 链接及围栏通过，最终 diff check 通过；依赖和基准无变化。
