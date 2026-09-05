@@ -49,7 +49,7 @@ MVP-1 已把系统事实来源替换为真实 SysML v2：
 - Function 分配基于真实 owner traversal 证据（禁止 name/FQN 匹配）
 - B0/B1 benchmark 通过（`docs/evaluation/MVP_1_BENCHMARK_REPORT.md`）
 
-Demo V1 已具备固定资料包、D2 输入基础和 D3 只读检索（当前审核状态见 PROGRESS）：
+Demo V1 已具备固定资料包、D2 输入基础、D3 只读检索和 D4 模型适配/校验（当前审核状态见 PROGRESS）：
 
 - [固定案例包](examples/demo_v1/README.md)：SysML 原样副本、BOM、中文设计说明和来源清单。
 - 只读载入一个 SysML、可选设计说明（MD/TXT/文本 PDF）与 BOM（CSV/XLSX 的 BOM 表）。
@@ -80,7 +80,7 @@ print(inputs.input_digest, inputs.missing_files, inputs.conflicts)
 每文件 5 MiB、PDF 20 页、BOM 200 数据行、所有输入提取文本合计 30,000 字符；
 XLSX 总展开大小上限 25 MiB，BOM 表扫描最多 10,000 物理行、64 列（含空白间隔）。
 超限、公式、加密/损坏文件、无文本 PDF、partial 模型或无合法目标明确拒绝。
-loader 不保存文件或执行链接；UI 上传存储与模型交互尚未实现。
+loader 不保存文件或执行链接；UI 上传存储与会话交互尚未实现。
 
 D3 可单独调用 `Neo4jSourceKnowledgeRepository.from_env()`，通过 D2 的 `KnowledgeQuery`
 检索来源知识。固定模板双入口、最多 20 个模式，context/associations 各最多 1000 条关系记录；
@@ -99,11 +99,26 @@ smoke 只输出状态/计数与定位是否通过。配置缺失返回 SKIPPED/C
 运行错误返回非零退出码；当前本机真实验证已因配置缺失跳过，不能据契约测试宣称真实连接通过。
 细节和已知限制见 [D3 记录](docs/records/DEMO_V1/D3_READONLY_NEO4J_RETRIEVAL.md)。
 
+D4 提供 `DeepSeekLLMClient.from_env()`、`record_user_input` / `analyze_intake` 和
+`generate_analysis`，分别负责传输、目标/工况解析与候选校验；不改原 CLI 工作流。
+调用前配置进程环境 `DEEPSEEK_API_KEY`，不在命令行或仓库填写密钥值。
+
+```bash
+uv run --extra demo python scripts/demo_model_smoke.py
+```
+
+smoke 只用固定 hash 的公开 D1 教学资料，先验证通用 JSON，再验证 motor/spin 候选 schema；
+当前真实结果为 SKIPPED/CONFIG_MISSING。适配器固定 `deepseek-v4-pro`，最多六次 HTTP 请求
+（含一次有限重试），响应上限 1 MiB，输出始终待审核的推断/候选，无 S/O/D/AP。
+应用生成入口使用 D3 未排除参考，保留原检索审计；图错误须显式选择继续才生成。
+上下文事实的精确原文检查不是工程真实性认证。详见 [D4 记录](docs/records/DEMO_V1/D4_DEEPSEEK_AND_GENERATION_VALIDATION.md)。
+D5 会话/补问恢复、D6 报告/UI、D7 集成验收尚未实现。
+
 ## 当前不能做什么
 
 - 不读取多文件 / import 模型（单文件子集，unresolved import 显式诊断）
 - Neo4j 只读适配器已实现，真实 smoke 待配置；Qdrant 未接入，旧 workflow 仍用内存知识
-- 不调用真实 LLM（默认路径不经过 `LLMClient`）
+- 原 CLI 默认路径不经过 LLM；D4 适配器已实现，真实 DeepSeek smoke 待配置
 - 不计算真实 AIAG-VDA S/O/D/AP 风险等级
 - 没有生产 UI、Human Review、Failure Propagation、Dynamic FMEA、
   多智能体编排、SysML Repository API
@@ -154,7 +169,7 @@ drift）→ docs-only patch → Independent Patch Review ACCEPTED
 → annotated tag v0.1.1（current stable patch；无 capability 变化）
 ```
 
-下一步：按已同意方向推进 Demo V1，从现有 SysML 派生演示资料，接入只读知识检索、DeepSeek 和最小 UI/候选报告。
+下一步：D4 独立审核接受后，按既有计划进入 D5 受控工作流；报告/UI 和集成验收留到 D6/D7。
 已实现输入资料、契约与独立只读检索；真实 Neo4j smoke 待配置，LLM、UI 和完整候选报告尚未接入。
 MVP-1 稳定发布 tag 不变，当前开发阶段以 PROGRESS 和阶段记录为准。
 

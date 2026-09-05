@@ -15,7 +15,7 @@ LangGraph 负责明确的 Demo 状态转换；Streamlit 仅作为应用入口。
 
 Lifecycle: ACTIVE
 Status: ACCEPTED（D0 独立计划审查）
-Implementation: D1/D2 ACCEPTED；D3 ACCEPTED；D4–D7 NOT_STARTED
+Implementation: D1/D2 ACCEPTED；D3 ACCEPTED；D4 READY_FOR_REVIEW；D5–D7 NOT_STARTED
 起点与本次准备证据：[D0 记录](../records/DEMO_V1/D0_SPEC_AND_PLAN.md)。
 
 D0–D7 是 Demo V1 的内部工作步骤，保留原 MVP 能力路线；对应关系与收尾归入原则以
@@ -245,7 +245,7 @@ D3 实际验证及资源/排除接口细化见 [D3 记录](../records/DEMO_V1/D3
 `parse_intake(raw: str, inputs: LoadedInputs) -> IntakeResult`；
 `validate_generation(raw: str, allowed_evidence: list[EvidenceRef]) -> GenerationResult`。
 
-- [ ] 用 HTTPX MockTransport 写成功、401、429一次重试、超时、空 content、finish_reason=length、非法 JSON 测试。
+- [x] 用 HTTPX MockTransport 写成功、401、429一次重试、超时、空 content、finish_reason=length、非法 JSON 测试。
   最小 transport 契约：
 
 ```python
@@ -265,23 +265,26 @@ def test_provider_uses_json_mode():
     assert client.generate("Return json") == '{"rows": []}'
 ```
 
-- [ ] 请求 body 按 Spec §6。用 `httpx.Timeout(60.0, connect=10.0)`；该设置为读/连接阶段超时，
+- [x] 请求 body 按 Spec §6。用 `httpx.Timeout(60.0, connect=10.0)`；该设置为读/连接阶段超时，
   不是整个会话时限。单次非流式响应大小限制 1 MiB，超过报 INVALID_RESPONSE。
   API 原始错误转安全 code，不把 Authorization/header/输入资料输出到 UI/log。
-- [ ] 只在 429/502/503/504 重试一次，delay 最多 2 秒；认证/不合法输出直接报错。
+- [x] 只在 429/502/503/504 重试一次，delay 最多 2 秒；认证/不合法输出直接报错。
   第 7 次请求报 CALL_BUDGET_EXCEEDED，防 UI rerun 的幂等由 D5 控制。
-- [ ] intake prompt 输入实际 component/function ID 清单，输出必须属于该清单；不能修改 CSM。
+- [x] intake prompt 输入实际 component/function ID 清单，输出必须属于该清单；不能修改 CSM。
   模型从文档提出的 FACT 字段必须有原文引用和精确子串校验；校验失败转为待确认，不标 FACT。
   用户补充记录为 user EvidenceRef，不自动当成审核知识。
-- [ ] analysis prompt 限定 context/evidence ID 列表与目标，要求 GenerationResult JSON；
+- [x] analysis prompt 限定 context/evidence ID 列表与目标，要求 GenerationResult JSON；
   每次最多 8 个候选模式，UNKNOWN 层空值允许，所有新增字段 INFERENCE。
   对既有控制 FACT 需要精确原文及已有证据；拒绝额外 score/AP/approved 字段。
   不接受带不存在引用的结果；不做无限二次“修复”调用。
-- [ ] mock 场景分别验证：无匹配仍生成 INFERENCE、有相关历史仅作参考、REJECTED 不进 prompt、
+- [x] mock 场景分别验证：无匹配仍生成 INFERENCE、有相关历史仅作参考、REJECTED 不进 prompt、
   图故障保留错误、恶意文件指令不能生成工具执行、重复候选不静默丢来源。
-- [ ] `demo_model_smoke.py` 只用公开项目演示数据，首测通用 JSON响应，再测1个目标的完整 schema。
+- [x] `demo_model_smoke.py` 只用公开项目演示数据，首测通用 JSON响应，再测1个目标的完整 schema。
   key 从 DEEPSEEK_API_KEY 读取；未配置明确未验证，不切别的模型；记录模型标识/时间/token计数。
-- [ ] 运行目标测试和完整验证；记录 D4 是否仅 mock PASS 或另有真实 API PASS；提交。
+- [x] 运行目标测试和完整验证；记录 D4 是否仅 mock PASS 或另有真实 API PASS；提交。
+
+D4 实际验证及实施细化见 [D4 记录](../records/DEMO_V1/D4_DEEPSEEK_AND_GENERATION_VALIDATION.md)。
+真实 DeepSeek smoke 因 CONFIG_MISSING 跳过；勾选代表已执行检查，不表示真实 API 通过。独立审核待进行。
 
 ## D5 — 可补问、可恢复的受控工作流（A04、A07、A10）
 

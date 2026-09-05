@@ -78,6 +78,19 @@ DEFERRED
 | Docling MCP | https://github.com/docling-project/docling-mcp | 文档处理 MCP | D/W | CANDIDATE | 需要面向 Agent 的文档处理时复用 |
 | SYSMOD SysML MCP | https://github.com/Open-MBEE/sysmod-sysmlv2-api | SysML/SYSMOD Agent 工具 | W/R | WIP | 研究/封装；具有方法论专属性 |
 
+## Demo V1 / D4 HTTP 与模型适配（2026-09-05）
+
+`httpx==0.28.1`（W）从已有锁定依赖补为 optional extra `demo` 的直接依赖；
+未新增包或升级现有版本，锁文件仍为 78 packages。许可证 BSD-3-Clause，
+已核对安装元数据；未复制上游源码。适配器：`src/fmea_agent/adapters/llm/deepseek.py`；
+契约：`tests/test_demo_deepseek.py`，语义校验不依赖 HTTPX。
+
+上游：[DeepSeek API](https://api-docs.deepseek.com/api/create-chat-completion/)、
+[HTTPX 超时](https://www.python-httpx.org/advanced/timeouts/)。模型固定请求别名 `deepseek-v4-pro`，
+不声称固定权重 SHA。没有引入 DeepSeek/OpenAI SDK；替换提供商时保持 LLMClient 边界。
+升级仍须单依赖、契约与全套回归。真实 smoke 因 CONFIG_MISSING 跳过，不等于 live API PASS。
+详细证据和限制见 [D4 记录](../records/DEMO_V1/D4_DEEPSEEK_AND_GENERATION_VALIDATION.md)。
+
 ## Demo V1 / D3 Neo4j 只读驱动（2026-09-05）
 
 optional extra `demo` 新增 neo4j==5.28.2（W）和传递 pytz==2026.3.post1（D），

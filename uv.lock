@@ -400,6 +400,7 @@ dependencies = [
 
 [package.optional-dependencies]
 demo = [
+    { name = "httpx" },
     { name = "neo4j" },
     { name = "openpyxl" },
     { name = "pypdf" },
@@ -414,6 +415,7 @@ dev = [
 
 [package.metadata]
 requires-dist = [
+    { name = "httpx", marker = "extra == 'demo'", specifier = "==0.28.1" },
     { name = "langgraph", specifier = ">=1.2.11" },
     { name = "neo4j", marker = "extra == 'demo'", specifier = "==5.28.2" },
     { name = "openpyxl", marker = "extra == 'demo'", specifier = "==3.1.5" },
