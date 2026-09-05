@@ -1,8 +1,8 @@
 # Demo V1 D2 — 输入/证据契约与旧导出修复
 
 日期：2026-09-05
-Stage status: ACCEPTED（仅 D2 独立技术审核）
-Closeout status: PENDING_PUSH（本地提交已保存；远端推送失败，未声明正式 COMPLETE）
+Stage status: ACCEPTED（仅 Demo V1 / D2）
+Closeout status: ACCEPTED（实现、复审记录已提交并推送；此前网络阻碍已解除）
 Scope: Demo V1 / D2（A03、A08、A09 的基础），不是完整 Demo 或正式 MVP-2/3 验收。
 
 ## 1. 目标与依据
@@ -41,12 +41,15 @@ D1 工件/原夹具/benchmark gold 不变；D3–D7 图/LLM/新工作流/报告/
   已确认包含原规划 `740279c`、路线澄清 `9d5c0a7` 与全部 D1 实现/收尾提交。
 - 本阶段没有观察到其他并行提交/修改；范围限定 D2，不从旧 master 漏掉交接。
 - 首次送审实现提交：`bdbdedea03429ff1aeeacbfca229a2a408b3a5f4`。
-  当前远端推送因 GitHub TLS 握手/连接超时未成功；没有禁用证书验证或修改永久 Git 配置。
+  首次远端推送因 GitHub TLS 握手/连接超时未成功；没有禁用证书验证或修改永久 Git 配置。
   修复提交：`dde80fda741602483e7f4a34e8572fa9d5af4841`，独立复审基线。
   后续治理提交只回填复审与保存状态，不改被审代码。
 - 多次标准 push 与一次仅命令级 schannel/HTTP 1.1 尝试均失败；GitHub HTTPS HEAD 探测也超时。
-  最后标准推送仍返回 `TLS connect error: unexpected eof while reading`。
-  按治理 §3.2 `Push complete` 条件，远端收尾保持 PENDING_PUSH；技术审核通过不代替远端保存。
+  复审期间标准推送仍返回 `TLS connect error: unexpected eof while reading`。
+  按治理 §3.2 `Push complete` 条件，当时远端收尾保留 PENDING_PUSH；技术审核未代替远端保存。
+- 审核记录提交 `ec83bba96a9253430824bfd9cc0115b92352ddac` 后，最终标准 push 重试成功，
+  远端创建 `codex/demo-v1-d2-input-contracts` 并建立 upstream；上述实现、修复和审核记录全部保存。
+  本次追加治理提交只消除已解除的网络待办，保留此前失败历史。
 - 不合并到 master，不创建或移动发布 tag。
 
 范围变化：没有进入其他 D 阶段。Spec §3.1 本轮记录以下实施细化，随本次独立审查：
@@ -174,5 +177,5 @@ EXTERNAL_REVIEW 复审证据：
 - Pydantic 数据仍可被 Python 调用方修改；对外接入/导出须使用正常验证入口，不使用 model_construct
   或未验证 model_copy 晋升数据。D4 的生成语义/原文支持校验与 D6 导出尚未实现。
 - 旧 JSON 来源缺失问题按 D2 清单补齐，但旧 CLI 不等于自包含的 CandidateReport。
-- 下一步先在网络恢复后推送 `codex/demo-v1-d2-input-contracts` 并更新保存状态；随后在新主会话
-  按 Plan 进入 D3 可独立验证的只读 Neo4j 检索，不重复 D2 实现或需求问卷。
+- 网络阻碍已经解除，D2 分支已推送。下一主会话按 Plan 进入 D3 可独立验证的只读 Neo4j 检索，
+  不重复 D2 实现或需求问卷。

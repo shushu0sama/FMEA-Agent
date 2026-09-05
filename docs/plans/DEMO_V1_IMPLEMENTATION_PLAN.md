@@ -15,7 +15,7 @@ LangGraph 负责明确的 Demo 状态转换；Streamlit 仅作为应用入口。
 
 Lifecycle: ACTIVE
 Status: ACCEPTED（D0 独立计划审查）
-Implementation: D1 ACCEPTED；D2 技术审核 ACCEPTED / PENDING_PUSH；D3–D7 NOT_STARTED
+Implementation: D1/D2 ACCEPTED；D3–D7 NOT_STARTED
 起点与本次准备证据：[D0 记录](../records/DEMO_V1/D0_SPEC_AND_PLAN.md)。
 
 D0–D7 是 Demo V1 的内部工作步骤，保留原 MVP 能力路线；对应关系与收尾归入原则以
@@ -192,7 +192,7 @@ def test_empty_hit_result_is_invalid():
 - [x] 运行 D2 测试、全套 `python scripts/verify.py` 和 B0/B1；审查/记录 D2 并提交。
 
 D2 执行证据与实现细化见 [D2 记录](../records/DEMO_V1/D2_INPUT_EVIDENCE_AND_LEGACY_EXPORT.md)。
-独立复审已接受技术范围；GitHub TLS 连接失败，远端推送待完成，不将勾选的本地步骤解释为正式阶段收尾。
+独立复审已接受 D2；GitHub TLS 连接失败在最终重试时恢复，实施及审核记录已推送。
 
 ## D3 — 可独立验证的只读检索（A05、A06）
 
