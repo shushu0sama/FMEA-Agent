@@ -11,14 +11,14 @@ Architecture baseline: v0.1
 Development mode:      Runnable Vertical Slice First
 FMEA profile:          AIAG & VDA FMEA Handbook（First Edition, 2019；
                        Seven-Step Approach）
-Current branch:        codex/demo-v1-d2-input-contracts
+Current branch:        codex/demo-v1-d3-readonly-neo4j
 MVP-1 Review Baseline: 369f09d
 C-1 Review Baseline:   70052a0（ACCEPTED，2026-09-05）
 Current MVP:           MVP-1 Real System Facts（stable） /
-                       Demo V1 End-to-End FMEA（D2 input/evidence contracts）
+                       Demo V1 End-to-End FMEA（D3 read-only knowledge retrieval）
 MVP status:            RELEASED（v0.1.0 = original capability release；
                        v0.1.1 = current stable docs-only patch）
-Current Stage:         Demo D2 输入/证据契约与旧导出修复（ACCEPTED）
+Current Stage:         Demo D3 只读 Neo4j 检索（READY_FOR_REVIEW）
 Post-Release Patch:    DONE（Independent Patch Review = ACCEPTED；
                        annotated tag v0.1.1）
 ```
@@ -33,7 +33,7 @@ Demo 不替代或重编号 MVP，也不等同于 FMEA 方法七步法。当前�
 ```text
 MVP-0 COMPLETE（v0.0.1 tagged）
 MVP-1 Real System Facts       — RELEASED（v0.1.0 capability；v0.1.1 stable patch）
-Demo V1 End-to-End FMEA       — D0/D1/D2 ACCEPTED；D3–D7 NOT_STARTED
+Demo V1 End-to-End FMEA       — D0/D1/D2 ACCEPTED；D3 READY_FOR_REVIEW；D4–D7 NOT_STARTED
 MVP-2 Real Failure Knowledge  — NOT_STARTED（PLANNING ONLY；
                                   原草案作为完整检索阶段参考）
 MVP-3 Evidence-grounded LLM
@@ -138,7 +138,7 @@ MVP-2 规划与实现边界：
 C-1 final re-review: ACCEPTED（仅限 credential remediation）。
 Standalone MVP-2 G0B: NOT_STARTED（完整检索阶段未单独开工）。
 Demo D0: ACCEPTED；新增 Demo Spec / Plan，复审决定见 D0 记录。
-Demo D1/D2: ACCEPTED；D3–D7: NOT_STARTED。
+Demo D1/D2: ACCEPTED；D3: READY_FOR_REVIEW；D4–D7: NOT_STARTED。
 ```
 
 ## 当前已知限制
@@ -164,9 +164,20 @@ Demo D1/D2: ACCEPTED；D3–D7: NOT_STARTED。
 6. MVP-1/2 之后的最优 KG/向量融合策略。
 7. 流、接口、状态与功能之间的传播语义。
 8. MVP-2 针对现有仅有名称的 Neo4j 图的实体解析策略。
-9. 未来只读 Neo4j 适配器的凭证与配置政策。
+9. Neo4j 真实 smoke 待配置；当前 D3 仅从进程环境读取，后续部署政策另定。
 
-## 当前 D2 验证与审核状态
+## 当前 D3 验证与审核状态
+
+- [D3 记录](docs/records/DEMO_V1/D3_READONLY_NEO4J_RETRIEVAL.md)：双入口固定只读检索、独立关系证据、配置与排除边界。
+- 基线为 `f6d83d1`，fetch 后远端 D2 一致；本地创建 `codex/demo-v1-d3-readonly-neo4j`。
+- LOCAL：`scripts/verify.py` → 376 passed in 19.42s；Ruff PASS；mypy src PASS（35 files）。
+  D3 新增 42 项；既有 B0/B1、CLI、SysML、D1/D2 和 orphan 回归通过。
+- 新增 optional extra `demo` 的 neo4j 5.28.2 与传递 pytz 2026.3.post1；既有锁定版本未升级。
+- 真实 Neo4j smoke：SKIPPED / CONFIG_MISSING（2026-09-05）；未验证真实连接或真实 Cypher。
+- EXTERNAL_REVIEW：待独立审核；最终 Git 提交与推送待收尾。
+- D4–D7 尚未实现，正式 MVP-2/3 没有因此验收；无评分、批准或知识写回。
+
+## D2 验证与审核基线（已接受）
 
 - [D2 记录](docs/records/DEMO_V1/D2_INPUT_EVIDENCE_AND_LEGACY_EXPORT.md)：范围、接口细化、验证与审核。
 - LOCAL：修复后 `scripts/verify.py` → 334 passed in 18.87s；Ruff PASS；mypy src PASS（32 files）。
@@ -177,7 +188,7 @@ Demo D1/D2: ACCEPTED；D3–D7: NOT_STARTED。
   0 CRITICAL / 0 IMPORTANT / 0 MINOR；334 passed in 20.14s，Ruff/mypy/lock/diff 及独立行列/ZIP 边界通过。
 - Git：实现 `bdbdede`、修复 `dde80fd` 和审核记录 `ec83bba` 已提交并推送。
   此前 TLS 握手/连接超时在最终重试时恢复；远端已创建并跟踪同名实施分支。
-- D3–D7 未实现；本次没有调用 DeepSeek/Neo4j，也不宣布完整 Demo 或工程质量通过。
+- D2 收尾时 D3–D7 未实现，D2 未调用 DeepSeek/Neo4j；当前 D3 见上方专节。
 
 ## D1 验证与审核基线（已接受）
 
@@ -264,10 +275,10 @@ SysML 与 Neo4j 案例仍独立；无匹配、相关但适用性待确认、推�
 Demo 可用自动测试减少人工准备，但不以同源派生资料或模型自己生成的答案验证工程正确率。
 历史讨论见 [信息对齐台账](docs/product/MVP_2_PREPLANNING_ALIGNMENT.md)，现为 HISTORICAL。
 
-下一步：在新主会话按既有 Plan 进入 D3 可独立验证的只读检索，不重复规划前问卷。
-D2 实现、独立审核和远端保存已通过；D3–D7 仍未实现。
-实施基线包含 `740279c`、路线澄清 `9d5c0a7`、D1 实现 `d1868a1`、D1 收尾 `35aa066` 及后续 D2 提交；
-按实际 Git 最新记录恢复，不从旧 master 遗漏这些提交。
+当前 D3 已实现并通过本机契约/回归，正在独立审核及 Git 收尾；详细状态见上方 D3 专节。
+D3 基线含 `f6d83d1` 及全部 D0–D2 规划、实现、审核记录；不从旧 master 恢复。
+D3 收尾后下一阶段是 D4 DeepSeek 与生成校验；不重复问卷，不提前实现 D5–D7。
+真实 Neo4j 配置缺失时 smoke 明确跳过，待配置后另行执行。
 约一周为可放宽目标窗口；真实API/图/前端接入状态分别记录，不能以mock通过替代live验收。
 
 Patch 详情：`docs/records/MVP_1/MVP_1_POST_RELEASE_PATCH.md`。

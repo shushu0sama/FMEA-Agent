@@ -49,7 +49,7 @@ MVP-1 已把系统事实来源替换为真实 SysML v2：
 - Function 分配基于真实 owner traversal 证据（禁止 name/FQN 匹配）
 - B0/B1 benchmark 通过（`docs/evaluation/MVP_1_BENCHMARK_REPORT.md`）
 
-Demo V1 已具备固定资料包及 D2 输入基础（当前审核状态见 PROGRESS）：
+Demo V1 已具备固定资料包、D2 输入基础和 D3 只读检索（当前审核状态见 PROGRESS）：
 
 - [固定案例包](examples/demo_v1/README.md)：SysML 原样副本、BOM、中文设计说明和来源清单。
 - 只读载入一个 SysML、可选设计说明（MD/TXT/文本 PDF）与 BOM（CSV/XLSX 的 BOM 表）。
@@ -82,10 +82,27 @@ XLSX 总展开大小上限 25 MiB，BOM 表扫描最多 10,000 物理行、64 �
 超限、公式、加密/损坏文件、无文本 PDF、partial 模型或无合法目标明确拒绝。
 loader 不保存文件或执行链接；UI 上传存储与模型交互尚未实现。
 
+D3 可单独调用 `Neo4jSourceKnowledgeRepository.from_env()`，通过 D2 的 `KnowledgeQuery`
+检索来源知识。固定模板双入口、最多 20 个模式，context/associations 各最多 1000 条关系记录；
+截断显式标记。每条边保留独立来源，图关联不还原成原 Excel 行。
+TARGET_ANALYSIS 命中适用性 UNKNOWN；SOURCE_LOOKUP 仅 SOURCE_CONTEXT_ONLY。
+应用层 `retrieve` 保存显式 REJECTED 与理由，后续生成应使用 `reference_hits` 排除这些命中。
+
+在本机进程配置 `NEO4J_URI`、`NEO4J_USERNAME`、`NEO4J_PASSWORD`，可选 `NEO4J_DATABASE`
+（默认 neo4j），再执行下列 smoke；不将值写入 Git、聊天或命令示例：
+
+```bash
+uv run --extra demo python scripts/demo_neo4j_smoke.py
+```
+
+smoke 只输出状态/计数与定位是否通过。配置缺失返回 SKIPPED/CONFIG_MISSING，
+运行错误返回非零退出码；当前本机真实验证已因配置缺失跳过，不能据契约测试宣称真实连接通过。
+细节和已知限制见 [D3 记录](docs/records/DEMO_V1/D3_READONLY_NEO4J_RETRIEVAL.md)。
+
 ## 当前不能做什么
 
 - 不读取多文件 / import 模型（单文件子集，unresolved import 显式诊断）
-- 不使用真实故障知识库：Neo4j / Qdrant **未接入**
+- Neo4j 只读适配器已实现，真实 smoke 待配置；Qdrant 未接入，旧 workflow 仍用内存知识
 - 不调用真实 LLM（默认路径不经过 `LLMClient`）
 - 不计算真实 AIAG-VDA S/O/D/AP 风险等级
 - 没有生产 UI、Human Review、Failure Propagation、Dynamic FMEA、
@@ -138,7 +155,7 @@ drift）→ docs-only patch → Independent Patch Review ACCEPTED
 ```
 
 下一步：按已同意方向推进 Demo V1，从现有 SysML 派生演示资料，接入只读知识检索、DeepSeek 和最小 UI/候选报告。
-已实现输入资料与契约基础；真实知识检索、LLM、UI 和完整候选报告尚未接入。
+已实现输入资料、契约与独立只读检索；真实 Neo4j smoke 待配置，LLM、UI 和完整候选报告尚未接入。
 MVP-1 稳定发布 tag 不变，当前开发阶段以 PROGRESS 和阶段记录为准。
 
 - [Demo 规格](docs/specs/DEMO_V1_END_TO_END_FMEA.md)
@@ -149,10 +166,10 @@ MVP-1 稳定发布 tag 不变，当前开发阶段以 PROGRESS 和阶段记录�
 当前阶段以 [PROGRESS.md](PROGRESS.md) 为准；[信息对齐](docs/product/MVP_2_PREPLANNING_ALIGNMENT.md)
 保留历史问答。SysML 与 Neo4j 案例独立，不强行配对。
 
-尚未实现（MVP-1 明确延后，不宣传为已有能力）：
+后续能力仍延后（D3 只读 Neo4j 单独验证，不改变 MVP-1 发布范围）：
 
 ```text
-Neo4j / RAG / real LLM / AIAG-VDA real S/O/D/AP
+RAG / real LLM / AIAG-VDA real S/O/D/AP
 MCP / Human Review / Failure Propagation / Dynamic FMEA
 ```
 

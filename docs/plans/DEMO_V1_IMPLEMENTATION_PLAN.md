@@ -15,7 +15,7 @@ LangGraph 负责明确的 Demo 状态转换；Streamlit 仅作为应用入口。
 
 Lifecycle: ACTIVE
 Status: ACCEPTED（D0 独立计划审查）
-Implementation: D1/D2 ACCEPTED；D3–D7 NOT_STARTED
+Implementation: D1/D2 ACCEPTED；D3 READY_FOR_REVIEW；D4–D7 NOT_STARTED
 起点与本次准备证据：[D0 记录](../records/DEMO_V1/D0_SPEC_AND_PLAN.md)。
 
 D0–D7 是 Demo V1 的内部工作步骤，保留原 MVP 能力路线；对应关系与收尾归入原则以
@@ -203,9 +203,9 @@ D2 执行证据与实现细化见 [D2 记录](../records/DEMO_V1/D2_INPUT_EVIDEN
 `prepare_query(inputs: LoadedInputs, intake: IntakeResult, terms: list[str]) -> KnowledgeQuery`；
 `Neo4jSourceKnowledgeRepository(driver, database: str)` 只在适配器内接受 driver。
 
-- [ ] 先用假的 driver/session 返回固定 records，测试同模式的两条起因和两条影响仍为四条独立关系证据，
+- [x] 先用假的 driver/session 返回固定 records，测试同模式的两条起因和两条影响仍为四条独立关系证据，
   不能变四条原始 FMEA 行；测试 scope/NO_MATCH/ERROR/多关注要素/截断。
-- [ ] 实现固定模板。入口模式候选查询结构如下；实际 code 使用常量模板并为补充上下文分别查询：
+- [x] 实现固定模板。入口模式候选查询结构如下；实际 code 使用常量模板并为补充上下文分别查询：
 
 ```cypher
 MATCH (focus:`关注要素层次`)-[:`故障模式`]->(mode:`故障模式`)
@@ -220,15 +220,18 @@ ORDER BY mode_name, mode_id LIMIT $fetch_limit
   报告注明有界词法检索。不要把截断结果描述为完整召回。
   按选中 mode IDs 获取 `(mode)-[edge]->(target)` 的四类固定关系及 focus 来源关联；
   一条 edge 产生一个 EvidenceRef，locator 含库名、节点/关系 elementId、检索时间（报告元数据）。
-- [ ] 值只作为参数；query文本不含用户/模型字符串。fake driver 断言只出现登记模板，
+- [x] 值只作为参数；query文本不含用户/模型字符串。fake driver 断言只出现登记模板，
   不运行 APOC/write/schema 命令；控制连接/查询超时为 10 秒、禁用无限事务重试。
-- [ ] SOURCE_LOOKUP 命中仅 SOURCE_CONTEXT_ONLY；TARGET_ANALYSIS 命中默认 UNKNOWN。
+- [x] SOURCE_LOOKUP 命中仅 SOURCE_CONTEXT_ONLY；TARGET_ANALYSIS 命中默认 UNKNOWN。
   明确用户排除的词/对象记录 REJECTED 并不传给生成器；无跨案例自动批准路径。
-- [ ] 读取进程 `NEO4J_URI/NEO4J_USERNAME/NEO4J_PASSWORD/NEO4J_DATABASE`，后者默认 neo4j；
+- [x] 读取进程 `NEO4J_URI/NEO4J_USERNAME/NEO4J_PASSWORD/NEO4J_DATABASE`，后者默认 neo4j；
   未配返回 CONFIG_MISSING，认证/超时分别 AUTH_FAILED/TIMEOUT，均是 ERROR，不能空列表假装成功。
-- [ ] `demo_neo4j_smoke.py` 从实际图读一条关注要素名称再用 SOURCE_LOOKUP 查回，记录存在性与定位；
+- [x] `demo_neo4j_smoke.py` 从实际图读一条关注要素名称再用 SOURCE_LOOKUP 查回，记录存在性与定位；
   随机不存在标识测无结果；只输出计数/状态，不打印密钥/全量工程正文。未配置明确 skip reason。
-- [ ] 运行 D3 契约、完整验证，保留本机 smoke 的真实状态；记录 D3，不写入原图或提交私有记录。
+- [x] 运行 D3 契约、完整验证，保留本机 smoke 的真实状态；记录 D3，不写入原图或提交私有记录。
+
+D3 实际验证及资源/排除接口细化见 [D3 记录](../records/DEMO_V1/D3_READONLY_NEO4J_RETRIEVAL.md)。
+真实 smoke 已执行但因 CONFIG_MISSING 跳过；上述勾选不表示真实连接通过。独立审核待进行。
 
 ## D4 — DeepSeek 与生成校验（A04、A07、A08）
 

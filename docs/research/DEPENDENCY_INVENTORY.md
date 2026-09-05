@@ -78,6 +78,21 @@ DEFERRED
 | Docling MCP | https://github.com/docling-project/docling-mcp | 文档处理 MCP | D/W | CANDIDATE | 需要面向 Agent 的文档处理时复用 |
 | SYSMOD SysML MCP | https://github.com/Open-MBEE/sysmod-sysmlv2-api | SysML/SYSMOD Agent 工具 | W/R | WIP | 研究/封装；具有方法论专属性 |
 
+## Demo V1 / D3 Neo4j 只读驱动（2026-09-05）
+
+optional extra `demo` 新增 neo4j==5.28.2（W）和传递 pytz==2026.3.post1（D），
+已有锁定版本不变，wheel/source hash 由 `uv.lock` 保存。
+neo4j 安装元数据为 Apache License, Version 2.0，原文位于
+`neo4j-5.28.2.dist-info/licenses/` 的 LICENSE.txt、LICENSE.APACHE2.txt、LICENSE.PYTHON.txt；
+pytz 为 MIT，原文位于 `pytz-2026.3.post1.dist-info/LICENSE.txt`。
+
+适配器：`src/fmea_agent/adapters/neo4j/failure_knowledge.py`；
+契约：`tests/test_demo_neo4j_contract.py`；真实 smoke：`scripts/demo_neo4j_smoke.py`。
+固定只读 Cypher、显式 10 秒事务、无自动事务重试；驱动不进入 domain/application。
+目标服务沿用已盘点 Neo4j 5.26.0；当前真实 smoke 为 CONFIG_MISSING/SKIPPED，
+不声明已通过该服务契约。替换实现须保持 D2 SourceKnowledgeRepository，升级一次一个集成并回归。
+执行证据与上游 API 核对见 [D3 记录](../records/DEMO_V1/D3_READONLY_NEO4J_RETRIEVAL.md)。
+
 ## Demo V1 / D2 文件解析依赖（2026-09-05）
 
 以下仅通过 optional extra `demo` 安装；原依赖版本没有升级，基础 CLI 不依赖这些包。
@@ -139,6 +154,8 @@ Upgrade policy: one dev-dependency major at a time; run `pytest` + `ruff check .
 ```
 
 ## 参考基线 — 现有 Neo4j 故障知识（Pre-MVP-2，2026-09-04）
+
+以下是历史规划基线；当前 Demo D3 驱动安装与验证状态见上方 D3 专节，不改写当时状态。
 
 详细基线：
 `docs/research/NEO4J_FAILURE_KNOWLEDGE_BASELINE.md`.
