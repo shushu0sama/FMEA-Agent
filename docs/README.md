@@ -20,7 +20,8 @@
 
 当前入口为 Demo V1：读完 `AGENTS.md` 与 `PROGRESS.md` 后，读取
 [Demo 规格](specs/DEMO_V1_END_TO_END_FMEA.md)、[实施计划](plans/DEMO_V1_IMPLEMENTATION_PLAN.md)
-及最近的 [D7 记录](records/DEMO_V1/D7_DEMO_RELEASE.md)、
+及当前 [UX1 用户流程修复](records/DEMO_V1/UX1_USER_FLOW_FIX.md)、
+[D7 记录](records/DEMO_V1/D7_DEMO_RELEASE.md)、
 [Demo 验收报告](evaluation/DEMO_V1_ACCEPTANCE_REPORT.md)；
 [D6 记录](records/DEMO_V1/D6_REPORTS_AND_LOCAL_UI.md)保留报告/UI 契约；
 [D5 记录](records/DEMO_V1/D5_CONTROLLED_WORKFLOW.md)保留会话、预算与恢复边界；
@@ -45,7 +46,7 @@ git rev-parse HEAD
 git log -5 --oneline
 ```
 
-当前恢复预期分支见 `PROGRESS.md`；最近起点与分支来源见 D7 记录第 1 节。
+当前恢复预期分支见 `PROGRESS.md`；最近起点与分支来源见 UX1 记录。
 若实际分支/提交不一致，先查明是否在旧 master、新 worktree 或未同步副本中；
 不要自动切换、reset 或把旧文档当成当前状态。确认 checkout 含最新文档提交后再继续。
 同一工作区切换聊天不会自动删除文件，但新工作树、换机器或只读取已发布 tag 不保证拥有最新本地收尾。

@@ -11,14 +11,14 @@ Architecture baseline: v0.1
 Development mode:      Runnable Vertical Slice First
 FMEA profile:          AIAG & VDA FMEA Handbook（First Edition, 2019；
                        Seven-Step Approach）
-Current branch:        codex/demo-v1-d7-acceptance
+Current branch:        codex/demo-v1-ux-flow
 MVP-1 Review Baseline: 369f09d
 C-1 Review Baseline:   70052a0（ACCEPTED，2026-09-05）
 Current MVP:           MVP-1 Real System Facts（stable） /
-                       Demo V1 End-to-End FMEA（D7 acceptance）
+                       Demo V1 End-to-End FMEA（UX1 用户流程修复）
 MVP status:            RELEASED（v0.1.0 = original capability release；
                        v0.1.1 = current stable docs-only patch）
-Current Stage:         Demo D7 集成验收（ACCEPTED）
+Current Stage:         Demo UX1 用户流程修复（IN_PROGRESS）
 Post-Release Patch:    DONE（Independent Patch Review = ACCEPTED；
                        annotated tag v0.1.1）
 ```
@@ -167,6 +167,10 @@ Demo D1–D7: 技术 ACCEPTED；工程质量未验收。
 9. Neo4j 真实 smoke 已通过；有界结果截断，完整召回与跨案例适用性仍未验证。
 
 ## 当前 D7 集成验收状态
+
+后续 UX1：用户试用未通过，已优先修复使用流程；D7 技术 ACCEPTED 历史不变。
+当前修复/验证/审核证据见 [UX1 记录](docs/records/DEMO_V1/UX1_USER_FLOW_FIX.md)。
+用户使用复验 PENDING；人工工程质量仍为 NOT_ACCEPTED。未开始后续中文映射及报告持续对话。
 
 - [验收报告](docs/evaluation/DEMO_V1_ACCEPTANCE_REPORT.md)：A01–A12 矩阵、三类独立场景、MVP-2/3 复用能力与正式差距。
 - [D7 记录](docs/records/DEMO_V1/D7_DEMO_RELEASE.md)：起点 dadc36c，当前 checkout 单目标 D7 分支；独立最终审查 ACCEPTED，基线 f550a0d；实施/审核记录已推送。
@@ -347,8 +351,8 @@ Demo 可用自动测试减少人工准备，但不以同源派生资料或模型
 
 当前 D7 集成回归、三个独立场景、验收矩阵与差距登记已通过独立技术审核；实施/审核记录已推送。
 详细状态和证据以上方 D7 专节、验收报告与阶段记录为准，不重复执行 D2–D6。
-下一建议任务为正式 MVP-2/3 当期 Spec 差距核对与独立工程样例/人工抽查准备，
-复用已有 Demo 实现；需另行确定正式阶段范围，不自动启动全部后续 MVP。
+用户试用反馈后，优先完成 UX1 使用流程修复与独立技术复审，再请用户进行完整操作复验。
+后续依据使用反馈安排中文可读性、来源展示和持续对话；正式 MVP-2/3 差距工作保留待后续确定范围。
 真实服务分别通过不等于私有图与模型完整联合验证；工程质量仍未验收。
 
 Patch 详情：`docs/records/MVP_1/MVP_1_POST_RELEASE_PATCH.md`。

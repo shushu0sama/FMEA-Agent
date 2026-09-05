@@ -51,6 +51,10 @@ MVP-1 已把系统事实来源替换为真实 SysML v2：
 
 Demo V1 已具备固定资料包、输入/证据、只读检索、模型校验、D5 会话及 D6 报告/UI（审核状态见 PROGRESS）：
 
+用户试用反馈后，当前优先修复 [UX1 使用流程](docs/records/DEMO_V1/UX1_USER_FLOW_FIX.md)：
+页面明确下一步、空白提交反馈、直接按未知继续、故障明确降级及异常恢复。
+技术修复、用户使用验收和人工工程质量分别记录；操作见 [用户指南](docs/product/DEMO_V1_USER_GUIDE.md)。
+
 - [固定案例包](examples/demo_v1/README.md)：SysML 原样副本、BOM、中文设计说明和来源清单。
 - 只读载入一个 SysML、可选设计说明（MD/TXT/文本 PDF）与 BOM（CSV/XLSX 的 BOM 表）。
   保留文件 hash、行/页/模型元素定位、冲突与缺失项；不把文档断言自动提升为模型事实。

@@ -45,8 +45,7 @@ def test_two_rounds_unknown_reruns_and_downloads_do_not_repeat_calls(app):
     app.button(key="answer").click().run()
     assert app.session_state["session"].question_rounds == 2
     app.text_area(key="answer_message").set_value("").run()
-    app.checkbox(key="continue_unknown").check().run()
-    app.button(key="answer").click().run()
+    app.button(key="continue_unknown").click().run()
     assert app.session_state["session"].phase == "READY"
     app.button(key="analyze").click().run()
     session = app.session_state["session"]
@@ -102,13 +101,11 @@ def test_retrieval_failure_requires_explicit_action(app, monkeypatch):
     )
     load_pack(app)
     start(app)
-    app.checkbox(key="continue_unknown").check().run()
-    app.button(key="answer").click().run()
+    app.button(key="continue_unknown").click().run()
     app.button(key="analyze").click().run()
     assert app.session_state["session"].phase == "READY" and app.error
     app.run()
     assert not app.download_button
-    app.checkbox(key="allow_without_retrieval").check().run()
     app.button(key="analyze").click().run()
     assert app.session_state["session"].report.retrieval.status == "ERROR"
 
@@ -173,8 +170,7 @@ def test_ui_clarification_keeps_selected_second_target(app, monkeypatch, inputs)
     app.button(key="answer").click().run()
     assert app.session_state["session"].intake.component_id == "c2"
     app.text_area(key="answer_message").set_value("").run()
-    app.checkbox(key="continue_unknown").check().run()
-    app.button(key="answer").click().run()
+    app.button(key="continue_unknown").click().run()
     app.button(key="analyze").click().run()
     report = app.session_state["session"].report
     assert report.component_id == "c2" and report.function_id == "f2"

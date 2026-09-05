@@ -386,6 +386,19 @@ D6 执行证据见 [D6 记录](../records/DEMO_V1/D6_REPORTS_AND_LOCAL_UI.md)。
 D7 当前技术 ACCEPTED（独立审核 f550a0d，0 未解决发现）；LOCAL 与真实场景证据见[验收报告](../evaluation/DEMO_V1_ACCEPTANCE_REPORT.md)，
 独立最终审查与提交推送见[D7 记录](../records/DEMO_V1/D7_DEMO_RELEASE.md)。工程质量 NOT_ACCEPTED。
 
+## D7 后修复 — UX1 用户流程（A10）
+
+这是用户试用后的新增有限修复，不回写 D7 计划为已预先包含 UX1。
+依据 Spec §7.1 和用户批准的第一批设计，在包含 D7 最终提交的当前 checkout 建立单目标分支。
+
+1. 先增加用户入口回归：阶段提示、空白提交、未知继续、故障明确降级、输入拒绝及异常恢复。
+2. 仅调整现有 UI；复用 D2 loader、D5 service、D6 exporter/Streamlit，不更换解析器或运行时。
+3. 运行 UI/E2E、全套 verify、离线 lock、B0/B1，并以独立浏览器会话验证实际操作。
+4. 独立审核并修复发现后，记录技术修复状态；用户使用验收和工程质量验收单独保留。
+5. 更新指南、导航和 PROGRESS，提交推送，不合并 master 或移动发布 tag。
+
+执行证据和当前状态见 [UX1 记录](../records/DEMO_V1/UX1_USER_FLOW_FIX.md)。
+
 ## 排期与交接
 
 D1–D2 是输入与证据基础；D3/D4 可在接口稳定后各自验证；D5依赖二者；D6依赖D5；D7最终集成。
