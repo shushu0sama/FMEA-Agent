@@ -1,0 +1,2 @@
+item_id,parent_id,name,quantity,unit,source_element_id
+component-1,system-1,motor,,UNKNOWN,TypedInsideProbe::hydraulicPump::motor

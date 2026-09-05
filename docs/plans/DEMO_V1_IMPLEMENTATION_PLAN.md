@@ -15,7 +15,7 @@ LangGraph 负责明确的 Demo 状态转换；Streamlit 仅作为应用入口。
 
 Lifecycle: ACTIVE
 Status: ACCEPTED（D0 独立计划审查）
-Implementation: NOT_STARTED
+Implementation: D1 READY_FOR_REVIEW；D2–D7 NOT_STARTED
 起点与本次准备证据：[D0 记录](../records/DEMO_V1/D0_SPEC_AND_PLAN.md)。
 
 D0–D7 是 Demo V1 的内部工作步骤，保留原 MVP 能力路线；对应关系与收尾归入原则以
@@ -68,7 +68,7 @@ D0–D7 是 Demo V1 的内部工作步骤，保留原 MVP 能力路线；对应�
 **Interface:** `build_demo_inputs(source: Path, destination: Path) -> dict[str, str]` 返回输出文件名到 SHA-256，
 实现放在脚本，测试通过 `runpy.run_path` 获取函数；脚本入口只接受 `--source` 和 `--output`。
 
-- [ ] 先写下面的内容一致性测试，并运行 `python -m pytest tests/test_demo_inputs_manifest.py -q` 验证缺失实现导致失败。
+- [x] 先写下面的内容一致性测试，并运行 `python -m pytest tests/test_demo_inputs_manifest.py -q` 验证缺失实现导致失败。
 
 ```python
 from pathlib import Path
@@ -84,14 +84,16 @@ def test_pack_preserves_model_and_unknown_quantity(tmp_path):
     assert ",,UNKNOWN," in (tmp_path / "bom.csv").read_text(encoding="utf-8")
 ```
 
-- [ ] 生成器调用现有 adapter/mapper 获取真实部件，输出 CSV 表头按 Spec，quantity 空，unit 为 UNKNOWN。
+- [x] 生成器调用现有 adapter/mapper 获取真实部件，输出 CSV 表头按 Spec，quantity 空，unit 为 UNKNOWN。
   manifest 存来源路径（仓库相对）、hash、派生关系、CSM source IDs，禁止绝对路径作为可移植主键。
-- [ ] `design.md` 使用中文列出已知结构/动作及未知工况，声明“演示派生资料”；不填参数或原始失效答案。
+- [x] `design.md` 使用中文列出已知结构/动作及未知工况，声明“演示派生资料”；不填参数或原始失效答案。
   manifest 排除自己的 hash，不形成自引用；无时间戳参与内容，重复生成逐字一致。
-- [ ] 加入第二次生成字节相同、源 hash 不符时拒绝、source==output 不能覆盖原模型的测试。
-- [ ] 执行 `python scripts/build_demo_inputs.py --source tests/fixtures/sysml/models/typed_inside_probe.sysml --output examples/demo_v1`。
+- [x] 加入第二次生成字节相同、源 hash 不符时拒绝、source==output 不能覆盖原模型的测试。
+- [x] 执行 `python scripts/build_demo_inputs.py --source tests/fixtures/sysml/models/typed_inside_probe.sysml --output examples/demo_v1`。
   用真实 adapter 重读 `system.sysml`；断言 system=hydraulicPump、motor/spin 可定位，pumpSpin 排除。
 - [ ] 运行目标测试及 `python scripts/verify.py`；记录 D1 来源/hash/真实 parser 证据并提交。
+
+D1 执行与审核证据见 [D1 记录](../records/DEMO_V1/D1_FIXED_CASE_AND_INPUT_PACK.md)。
 
 ## D2 — 输入/证据契约与旧导出修复（A03、A08、A09 的基础）
 
@@ -369,4 +371,5 @@ D1–D2 是输入与证据基础；D3/D4 可在接口稳定后各自验证；D5�
 但live验证不以mock替代；不要为了赶日期扩展复杂模型或取消错误/来源检查。
 
 自审：Spec §2→D1；§3→D2/D5/D6；§4→D2/D6；§5→D3；§6→D4；§7→D5/D6；
-§8→逐阶段依赖/锁文件；§9→D7。所有D阶段当前均未执行；下次从D1开始。
+§8→逐阶段依赖/锁文件；§9→D7。D0 时所有实现阶段均未执行；实际执行状态以上方
+Implementation、PROGRESS 和各阶段记录为准，不将本段规划自审当作当前完成证据。

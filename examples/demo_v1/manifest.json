@@ -1,0 +1,186 @@
+{
+  "schema_version": "demo-v1-input-pack",
+  "source": {
+    "path": "tests/fixtures/sysml/models/typed_inside_probe.sysml",
+    "sha256": "fb1637c8ae7ec620d77a10f65efa7d4e5a352523de8b110046c0b3043447f6e5",
+    "ownership": "PROJECT_OWNED_TEACHING_FIXTURE"
+  },
+  "files": {
+    "system.sysml": {
+      "sha256": "fb1637c8ae7ec620d77a10f65efa7d4e5a352523de8b110046c0b3043447f6e5",
+      "derived_from": [
+        "tests/fixtures/sysml/models/typed_inside_probe.sysml"
+      ]
+    },
+    "bom.csv": {
+      "sha256": "0aafeebc9492bc80dc7cf968cdd5a6689cf11347fa6a1db9d0fd3f832e68421e",
+      "derived_from": [
+        "system.sysml"
+      ]
+    },
+    "design.md": {
+      "sha256": "01d249081fa097e918dfc84ee852277f3e37ce6fc14772cb927dbe6d5c7f3784",
+      "derived_from": [
+        "system.sysml"
+      ]
+    },
+    "README.md": {
+      "sha256": "e8b76382653c67124522b00a4b3fe9c37d1302f3d241380e1d6ecaf84acfb851",
+      "derived_from": [
+        "system.sysml"
+      ]
+    }
+  },
+  "parser": {
+    "name": "opensysml",
+    "version": "0.4.0",
+    "runtime_version": "v0.4.3",
+    "adapter": "open_sysml_file",
+    "load_status": "ok",
+    "diagnostics_count": 0
+  },
+  "canonical_model": {
+    "system": {
+      "id": "system-1",
+      "name": "hydraulicPump",
+      "description": null,
+      "source_refs": [
+        {
+          "source_type": "sysml_file",
+          "source_uri": "system.sysml",
+          "source_element_id": "TypedInsideProbe::hydraulicPump",
+          "source_version": null,
+          "adapter": "open_sysml_file",
+          "repository": null,
+          "project": null,
+          "commit": null,
+          "branch": null,
+          "locator": null
+        }
+      ]
+    },
+    "components": [
+      {
+        "id": "component-1",
+        "name": "motor",
+        "parent_id": "system-1",
+        "component_type": null,
+        "source_refs": [
+          {
+            "source_type": "sysml_file",
+            "source_uri": "system.sysml",
+            "source_element_id": "TypedInsideProbe::hydraulicPump::motor",
+            "source_version": null,
+            "adapter": "open_sysml_file",
+            "repository": null,
+            "project": null,
+            "commit": null,
+            "branch": null,
+            "locator": null
+          }
+        ]
+      }
+    ],
+    "functions": [
+      {
+        "id": "function-1",
+        "name": "pumpSpin",
+        "description": null,
+        "allocated_to": [
+          "system-1"
+        ],
+        "requirement_ids": [],
+        "source_refs": [
+          {
+            "source_type": "sysml_file",
+            "source_uri": "system.sysml",
+            "source_element_id": "TypedInsideProbe::hydraulicPump::pumpSpin",
+            "source_version": null,
+            "adapter": "open_sysml_file",
+            "repository": null,
+            "project": null,
+            "commit": null,
+            "branch": null,
+            "locator": null
+          }
+        ]
+      },
+      {
+        "id": "function-2",
+        "name": "spin",
+        "description": null,
+        "allocated_to": [
+          "component-1"
+        ],
+        "requirement_ids": [],
+        "source_refs": [
+          {
+            "source_type": "sysml_file",
+            "source_uri": "system.sysml",
+            "source_element_id": "TypedInsideProbe::hydraulicPump::motor::spin",
+            "source_version": null,
+            "adapter": "open_sysml_file",
+            "repository": null,
+            "project": null,
+            "commit": null,
+            "branch": null,
+            "locator": null
+          }
+        ]
+      }
+    ],
+    "notices": [
+      {
+        "source_id": "TypedInsideProbe",
+        "status": "TENTATIVE",
+        "message": "package is source context; not mapped to a canonical entity"
+      },
+      {
+        "source_id": "TypedInsideProbe::Pump",
+        "status": "NEEDS_RESEARCH",
+        "message": "PartDefinition is type metadata; direct mapping to Component is forbidden"
+      },
+      {
+        "source_id": "TypedInsideProbe::Motor",
+        "status": "NEEDS_RESEARCH",
+        "message": "PartDefinition is type metadata; direct mapping to Component is forbidden"
+      },
+      {
+        "source_id": "TypedInsideProbe::Spin",
+        "status": "NEEDS_RESEARCH",
+        "message": "ActionDefinition is behavior/type metadata; not directly mapped to Function"
+      }
+    ]
+  },
+  "source_element_ids": [
+    "TypedInsideProbe::hydraulicPump",
+    "TypedInsideProbe::hydraulicPump::motor",
+    "TypedInsideProbe::hydraulicPump::pumpSpin",
+    "TypedInsideProbe::hydraulicPump::motor::spin"
+  ],
+  "bom_rows": [
+    {
+      "row": 2,
+      "item_id": "component-1",
+      "source_element_id": "TypedInsideProbe::hydraulicPump::motor",
+      "unknown_fields": [
+        "quantity",
+        "unit"
+      ]
+    }
+  ],
+  "analysis_scope": {
+    "component_id": "component-1",
+    "function_id": "function-2",
+    "excluded_function_ids": [
+      "function-1"
+    ],
+    "exclusion_reason": "根动作 pumpSpin 未纳入分析；当前 workflow 只分析组件功能。"
+  },
+  "limitations": [
+    "教学夹具及同源派生资料，不是经工程审核的产品或独立 gold。",
+    "文件 SHA-256 与 source_element_id 联用；不提供跨版本稳定身份。",
+    "未表达的数量、参数与工况为 UNKNOWN；不从名称或声明数量推断。",
+    "不生成失效答案或 S/O/D/AP；未执行工程分析或批准。"
+  ]
+}

@@ -11,14 +11,14 @@ Architecture baseline: v0.1
 Development mode:      Runnable Vertical Slice First
 FMEA profile:          AIAG & VDA FMEA Handbook（First Edition, 2019；
                        Seven-Step Approach）
-Current branch:        codex/demo-v1-spec-plan
+Current branch:        codex/demo-v1-d1-input-pack
 MVP-1 Review Baseline: 369f09d
 C-1 Review Baseline:   70052a0（ACCEPTED，2026-09-05）
 Current MVP:           MVP-1 Real System Facts（stable） /
-                       Demo V1 End-to-End FMEA（planning）
+                       Demo V1 End-to-End FMEA（D1 input pack）
 MVP status:            RELEASED（v0.1.0 = original capability release；
                        v0.1.1 = current stable docs-only patch）
-Current Stage:         Demo D0 Spec & Plan（ACCEPTED）
+Current Stage:         Demo D1 固定案例与演示资料（READY_FOR_REVIEW）
 Post-Release Patch:    DONE（Independent Patch Review = ACCEPTED；
                        annotated tag v0.1.1）
 ```
@@ -33,7 +33,7 @@ Demo 不替代或重编号 MVP，也不等同于 FMEA 方法七步法。当前�
 ```text
 MVP-0 COMPLETE（v0.0.1 tagged）
 MVP-1 Real System Facts       — RELEASED（v0.1.0 capability；v0.1.1 stable patch）
-Demo V1 End-to-End FMEA       — D0 ACCEPTED；D1–D7 NOT_STARTED
+Demo V1 End-to-End FMEA       — D0 ACCEPTED；D1 READY_FOR_REVIEW；D2–D7 NOT_STARTED
 MVP-2 Real Failure Knowledge  — NOT_STARTED（PLANNING ONLY；
                                   原草案作为完整检索阶段参考）
 MVP-3 Evidence-grounded LLM
@@ -138,7 +138,7 @@ MVP-2 规划与实现边界：
 C-1 final re-review: ACCEPTED（仅限 credential remediation）。
 Standalone MVP-2 G0B: NOT_STARTED（完整检索阶段未单独开工）。
 Demo D0: ACCEPTED；新增 Demo Spec / Plan，复审决定见 D0 记录。
-Demo D1–D7 implementation: NOT_STARTED。
+Demo D1 implementation: READY_FOR_REVIEW；D2–D7: NOT_STARTED。
 ```
 
 ## 当前已知限制
@@ -166,7 +166,17 @@ Demo D1–D7 implementation: NOT_STARTED。
 8. MVP-2 针对现有仅有名称的 Neo4j 图的实体解析策略。
 9. 未来只读 Neo4j 适配器的凭证与配置政策。
 
-## 当前验收基线
+## 当前 D1 验证与审核状态
+
+- D1 来源与收尾证据：[D1 记录](docs/records/DEMO_V1/D1_FIXED_CASE_AND_INPUT_PACK.md)。
+- LOCAL：`scripts/verify.py` → 233 passed in 13.62s；Ruff PASS；mypy src PASS。
+  其中新增 10 项 D1 测试，真实重读演示模型通过；既有 B0/B1 与 orphan 回归包含在全套中。
+- LOCAL：`mypy src scripts/build_demo_inputs.py` PASS（25 source files）；
+  `uv lock --check --offline` PASS。src、依赖与既有基准 gold 未改动。
+- EXTERNAL_REVIEW：待独立 D1 审核；D1 资料包已创建，D2–D7 未实现。
+- 真实 DeepSeek/Neo4j/UI 与工程质量验收不在 D1 完成范围，本次未调用或验收。
+
+## MVP-1 验收基线（既有发布能力）
 
 2026-09-05 在 `70052a0` 重新执行下列本地验证；生产代码、测试和依赖与 `v0.1.1` 无差异。
 
@@ -193,8 +203,8 @@ CI:              GitHub Actions NOT CONFIGURED
   扩展既有 Stage 内交接模板，不另建长期状态台账。
 - LOCAL 重新执行 `.venv/Scripts/python.exe scripts/verify.py`：223 passed in 12.23s；
   Ruff PASS；mypy PASS（24 source files）。包括现有 SysML/benchmark 回归，非 Demo live 验收。
-- 本次仅研究/交接文档变更；外部 SysML 目录保留原位，D1 演示资料包尚未创建，
-  D1–D7 仍 NOT_STARTED。独立审核结论仍只沿用已接受的 D0，不扩展为本次补充文档的新审核。
+- `740279c` 补充文档当时未创建 D1 资料包；当前 D1 状态与证据见上方 D1 专节及阶段记录。
+  独立 D0 结论不扩展为补充文档或 D1 的新审核。
 
 - G0A 基线：`4d38489f92c41ffa906c6d0b79a4fd34d6ecb422`，完整保留。
 - G0A + G0A-L 原 Independent Review：`CHANGES_REQUIRED`；发现 C-1、I-1、I-2、I-3，历史保留。
@@ -225,18 +235,20 @@ DONE（独立补丁审核 ACCEPTED；附注 tag 为 v0.1.1）。
 - [Demo 规格](docs/specs/DEMO_V1_END_TO_END_FMEA.md)：输入/分析/来源/报告/验收边界。
 - [Demo 实施计划](docs/plans/DEMO_V1_IMPLEMENTATION_PLAN.md)：D1–D7 文件、接口与验证步骤。
 - [D0 记录](docs/records/DEMO_V1/D0_SPEC_AND_PLAN.md)：准备核查、初审问题与后续复验。
+- [D1 记录](docs/records/DEMO_V1/D1_FIXED_CASE_AND_INPUT_PACK.md)：固定资料、测试、基线变化与独立审核。
 
 首例选定项目自有 `typed_inside_probe.sysml`，分析 hydraulicPump 下 motor 的 spin 功能；
-本次真实解析成功（0 diagnostics），两个既有相关测试通过，派生资料包尚未创建。
-DeepSeek 官方接口已核实 `deepseek-v4-pro`，但本次未调用API。当前进程未见DeepSeek/Neo4j配置变量，
-不表示用户在其他位置没有配置；真实接入前在本机配置，不在聊天/Git记录密钥。
+资料包位于 [examples/demo_v1](examples/demo_v1/README.md)，真实解析及副本重读成功（0 diagnostics）；
+生成器保留来源 SHA-256、CSM source IDs、未知数量/工况及根动作排除项。
+D0 已核实 DeepSeek 官方接口 `deepseek-v4-pro`；D1 未调用 API 或检查凭据配置。
+真实接入前在本机配置，不在聊天/Git记录密钥。
 
 SysML 与 Neo4j 案例仍独立；无匹配、相关但适用性待确认、推理建议及查询失败分别展示。
 两份 Excel 同时保留，审核范围只知来源可信；方法版本/来源覆盖与工程gold仍未核实。
 Demo 可用自动测试减少人工准备，但不以同源派生资料或模型自己生成的答案验证工程正确率。
 历史讨论见 [信息对齐台账](docs/product/MVP_2_PREPLANNING_ALIGNMENT.md)，现为 HISTORICAL。
 
-下一步：D0 独立审查已通过，从 D1 固定案例与演示资料开始；不重复规划前问卷。
+下一步：完成 D1 独立审核与收尾后，进入 D2 输入/证据契约与旧导出修复；不重复规划前问卷。
 约一周为可放宽目标窗口；真实API/图/前端接入状态分别记录，不能以mock通过替代live验收。
 
 Patch 详情：`docs/records/MVP_1/MVP_1_POST_RELEASE_PATCH.md`。

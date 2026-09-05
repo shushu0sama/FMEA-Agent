@@ -1,0 +1,5 @@
+# Preserve the D0 byte baseline on checkout, independent of core.autocrlf.
+tests/fixtures/sysml/models/typed_inside_probe.sysml text eol=crlf
+# Generated text is deterministic; the model copy retains its original bytes.
+examples/demo_v1/* text eol=lf
+examples/demo_v1/system.sysml -text whitespace=cr-at-eol
