@@ -195,3 +195,27 @@ lock78 / diff PASS；D4 累计新增 95 项测试。真实 smoke 于
 - 没有真实 API 配置，live 接入仍待验证；不自动读取配置文件或切换模型。
 - 下一建议任务：D4 被独立接受后进入 D5 受控工作流，复用本次应用服务与 D3 审计，
   实现两轮补问/未知继续、会话预算与 request_id 幂等；本会话不提前实现。
+
+## 8. 用户配置后的真实 API 补充验证
+
+2026-09-05，用户要求创建本机配置模板，随后确认已填写并明确要求验证。
+创建 `.env.local`（Git 已以 `.env.*` 忽略），使用 uv 已有 `--env-file` 显式注入进程环境，
+没有修改适配器的 `from_env` 行为、依赖或 D4 被审代码。配置值未打印或进入 Git；
+启动器原始 stderr 被捕获，不把潜在配置解析错误原文输出到聊天。
+
+基线：`codex/demo-v1-d4-deepseek-validation` / `4aa8723`，运行前工作区干净。
+命令：`uv run --no-sync --offline --env-file .env.local python scripts/demo_model_smoke.py`。
+这里 `--offline` 仅约束 uv 包管理访问，脚本实际调用 DeepSeek；本次不安装或更新依赖。
+
+LOCAL 真实结果（`checked_at=2026-09-05T11:03:18.035795+00:00`）：
+
+- exit_code=0，status=PASS，generic_json=PASS，generation_schema=PASS。
+- 请求及响应 model 均为 `deepseek-v4-pro`；request_count=2，usage_response_count=2。
+- prompt_tokens=6799，completion_tokens=2398，total_tokens=9197。
+- candidate_count=8，graph_used=false，engineering_quality=NOT_ACCEPTED。
+- 只使用脚本固定 hash 的公开 D1 教学资料；未发送 Neo4j 工程正文，未打印或保存生成原文。
+
+本次证据将最新真实 DeepSeek 状态从 SKIPPED 更新为 PASS；第 5/6 节的历史跳过记录不改写。
+这是提供商连接、JSON 和当前候选契约的真实验证，不是工程准确率、完整性或整个 Demo 端到端验收。
+同次 Neo4j smoke 为 ERROR / AUTH_FAILED，详见 [D3 补充验证](D3_READONLY_NEO4J_RETRIEVAL.md#8-用户配置后的真实-neo4j-补充验证)。
+没有重跑全套代码测试（生产代码/测试/依赖均未变化）；本次文档检查与 Git 范围检查另行执行。

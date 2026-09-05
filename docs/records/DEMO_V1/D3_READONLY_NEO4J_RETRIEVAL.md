@@ -173,3 +173,19 @@ EXTERNAL_REVIEW 新证据：
 - 正式 MVP-2/3 尚未单独验收，Demo D3 不改变 MVP-1 发布 tag 或包版本。
 
 下一项开发任务：按既有 Plan 进入 Demo V1 / D4 DeepSeek 与生成校验；本会话止于 D3 收尾。
+
+## 8. 用户配置后的真实 Neo4j 补充验证
+
+2026-09-05，D4 收尾后用户在 Git 忽略的 `.env.local` 填入配置，并明确要求运行验证。
+基线为 D4 分支 `codex/demo-v1-d4-deepseek-validation` / `4aa8723`；D3 代码未改变。
+使用 `uv run --no-sync --offline --env-file .env.local python scripts/demo_neo4j_smoke.py`，
+由 uv 显式注入进程环境，不修改适配器或读取/打印配置原文。
+
+LOCAL 真实结果（`checked_at=2026-09-05T11:03:17.794472+00:00`）：
+exit_code=1，status=ERROR，reason=AUTH_FAILED，read_only=true。
+驱动返回认证失败，本次没有完成来源查回、定位或随机不存在词验证，不能宣称真实检索通过。
+不自动重试认证错误，不写入数据库或更改账号。下一步由用户核对用户名/密码及目标实例后重试。
+
+这是首次配置后的真实失败证据，不覆盖第 5/6 节历史 CONFIG_MISSING 跳过记录，
+也不撤销原 D3 技术范围的独立接受。配置值、服务地址、原始错误及工程正文未提交。
+同次 DeepSeek 真实 smoke 已通过，见 [D4 补充验证](D4_DEEPSEEK_AND_GENERATION_VALIDATION.md#8-用户配置后的真实-api-补充验证)。

@@ -88,7 +88,8 @@ DEFERRED
 上游：[DeepSeek API](https://api-docs.deepseek.com/api/create-chat-completion/)、
 [HTTPX 超时](https://www.python-httpx.org/advanced/timeouts/)。模型固定请求别名 `deepseek-v4-pro`，
 不声称固定权重 SHA。没有引入 DeepSeek/OpenAI SDK；替换提供商时保持 LLMClient 边界。
-升级仍须单依赖、契约与全套回归。真实 smoke 因 CONFIG_MISSING 跳过，不等于 live API PASS。
+升级仍须单依赖、契约与全套回归。D4 初次真实 smoke 因 CONFIG_MISSING 跳过；
+用户后续配置后，2026-09-05 的通用 JSON/完整 schema live smoke 已通过，未验收工程质量。
 详细证据和限制见 [D4 记录](../records/DEMO_V1/D4_DEEPSEEK_AND_GENERATION_VALIDATION.md)。
 
 ## Demo V1 / D3 Neo4j 只读驱动（2026-09-05）

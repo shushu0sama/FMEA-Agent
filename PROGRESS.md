@@ -164,7 +164,7 @@ Demo D1/D2: ACCEPTED；D3: ACCEPTED；D4: ACCEPTED；D5–D7: NOT_STARTED。
 6. MVP-1/2 之后的最优 KG/向量融合策略。
 7. 流、接口、状态与功能之间的传播语义。
 8. MVP-2 针对现有仅有名称的 Neo4j 图的实体解析策略。
-9. Neo4j 真实 smoke 待配置；当前 D3 仅从进程环境读取，后续部署政策另定。
+9. Neo4j 真实 smoke 当前 AUTH_FAILED，待用户核对账号/密码；后续部署政策另定。
 
 ## 当前 D4 验证与审核状态
 
@@ -173,7 +173,8 @@ Demo D1/D2: ACCEPTED；D3: ACCEPTED；D4: ACCEPTED；D5–D7: NOT_STARTED。
 - LOCAL：修复后 D4 新增 95 项通过；全套 473 passed in 20.36s，Ruff PASS、mypy src 40 files PASS；
   src+model smoke 41 files PASS、lock offline 78 packages PASS。B0/B1、旧 CLI/SysML 与 D1–D3 回归通过。
 - `httpx==0.28.1` 补为 Demo 直接依赖，未升级已有包；官方 API 核对无实质差异。
-- 真实 DeepSeek smoke：SKIPPED / CONFIG_MISSING，通用 JSON/完整 schema 均 NOT_RUN，未发真实请求。
+- 最新 LOCAL 真实 DeepSeek smoke（2026-09-05 11:03:18 UTC）：PASS；通用 JSON 与完整生成 schema 均通过，
+  8 条候选、2 次请求、9197 total tokens；仅公开演示资料，未使用图知识，工程质量未验收。
 - 首审 `321edf1` CHANGES_REQUIRED：1 项 IMPORTANT（公共 adapter 原生 HTTP DEBUG 头日志）；
   修复后独立复审 `dafbe82` ACCEPTED，未解决 CRITICAL/IMPORTANT/MINOR 均为 0。
   EXTERNAL_REVIEW：473 passed in 20.08s，Ruff/mypy/lock/diff PASS，原探查及13项附加恢复检查通过。
@@ -188,7 +189,8 @@ Demo D1/D2: ACCEPTED；D3: ACCEPTED；D4: ACCEPTED；D5–D7: NOT_STARTED。
 - LOCAL：修复后 `scripts/verify.py` → 378 passed in 19.03s；Ruff PASS；mypy src PASS（35 files）。
   D3 新增 44 项；既有 B0/B1、CLI、SysML、D1/D2 和 orphan 回归通过。
 - 新增 optional extra `demo` 的 neo4j 5.28.2 与传递 pytz 2026.3.post1；既有锁定版本未升级。
-- 真实 Neo4j smoke：SKIPPED / CONFIG_MISSING（2026-09-05）；未验证真实连接或真实 Cypher。
+- 最新 LOCAL 真实 Neo4j smoke（2026-09-05 11:03:17 UTC）：ERROR / AUTH_FAILED；
+  已显式加载本机配置，认证未通过，尚未验证真实检索 Cypher。历史配置缺失跳过记录保留。
 - EXTERNAL_REVIEW：首审 `22bd3a1` 的 1 项 IMPORTANT 已关闭；独立复审 `059b6ee` 为 ACCEPTED，
   未解决 CRITICAL/IMPORTANT/MINOR 均为 0。独立全套 378 passed in 19.13s，Ruff/mypy/lock/diff PASS，
   原生驱动日志泄漏及 12 个异常恢复用例通过；真实 smoke 仍 SKIPPED/CONFIG_MISSING。
@@ -296,7 +298,7 @@ Demo 可用自动测试减少人工准备，但不以同源派生资料或模型
 当前 D4 已实现，独立复审 ACCEPTED；详细证据见上方 D4 专节及 D4 记录。
 D4 起点包含 `9643c37` 及全部 D0–D3 规划、实现、审核记录；不从旧 master 恢复。
 下一阶段为 D5 受控工作流；本次止于 D4，不提前实现 D5–D7。
-真实 Neo4j 配置缺失时 smoke 明确跳过，待配置后另行执行。
+真实 DeepSeek 接口 smoke 已通过；Neo4j 认证失败待核对后重试，完整图与模型集成尚未验证。
 约一周为可放宽目标窗口；真实API/图/前端接入状态分别记录，不能以mock通过替代live验收。
 
 Patch 详情：`docs/records/MVP_1/MVP_1_POST_RELEASE_PATCH.md`。
