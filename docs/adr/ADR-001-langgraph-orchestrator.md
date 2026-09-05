@@ -1,20 +1,20 @@
-# ADR-001: LangGraph as the Orchestration Baseline
+# ADR-001: LangGraph 作为编排基线
 
 **Status:** ACCEPTED  
-**Baseline:** Bootstrap v0.1
+**基线:** Bootstrap v0.1
 
-## Context
+## 背景
 
-FMEA requires explicit workflow state, controlled routing, future persistence and human review. A generic one-shot agent loop would make the analysis process harder to test and audit.
+FMEA 需要显式工作流状态、受控路由、未来的持久化和人工审查。通用的一次性 Agent 循环会使分析过程更难测试和审计。
 
-## Decision
+## 决策
 
-Use LangGraph as the default workflow/orchestration framework. Keep domain logic independent of LangGraph.
+使用 LangGraph 作为默认工作流 / 编排框架。领域逻辑保持独立于 LangGraph。
 
-## Consequences
+## 影响
 
-Workflow structure is explicit and testable. The project accepts a dependency on LangGraph at the orchestration layer, while preserving the ability to replace it by keeping domain/application ports independent.
+工作流结构显式且可测试。项目接受编排层对 LangGraph 的依赖，同时通过保持领域 / 应用端口独立来保留替换它的能力。
 
-## Revisit When
+## 重新评估条件
 
-Revisit only when experiments, standards, compatibility constraints or engineering requirements demonstrate that the current decision materially blocks project goals.
+仅当实验、标准、兼容性约束或工程需求表明当前决策实质性阻碍项目目标时，才重新评估。

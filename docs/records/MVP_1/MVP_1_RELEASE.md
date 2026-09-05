@@ -1,7 +1,7 @@
-# MVP-1 — Real System Facts Release Record
+# MVP-1 — 真实系统事实发布记录
 
-Status: RELEASED（annotated release tag: v0.1.0）
-Date: 2026-09-04
+状态：RELEASED（附注发布 tag：v0.1.0）
+日期： 2026-09-04
 
 Commit 锚点（不可变历史基线；Markdown 不保存自身 SHA——自引用问题，
 最终发布锚点是 release tag v0.1.0 所指向的 release-closeout commit）：
@@ -30,13 +30,13 @@ Release Tag:               v0.1.0    annotated；最终不可变发布锚点
 ```
 
 > Independent Release Review 已通过（ACCEPTED @ `369f09d`）。merge
-> master 与 annotated tag v0.1.0 已完成；执行记录见 §Release Execution。
+> master 与 annotated tag v0.1.0 已完成；执行记录见 §发布执行。
 
 ## MVP
 
 MVP-1 Real System Facts
 
-## Objective
+## 目标
 
 > 用真实 SysML v2 File Mode 替换 MVP-0 的 synthetic system fixture，
 > 同时保持 MVP-0 的 Failure Knowledge、Risk、Optimization 和上层
@@ -45,7 +45,7 @@ MVP-1 Real System Facts
 Spec：`docs/specs/MVP_1_REAL_SYSTEM_FACTS.md`
 Plan：`docs/plans/MVP_1_IMPLEMENTATION_PLAN.md`
 
-## Delivered Capabilities
+## 已交付能力
 
 ```text
 真实 .sysml
@@ -65,7 +65,7 @@ Plan：`docs/plans/MVP_1_IMPLEMENTATION_PLAN.md`
 - diagnostics 一等公民；partial Snapshot 显式表达
 - B0 + B1 benchmark（exact gold + metrics）
 
-## Architecture Boundaries
+## 架构边界
 
 - 外部技术全部位于 ports/adapters 之后：
   `domain/` 不依赖 opensysml / grpc / protobuf（AST 级测试固化）。
@@ -77,7 +77,7 @@ Plan：`docs/plans/MVP_1_IMPLEMENTATION_PLAN.md`
   `docs/architecture/CANONICAL_SYSTEM_MODEL_SPEC.md`。
 - 关键决策：ADR-008（File Mode first）。
 
-## Stage Summary
+## 阶段概览
 
 ```text
 1A Feasibility Spike          COMPLETE（CONDITIONAL_GO）
@@ -88,21 +88,21 @@ Plan：`docs/plans/MVP_1_IMPLEMENTATION_PLAN.md`
 1F Benchmark & Release        ACCEPTED
 ```
 
-Stage Records：见 §Historical Records。
+阶段记录：见 §历史记录。
 
-## Benchmark
+## 基准测试
 
 B0（project-owned exact）PASS；B1（官方外部模型，root=vehicle）PASS。
 详情：`docs/evaluation/MVP_1_BENCHMARK_REPORT.md`。
 
-## Regression
+## 回归验证
 
 ```text
 MVP-0 全部历史 tests + 1B/1C/1D/1E tests 继续通过（223 passed 的一部分）
 MVP-0 demo 运行无退化（risk=NOT_EVALUATED，optimization=SKIPPED）
 ```
 
-## Dependency Baseline
+## 依赖基线
 
 ```text
 opensysml==0.4.0（PyPI，Apache-2.0，wheel sha256 见 Dependency Inventory）
@@ -113,7 +113,7 @@ pydantic 2.13.5 / pytest 8.4.2 / ruff 0.16.6 / mypy 1.20.2（uv.lock）
 详见 `docs/research/DEPENDENCY_INVENTORY.md` 与
 `docs/research/OPENSYSML_DEPENDENCY_REPRODUCTION_REPORT.md`。
 
-## Known Limitations
+## 已知限制
 
 - 单文件子集；用户文件 import 不支持（C1，显式诊断）。
 - `Model.hash` = load-context fingerprint（F1），非跨路径/跨版本 identity。
@@ -123,7 +123,7 @@ pydantic 2.13.5 / pytest 8.4.2 / ruff 0.16.6 / mypy 1.20.2（uv.lock）
 - B1 无 Function；Function metrics N/A。
 - 无 CI（GitHub Actions NOT CONFIGURED；建议 release review 评估）。
 
-## Deferred Capabilities
+## 延后能力
 
 ```text
 SysML Repository API
@@ -133,22 +133,22 @@ real LLM / AIAG-VDA S/O/D/AP
 Human Review / Failure Propagation / Dynamic FMEA
 ```
 
-## Open Research Questions
+## 待研究问题
 
-1. Exact canonical identity strategy across SysML commits.
-2. Final SysML-v2 → FMEA semantic mapping rules.
-3. Ground-truth construction process for aerospace examples.
-4. Evidence-confidence formulation.
-5. Licensed/authorized source for AIAG-VDA risk tables and AP rules.
-6. Best KG/vector fusion strategy after MVP-1/2.
-7. Propagation semantics across flow, interface, state and function.
+1. 跨 SysML commit 的精确规范身份策略。
+2. 最终的 SysML-v2 → FMEA 语义映射规则。
+3. 航空航天示例的真值构建流程。
+4. 证据置信度的形式化定义。
+5. AIAG-VDA 风险表和 AP 规则的已许可/授权来源。
+6. MVP-1/2 之后的最佳 KG/向量融合策略。
+7. 跨流、接口、状态和功能的传播语义。
 
-## Release Gate
+## 发布门禁
 
 Gate 分两层：实现验证在本阶段完成（Implementation / Verification Gate）；
 独立审核尚未进行（Independent Release Review）。
 
-### Implementation / Verification Gate — PASS 16/16（LOCAL evidence）
+### 实现 / 验证门禁 — PASS 16/16（LOCAL 证据）
 
 ```text
 [x] MVP-0 regression PASS
@@ -172,7 +172,7 @@ Gate 分两层：实现验证在本阶段完成（Implementation / Verification 
 逐项证据：`docs/records/MVP_1/MVP_1F_BENCHMARK_RELEASE.md` §8.1 与
 `docs/evaluation/MVP_1_BENCHMARK_REPORT.md`。
 
-### Independent Release Review — PASS
+### 独立发布审查 — PASS
 
 ```text
 [x] EXTERNAL_REVIEW — ACCEPTED
@@ -193,7 +193,7 @@ Benchmark blocker:       NONE
 Release hygiene blocker: NONE
 ```
 
-Review 通过后的执行步骤（已完成，证据见 §Release Execution）：
+Review 通过后的执行步骤（已完成，证据见 §发布执行）：
 
 ```text
 merge feature/mvp1-real-system-facts → master  — 2871b23c（--no-ff）
@@ -204,7 +204,7 @@ tag v0.1.0                                      — annotated
 
 未通过：CHANGES_REQUIRED（本次未发生）。
 
-## Release Execution
+## 发布执行
 
 ```text
 Feature Release Baseline:    d0f091fc616ce6a9498250d78e49c384ae6d85ff
@@ -219,7 +219,7 @@ Release Closeout Scope:      仅 release documentation + 最小 version policy�
                              零 production code / benchmark 语义改动
 ```
 
-### Master Verification Evidence — LOCAL
+### master 验证证据 — LOCAL
 
 ```text
 uv lock --check:   PASS
@@ -240,7 +240,7 @@ GitHub CI:
 NOT CONFIGURED（全部 evidence 为 LOCAL，非 CI PASS）
 ```
 
-## Version History（治理 §13）
+## 版本历史（治理 §13）
 
 ```text
 v0.1.0 = original MVP-1 capability release（annotated tag，不可变）
@@ -252,26 +252,26 @@ Independent Patch Review: ACCEPTED（review baseline e367fd8）
 Final tag:                v0.1.1（annotated）
 ```
 
-最终 immutable patch anchor 是 annotated tag v0.1.1 所指向的
-patch-closeout commit。
+最终不可变补丁锚点是 annotated tag v0.1.1 所指向的
+补丁收尾 commit。
 
 详见 `docs/records/MVP_1/MVP_1_POST_RELEASE_PATCH.md`。
 
-## Known Follow-up / Observation
+## 已知后续事项 / 观察
 
-- Python package version synchronization policy remains undefined：
+- Python 包版本同步政策仍未定义：
   `pyproject.toml` 仍为 `version = "0.0.1"`，与 Git tag（v0.1.0）
-  的同步策略未定义。resolve before any package publication；本 patch
+  的同步策略未定义。必须在任何包发布之前解决；本 patch
   不修改 `pyproject.toml` / `uv.lock`。
 
-## Recommended Next MVP
+## 建议的下一个 MVP
 
 MVP-2 Real Failure Knowledge —— MVP-1 已 RELEASED（v0.1.0 capability
 + v0.1.1 docs patch）。Post-Release Audit 与 patch release 已完成。
 下一 Session：MVP-2 Read-only Planning（MVP-2 = NOT_STARTED）。
 feature/mvp1-real-system-facts 分支暂不删除。
 
-## Historical Records
+## 历史记录
 
 ```text
 docs/records/MVP_1/MVP_1A_OPENSYSML_SPIKE.md

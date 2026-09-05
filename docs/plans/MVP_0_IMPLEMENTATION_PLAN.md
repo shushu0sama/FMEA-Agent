@@ -1,13 +1,13 @@
-# MVP-0 Implementation Plan
+# MVP-0 实施计划
 
-> Implement one task at a time. Do not start later integrations.
+> 每次实施一个任务。不要开始后续集成。
 
-## Task 0 — Inspect and Scaffold
+## 任务 0 — 检查与搭建骨架
 
-Goal:
-Create/align the Python package structure.
+目标：
+创建/对齐 Python 包结构。
 
-Expected directories:
+预期目录：
 
 ```text
 src/fmea_agent/
@@ -20,12 +20,12 @@ tests/
 examples/
 ```
 
-Verification:
-package imports successfully.
+验证：
+包可成功导入。
 
-## Task 1 — Minimal Domain Contracts
+## 任务 1 — 最小领域契约
 
-Implement:
+实现：
 
 ```text
 SourceReference
@@ -41,23 +41,22 @@ FailureEffectCandidate
 RiskAssessment
 ```
 
-Use typed Pydantic models.
+使用带类型的 Pydantic 模型。
 
-`FMEAItem` stays minimal in MVP-0: it represents the analysis-object
-identity of a Canonical System Element inside the current
-`AnalysisContext`. Do not permanently merge `Component` and `FMEAItem`
-into one domain object.
+`FMEAItem` 在 MVP-0 中保持最小化：它表示规范系统元素在当前
+`AnalysisContext` 中的分析对象身份。不要将 `Component` 和 `FMEAItem`
+永久合并为同一个领域对象。
 
-Tests first:
+先写测试：
 
-- valid construction;
-- invalid missing required IDs;
-- enum/status validation;
-- serialization.
+- 有效构造；
+- 缺少必填 ID 时无效；
+- enum/status 校验；
+- 序列化。
 
-## Task 2 — Application Ports
+## 任务 2 — 应用层端口
 
-Define:
+定义：
 
 ```text
 SystemModelRepository
@@ -66,14 +65,14 @@ LLMClient
 RiskStrategy
 ```
 
-No external implementation imports in port definitions.
+端口定义中不得导入外部实现。
 
-Tests:
-simple fake class satisfies expected behavior.
+测试：
+简单 fake 类满足预期行为。
 
-## Task 3 — In-Memory Adapters
+## 任务 3 — 内存适配器
 
-Implement:
+实现：
 
 ```text
 InMemorySystemModelRepository
@@ -82,16 +81,16 @@ NoOpRiskStrategy
 MockLLMClient
 ```
 
-The default path should not need `MockLLMClient`.
+默认路径应不需要 `MockLLMClient`。
 
-Tests:
-fixture lookup and missing-data behavior.
+测试：
+fixture 查找与数据缺失时的行为。
 
-## Task 4 — Workflow State
+## 任务 4 — 工作流状态
 
-Define structured graph state.
+定义结构化图状态。
 
-Suggested fields:
+建议字段：
 
 ```text
 analysis_context
@@ -105,11 +104,11 @@ output
 errors
 ```
 
-Do not use an unstructured chat transcript as the state model.
+不要使用非结构化聊天记录作为状态模型。
 
-## Task 5 — LangGraph Skeleton
+## 任务 5 — LangGraph 骨架
 
-Implement stages:
+实现以下阶段：
 
 ```text
 planning
@@ -121,47 +120,47 @@ optimization
 results_documentation
 ```
 
-Expected MVP statuses:
+预期 MVP 状态：
 
 ```text
 risk_analysis = NOT_EVALUATED
 optimization = SKIPPED
 ```
 
-Tests:
-state traverses to END.
+测试：
+状态流转到 END。
 
-## Task 6 — Demo Fixture
+## 任务 6 — 演示夹具
 
-Add:
+新增：
 
 ```text
 examples/simple_pump.json
 examples/demo_failure_library.json
 ```
 
-Keep fixtures obviously synthetic.
+确保夹具明显为合成数据。
 
-## Task 7 — CLI
+## 任务 7 — CLI
 
-Target:
+目标：
 
 ```bash
 python -m fmea_agent demo examples/simple_pump.json
 ```
 
-Behavior:
+行为：
 
-- read fixture;
-- run graph;
-- save or print structured output;
-- return non-zero on invalid input.
+- 读取夹具；
+- 运行图；
+- 保存或打印结构化输出；
+- 输入无效时返回非零退出码。
 
-## Task 8 — Smoke Test
+## 任务 8 — 冒烟测试
 
-Run CLI through subprocess or an equivalent test.
+通过子进程或等效测试运行 CLI。
 
-Assert:
+断言：
 
 ```text
 exit code == 0
@@ -170,11 +169,11 @@ risk.status == NOT_EVALUATED
 evidence exists
 ```
 
-## Task 9 — Verification Script
+## 任务 9 — 验证脚本
 
-Create platform-appropriate verification entry.
+创建适合当前平台的验证入口。
 
-Minimum logical checks:
+至少包含以下逻辑检查：
 
 ```text
 pytest
@@ -182,24 +181,24 @@ ruff check .
 mypy src
 ```
 
-If a tool is not configured yet, add it before closing MVP-0.
+如有工具尚未配置，在 MVP-0 收尾前补齐。
 
-## Task 10 — Documentation Handoff
+## 任务 10 — 文档交接
 
-Update:
+更新：
 
 ```text
 PROGRESS.md
 README.md
 ```
 
-Report:
+报告：
 
-- changed files;
-- tests;
-- known limitations;
-- next MVP recommendation.
+- 修改的文件；
+- 测试；
+- 已知限制；
+- 下一个 MVP 建议。
 
-## Completion Gate
+## 完成门禁
 
-Do NOT start OpenSysML integration until MVP-0 passes its acceptance criteria.
+MVP-0 通过验收标准之前，不得开始 OpenSysML 集成。

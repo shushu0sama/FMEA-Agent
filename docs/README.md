@@ -1,68 +1,62 @@
-# FMEA Agent Documentation Index
+# FMEA Agent 文档导航
 
-> Lifecycle navigation for coding-agent sessions. Keep this file short and use
-> linked documents as the detailed source of truth.
+> 本文件为 Coding Agent 会话提供文档生命周期导航。保持精简，
+> 详细事实以链接指向的文档为准。
 
-## New Session Minimum Reading
+## 新会话最小读取集
 
-For a normal development session, read only:
+常规开发会话只需先读取：
 
 1. `AGENTS.md`
 2. `PROGRESS.md`
 3. `docs/README.md`
-4. Current Spec under `docs/specs/`
-5. Current Plan under `docs/plans/` when one exists
-6. Previous Stage Record under `docs/records/`
+4. `docs/specs/` 下的当前 Spec
+5. `docs/plans/` 下的当前 Plan（存在时）
+6. `docs/records/` 下的上一阶段记录
 
-Do not read the full foundation guides every session. Read them when changing
-long-lived architecture, phase strategy, or source-of-truth rules.
+无需每次会话完整读取地基指南；修改长期架构、阶段策略或事实来源规则时再读。
 
-## Lifecycle States
+## 生命周期状态
 
-`ACTIVE` = current operational source of truth.
+`ACTIVE` = 当前操作依据。
 
-`REFERENCE` = useful long-lived background or evidence; read when relevant.
+`REFERENCE` = 长期背景或证据，按需读取。
 
-`HISTORICAL` = records what happened or what was planned at the time; do not
-treat as current state.
+`HISTORICAL` = 记录当时的实际情况或计划，不代表当前状态。
 
-`SUPERSEDED` = retained for traceability but replaced by a newer document.
+`SUPERSEDED` = 已由新文档取代，为追溯而保留。
 
 ## ACTIVE
 
-- `AGENTS.md` — canonical cross-coding-agent project instructions.
-- `PROGRESS.md` — current project state, roadmap and next action.
-- `README.md` — root project overview and current runnable capability.
-- `docs/README.md` — documentation lifecycle and navigation.
-- `docs/product/FMEA_AGENT_V1.md` — V1 product and capability boundary.
-- `docs/architecture/FMEA_AGENT_V1_ARCHITECTURE.md` — V1 architecture boundary.
-- `docs/architecture/CANONICAL_SYSTEM_MODEL_SPEC.md` — CSM contract.
-- `docs/architecture/SYSML_FACT_SNAPSHOT_CONTRACTS.md` — SysML snapshot contract.
-- `docs/architecture/SYSML_TO_CANONICAL_MAPPING.md` — SysML mapping matrix.
-- `docs/domain/FMEA_PROFILE_V1.md` — FMEA semantic profile.
-- `docs/domain/FMEA_GLOSSARY.md` — terminology source of truth.
-- `docs/evaluation/BENCHMARK_SPEC.md` — long-lived benchmark model.
-- `docs/governance/DEVELOPMENT_WORKFLOW_AND_RECORDS_POLICY.md` — governance rules.
-- `docs/governance/LANGUAGE_AND_TERMINOLOGY_POLICY.md` — language and term policy.
-- `docs/specs/MVP_2_REAL_FAILURE_KNOWLEDGE.md` — current MVP-2 planning spec.
+- `AGENTS.md` — 跨 Coding Agent 的规范项目指令。
+- `PROGRESS.md` — 当前项目状态、路线图与下一步。
+- `README.md` — 项目总览与当前可运行能力。
+- `docs/README.md` — 文档生命周期与导航。
+- `docs/product/FMEA_AGENT_V1.md` — V1 产品与能力边界。
+- `docs/architecture/FMEA_AGENT_V1_ARCHITECTURE.md` — V1 架构边界。
+- `docs/architecture/CANONICAL_SYSTEM_MODEL_SPEC.md` — CSM 契约。
+- `docs/architecture/SYSML_FACT_SNAPSHOT_CONTRACTS.md` — SysML 快照契约。
+- `docs/architecture/SYSML_TO_CANONICAL_MAPPING.md` — SysML 映射矩阵。
+- `docs/domain/FMEA_PROFILE_V1.md` — FMEA 语义配置。
+- `docs/domain/FMEA_GLOSSARY.md` — 术语权威来源。
+- `docs/evaluation/BENCHMARK_SPEC.md` — 长期基准模型。
+- `docs/governance/DEVELOPMENT_WORKFLOW_AND_RECORDS_POLICY.md` — 治理规则。
+- `docs/governance/LANGUAGE_AND_TERMINOLOGY_POLICY.md` — 语言与术语政策。
+- `docs/specs/MVP_2_REAL_FAILURE_KNOWLEDGE.md` — 当前 MVP-2 规划 Spec。
 
 ## REFERENCE
 
-- `CLAUDE.md` — Claude Code compatibility instructions; keep aligned with
-  `AGENTS.md` until tool-loading behavior is formally simplified.
-- `docs/foundation/FMEA_AGENT_FOUNDATION_GUIDE.md` — long-form architecture
-  foundation.
-- `docs/foundation/FMEA_AGENT_STAGED_DEVELOPMENT_AND_REUSE_GUIDE.md` — long-form
-  phase and reuse guide.
-- `docs/research/DEPENDENCY_INVENTORY.md` — dependency and reuse inventory.
-- `docs/research/NEO4J_FAILURE_KNOWLEDGE_BASELINE.md` — existing Neo4j failure
-  knowledge baseline for MVP-2 planning.
-- `docs/research/OPENSYSML_SPIKE_REPORT.md` — MVP-1 OpenSysML spike evidence.
-- `docs/research/OPENSYSML_DEPENDENCY_REPRODUCTION_REPORT.md` — OpenSysML pin
-  reproduction evidence.
-- `docs/research/SYSML_SOURCE_CATALOG.md` — SysML source catalog.
-- `docs/adr/` — accepted architecture decision records.
-- `docs/records/templates/` — closeout, release and session handoff templates.
+- `CLAUDE.md` — Claude Code 兼容指令；在正式简化工具加载行为之前，
+  保持与 `AGENTS.md` 一致。
+- `docs/foundation/FMEA_AGENT_FOUNDATION_GUIDE.md` — 长篇架构地基指南。
+- `docs/foundation/FMEA_AGENT_STAGED_DEVELOPMENT_AND_REUSE_GUIDE.md` — 长篇阶段与复用指南。
+- `docs/research/DEPENDENCY_INVENTORY.md` — 依赖与复用清单。
+- `docs/research/NEO4J_FAILURE_KNOWLEDGE_BASELINE.md` — 供 MVP-2 规划使用的现有 Neo4j 故障知识基线。
+- `docs/research/OPENSYSML_SPIKE_REPORT.md` — MVP-1 OpenSysML 探索证据。
+- `docs/research/OPENSYSML_DEPENDENCY_REPRODUCTION_REPORT.md` — OpenSysML 固定版本的复现证据。
+- `docs/research/SYSML_SOURCE_CATALOG.md` — SysML 来源目录。
+- `docs/adr/` — 已接受的架构决策记录。
+- `docs/records/templates/` — 收尾、发布与会话交接模板。
 
 ## HISTORICAL
 
@@ -77,11 +71,18 @@ treat as current state.
 
 ## SUPERSEDED
 
-- `docs/prompts/CLAUDE_CODE_SESSION_TEMPLATE.md` — superseded by
-  `docs/records/templates/SESSION_HANDOFF_TEMPLATE.md` for intra-stage handoff
-  and by the New Session Minimum Reading list above for normal sessions.
+- `docs/prompts/CLAUDE_CODE_SESSION_TEMPLATE.md` — Stage 内交接用途已由
+  `docs/records/templates/SESSION_HANDOFF_TEMPLATE.md` 取代；
+  常规会话启动采用上方最小读取集。
 
-## Current Stable Release
+## 当前稳定发布
 
-`v0.1.1` is the current stable release tag. It is a docs-only patch on top of
-MVP-1 Real System Facts; no MVP-2 production implementation has started.
+当前稳定发布 tag 为 `v0.1.1`，它是 MVP-1 Real System Facts 之上的文档补丁；
+MVP-2 生产实现仍为 `NOT_STARTED`，Implementation Plan 仍为 `NOT_STARTED pending spec review`。
+
+## 文档语言与当前治理任务
+
+项目自有文档以简体中文（zh-CN）为主体，技术标识符、状态、命令、路径和原始代码块保持 canonical form。
+语言规则及检查关口见 `docs/governance/DEVELOPMENT_WORKFLOW_AND_RECORDS_POLICY.md` 第 14 节。
+G0A-L 语言治理的范围、文件清单及验证证据见
+`docs/records/G0A_L_DOCUMENTATION_LOCALIZATION.md`；该记录记载本次工作，不替代 `PROGRESS.md` 的当前状态职责。

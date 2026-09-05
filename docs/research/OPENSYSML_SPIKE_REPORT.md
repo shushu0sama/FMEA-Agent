@@ -1,33 +1,33 @@
-# OpenSysML Feasibility Spike Report
+# OpenSysML 可行性探查报告
 ## MVP-1A — 2026-09-04
 
 > 证据等级：`CONFIRMED_RUNTIME`（本机实际执行成功）/ `CONFIRMED_SOURCE`（当前 checkout 官方 source/tests 明确支持）/ `DOCUMENTED`（官方文档明确说明，未实际运行）/ `OBSERVED_INTERNAL`（仅内部实现可见，禁止 production 依赖）/ `UNKNOWN`。
 
-# Environment
+# 环境
 
 | 项 | 值 |
 |---|---|
 | OS | Microsoft Windows NT 10.0.26200.0（Windows 11 Pro） |
-| Architecture | AMD64 (x64) |
+| 架构 | AMD64 (x64) |
 | PowerShell | 5.1.26100.9168 |
 | Python | 3.13.9（系统）；Spike venv 用 uv 以 3.13.9 创建 |
 | uv | 0.11.7 |
-| Go | not installed（本轮未需要：直接使用 release 二进制） |
+| Go | 未安装（本轮未需要：直接使用 release 二进制） |
 | 实验目录 | `D:\code\SysML 2026.9.3\FMEA-Agent-SysML-Workspace\99_experiments\opensysml_mvp1_spike` |
 
-# OpenSysML Version
+# OpenSysML 版本
 
 | 身份 | 值 | 证据 |
 |---|---|---|
 | Git commit（本地 checkout） | `ef03da889285a9a5c71bcec9dd7b67b8b3e1a599`（`main`，与 origin/main 一致；shallow clone，grafted） | CONFIRMED_RUNTIME（git rev-parse + ls-remote） |
-| Python package version | `opensysml` **0.4.0**（`clients/python/opensysml/_version.py`；安装后 `opensysml.__version__` 实测 0.4.0） | CONFIRMED_RUNTIME |
+| Python 包版本 | `opensysml` **0.4.0**（`clients/python/opensysml/_version.py`；安装后 `opensysml.__version__` 实测 0.4.0） | CONFIRMED_RUNTIME |
 | 最新 `opensysml-v*` release tag | `opensysml-v0.4.0`（peeled `91f595c…`）；另有 legacy `pysysml-v0.2.1` 与 plain `v0.4.3` 等 tag | CONFIRMED_SOURCE（git ls-remote --tags） |
 | 实际运行的 sysml-grpc | **v0.4.3**（`sysml-grpc --version` → `commit 99e02003c9c49358828b1c491a75de61745646ce`，与 plain tag `v0.4.3` 一致） | CONFIRMED_RUNTIME |
-| License | Apache-2.0（根 `LICENSE`；pyproject `license = "Apache-2.0"`） | CONFIRMED_SOURCE |
+| 许可证 | Apache-2.0（根 `LICENSE`；pyproject `license = "Apache-2.0"`） | CONFIRMED_SOURCE |
 
 三者关系：本地 checkout = remote main tip，晚于 `opensysml-v0.4.0` tag（版本号仍为 0.4.0 的开发状态）；缓存的 v0.4.3 服务二进制来自 GitHub release `v0.4.3`。本地 checkout 与 opensysml-v0.4.0 之间的精确提交距离因 shallow clone 为 UNKNOWN（不影响本轮结论）。
 
-# Installation
+# 安装
 
 以当前 checkout 为唯一来源（未使用 PyPI 的 `pip install opensysml`）：
 
@@ -44,7 +44,7 @@ uv pip install --python .venv\Scripts\python.exe "<checkout>\clients\python"
 - PyPI 上 `opensysml==0.4.0` 可解析（`uv pip install --dry-run` 通过）— CONFIRMED_RUNTIME
 - 未修改 FMEA-Agent `pyproject.toml` — 事实陈述
 
-# sysml-grpc Runtime
+# sysml-grpc 运行时
 
 | 问题 | 结论 | 证据 |
 |---|---|---|
@@ -54,16 +54,16 @@ uv pip install --python .venv\Scripts\python.exe "<checkout>\clients\python"
 | 是否自动下载 | 仅当显式请求 release（`ensure_binary(version=…)` 或 `$OPENSYSML_GRPC_VERSION`）；默认不下载，缺失时 `ConnectionError` 列出所有查找位置 | DOCUMENTED（未实际触发下载，因缓存已命中） |
 | 是否 bundled | 否。独立二进制，SHA-256 校验下载（client 0.4.0 的 digest 表只 pin 到 v0.3.0，含 `sysml-grpc-windows-amd64.exe`） | CONFIRMED_SOURCE（release-digests.json） |
 | Windows x64 binary | **有**。缓存中 v0.4.3 windows-amd64 二进制可直接运行；v0.0.5–v0.3.0 每个 release 都有 windows-amd64 asset 且 digest 已 pin | CONFIRMED_RUNTIME（v0.4.3）+ CONFIRMED_SOURCE（pin 表） |
-| transport | gRPC over loopback（port 0）；`cmd/sysml-grpc/stdio.go` 亦存在 stdio transport 实现 | CONFIRMED_RUNTIME（连接成功）+ CONFIRMED_SOURCE |
-| process lifecycle | stdin-pipe 归属模型：client 持有 child stdin 写端，进程退出内核关闭管道 → child 退出；两轮全新进程运行后 `Get-Process sysml-grpc` 计数为 0 | CONFIRMED_RUNTIME |
-| failure behavior | 无二进制时 `ConnectionError` 列出查找位置；release 不匹配时 `StaleServiceError`；能力缺失时 `MissingCapabilityError` | DOCUMENTED |
+| 传输 | gRPC over loopback（port 0）；`cmd/sysml-grpc/stdio.go` 亦存在 stdio transport 实现 | CONFIRMED_RUNTIME（连接成功）+ CONFIRMED_SOURCE |
+| 进程生命周期 | stdin-pipe 归属模型：client 持有 child stdin 写端，进程退出内核关闭管道 → child 退出；两轮全新进程运行后 `Get-Process sysml-grpc` 计数为 0 | CONFIRMED_RUNTIME |
+| 失败行为 | 无二进制时 `ConnectionError` 列出查找位置；release 不匹配时 `StaleServiceError`；能力缺失时 `MissingCapabilityError` | DOCUMENTED |
 | 缓存现状 | `~/.opensysml/bin/sysml-grpc.exe`（v0.4.3）+ 同名 `.json` 元数据（version/sha256/repo）+ digest 链接 `sysml-grpc-0b188ec140872c0f.exe`；client 从 digest 链接启动 | CONFIRMED_RUNTIME（ServerInfo.origin） |
 
-# Confirmed Public API
+# 已确认的公共 API
 
 仅列本轮实际执行验证或官方 source 明确支持的 public interface。未运行验证的一律不列。
 
-| API | Evidence | Execution result | Classification |
+| API | 证据 | 执行结果 | 分类 |
 |---|---|---|---|
 | `opensysml.load(path)` | spike `scripts/01_first_load.py` | 成功返回 `Model`（0.09–0.12 s） | CONFIRMED_RUNTIME |
 | `opensysml.load(path, strict=True)` | spike `scripts/02_diagnostics.py` | 语法错误模型 raise `ModelError`（带 `.diagnostics` + `.model`） | CONFIRMED_RUNTIME |
@@ -90,14 +90,14 @@ uv pip install --python .venv\Scripts\python.exe "<checkout>\clients\python"
 
 注意：`Symbol.children` 是方法（`children()`），直接迭代属性会 `TypeError` —— Adapter 需写对调用形式。
 
-# Load / Parse
+# 加载 / 解析
 
 - 最小合法模型（自建，语法取自官方 Training Examples）首轮即被解析；两处真实语法错误（bare `Real`、无 visibility 的 `import`）分别被精确诊断为 `unresolved reference: Real — did you mean ScalarValues::Real?` 与 `import without a visibility indicator`（带 file:line:col）—— parser 诊断质量高（CONFIRMED_RUNTIME）。
 - 修复后 `model.ok=True`，0 diagnostics（CONFIRMED_RUNTIME）。
 - `perform action spin;`（performed action usage）解析正常（CONFIRMED_RUNTIME）。
 - 首次加载耗时 0.09–0.12 s（含服务已启动状态；首个 connection 启动服务约 7 ms 量级，见官方 benchmark —— DOCUMENTED）。
 
-# Diagnostics
+# 诊断
 
 | 场景 | 结果 |
 |---|---|
@@ -109,7 +109,7 @@ uv pip install --python .venv\Scripts\python.exe "<checkout>\clients\python"
 
 结论：未来 Adapter 可以把 `Diagnostic` 直接翻译为项目自有的 `SysMLDiagnostic`，把 strict 加载的 `ModelError` 翻译为 `SysMLLoadError`/`SysMLParseError` 边界。
 
-# Query / Traversal
+# 查询 / 遍历
 
 对 `02_perform_probe.sysml`（含 2 part def、1 action def、root part usage + nested part usage、top-level action usage、performed action usage）：
 
@@ -149,7 +149,7 @@ RootNamespace
 - 顶层 usage：`type_facts(declared='Spin', resolved_id='PerformProbe::Spin', resolved_kind='actionDef')` + typing specialization —— 可获取 —— CONFIRMED_RUNTIME
 - **performed action usage**（`perform action spin;`）：parser 层作为嵌套 ActionUsage 出现在 part 之下（FQN `…::motor::spin`），但其 `type_facts` 为空（`declared=''`、无 resolved_id）、`specializations=[]` —— 与所引用 behavior 的链接在 public Symbol facts 中不可见 —— CONFIRMED_RUNTIME（**Mapping 阶段关键约束：performed action 的类型链接需另行研究或按 UNKNOWN 处理**）
 
-# Element Identity
+# 元素身份
 
 | 问题 | 结论 | 证据 |
 |---|---|---|
@@ -164,7 +164,7 @@ RootNamespace
 
 **禁止把 display name 当 ID** 在本 public 表示下天然满足：`id` 是 FQN 字符串、`name` 是短名字段，两者分离，但 id 的稳定性耦合于名字不改变。
 
-# Ownership / Containment
+# 归属 / 包含关系
 
 构造 root part usage + nested part usage + nested（performed）action usage 的模型后验证：
 
@@ -174,11 +174,11 @@ RootNamespace
 
 本轮只回答 "OpenSysML 返回什么"；不做 System/Component 映射。
 
-# Official Training Example Results
+# 官方训练示例结果
 
 本地 `SysML-v2-Release`（`master @ 29a3d2a`，tag `2026-07`）：
 
-| Example | 单文件加载 |
+| 示例 | 单文件加载 |
 |---|---|
 | `02. Part Definitions/Part Definition Example.sysml` | **PASS**（ok=True，0 diagnostics） |
 | `07. Parts/Parts Example-1.sysml` | **PASS** |
@@ -189,7 +189,7 @@ RootNamespace
 
 失败原因：该文件含 `private import 'Action Decomposition'::*;` 用户文件 import（见下节）。官方文件未被修改。
 
-# Single-file / Multi-file / Import
+# 单文件 / 多文件 / 导入
 
 | 场景 | 行为 | 证据 |
 |---|---|---|
@@ -201,13 +201,13 @@ RootNamespace
 
 **结论：MVP-1 File Mode（经 Python client）当前只能可靠支持 restricted single-file subset（标准库 import 允许，用户文件 import 不支持）。** 不隐藏此限制。
 
-# Windows Issues
+# Windows 问题
 
 - 未遇到 Windows 特有故障：binary 启动、gRPC loopback、stdin-pipe 生命周期、异常翻译均正常（CONFIRMED_RUNTIME）。
 - PowerShell 5.1 调用 uv 时其进度输出经 stderr 呈现（`NativeCommandError` 外观），命令本身成功 —— 只是展示噪音，非功能问题。
 - 官方 latency 数据为 Linux 实测；Windows 首连接耗时未单独 benchmark（本轮非性能目标），量级约 0.1 s 内完成 load —— CONFIRMED_RUNTIME（观察值，非基准）。
 
-# Known Limitations
+# 已知限制
 
 1. **无用户文件 import / multi-file**：Python public API 单文档；`parse_sources` 未暴露。这是 MVP-1 最大范围约束。
 2. **identity 为 name-derived FQN**：rename/move 改变 id；无跨版本稳定 identity（可选 `@ElementId` metadata 机制存在，未在本轮验证 File Mode 下的可用性）。
@@ -217,7 +217,7 @@ RootNamespace
 6. 服务缓存 LRU（100 models）：跨进程/长时间运行后旧 `model.hash` 可能被逐出（`ModelNotFoundError`）—— Adapter 应把 load 结果物化为 Snapshot，不依赖服务端缓存长期持有模型。
 7. `Symbol.children` 为方法（非属性）—— 容易写错的 API 形态，contract test 应覆盖。
 
-# Recommended Dependency Pin
+# 建议固定的依赖版本
 
 ```text
 opensysml==0.4.0          （PyPI；已确认可解析；Apache-2.0）
@@ -232,7 +232,7 @@ sysml-grpc v0.4.3         （GitHub release Open-MBEE/OpenSysML @ tag v0.4.3，
 
 外部模型引用记录（SYSML_SOURCE_CATALOG 要求）：SysML-v2-Release `https://github.com/Systems-Modeling/SysML-v2-Release.git` @ `29a3d2acdd49600cff872e7a55962a40400f3335`（tag `2026-07`），使用文件为 training 目录下 5 个 PASS 示例（相对路径见上表）。
 
-# Production Adapter Implications
+# 对生产适配器的影响
 
 （只描述未来 Adapter 必须遵守的边界，不写 Adapter 实现。）
 
@@ -244,7 +244,7 @@ sysml-grpc v0.4.3         （GitHub release Open-MBEE/OpenSysML @ tag v0.4.3，
 6. 加载成功后立即物化为 `SysMLFactSnapshot`（服务缓存 LRU，勿依赖远端缓存存活）。
 7. performed action usage 在 public facts 中无 typing 链接 —— 映射阶段不得据此发明类型关系；按 facts 缺失处理或列为 UNKNOWN。
 
-# Gate Evaluation
+# 门禁评估
 
 | Gate 项 | 判定 | 证据 |
 |---|---|---|
@@ -254,15 +254,15 @@ sysml-grpc v0.4.3         （GitHub release Open-MBEE/OpenSysML @ tag v0.4.3，
 | diagnostics 可处理 | **PASS** | severity/message/full locator + ModelError(partial model) |
 | 不需要修改 OpenSysML source | **PASS** | 非 editable 安装后 checkout 保持 clean；全部能力来自 release 二进制 + public API |
 
-# Final Verdict
+# 最终结论
 
 **CONDITIONAL_GO**
 
-Conditions（MVP-1B 之前必须书面接受，或纳入 MVP-1B Snapshot 契约）：
+约束条件（MVP-1B 之前必须书面接受，或纳入 MVP-1B Snapshot 契约）：
 
-1. **C1 — Single-file subset**：MVP-1 第一版只支持 standalone 单文件 `.sysml`（标准库 import 允许）。用户文件 import / multi-file 模型明确排除；Adapter 对 unresolved import 必须产出显式 `SysMLDiagnostic`，不得静默降级。官方 Training Example 选择限于可单文件加载者（本轮已列出 5 个 PASS 示例）。
-2. **C2 — Dependency pin**：`opensysml==0.4.0`（PyPI）+ `sysml-grpc v0.4.3` windows-amd64（SHA-256 已记录）；dependency inventory 登记 tag/commit/asset/sha256/license。服务二进制 provisioning 方式（缓存路径 or `$OPENSYSML_BINARY`）写进 Adapter 运维说明。
-3. **C3 — Identity semantics 声明**：source_id = FQN、rename ⇒ 新 identity、跨版本稳定 identity 不在 MVP-1 范围 —— 必须写入 Snapshot/契约文档；禁止任何把 name 当独立稳定 ID 的实现。
-4. **C4 — Performed action 限制**：performed ActionUsage 的 typing facts 在 public 表示中缺失；Mapping 阶段不得为它发明类型关系，按 UNKNOWN/缺失事实处理，并在 mapping matrix 中登记为 NEEDS_RESEARCH（不改 SYSML_TO_CANONICAL_MAPPING.md 的 TENTATIVE 状态）。
+1. **C1 — 单文件子集**：MVP-1 第一版只支持 standalone 单文件 `.sysml`（标准库 import 允许）。用户文件 import / multi-file 模型明确排除；Adapter 对 unresolved import 必须产出显式 `SysMLDiagnostic`，不得静默降级。官方 Training Example 选择限于可单文件加载者（本轮已列出 5 个 PASS 示例）。
+2. **C2 — 依赖版本固定**：`opensysml==0.4.0`（PyPI）+ `sysml-grpc v0.4.3` windows-amd64（SHA-256 已记录）；dependency inventory 登记 tag/commit/asset/sha256/license。服务二进制 provisioning 方式（缓存路径 or `$OPENSYSML_BINARY`）写进 Adapter 运维说明。
+3. **C3 — 身份语义声明**：source_id = FQN、rename ⇒ 新 identity、跨版本稳定 identity 不在 MVP-1 范围 —— 必须写入 Snapshot/契约文档；禁止任何把 name 当独立稳定 ID 的实现。
+4. **C4 — performed action 限制**：performed ActionUsage 的 typing facts 在 public 表示中缺失；Mapping 阶段不得为它发明类型关系，按 UNKNOWN/缺失事实处理，并在 mapping matrix 中登记为 NEEDS_RESEARCH（不改 SYSML_TO_CANONICAL_MAPPING.md 的 TENTATIVE 状态）。
 
 若 C1 不可接受（即 MVP-1 必须支持多文件），最小替代方向：a) 等 opensysml Python client 暴露 `parse_sources`（Future Work 已列入）；b) 改用 Go client `ParseFiles`（引入 Go 运行时）；c) 经 Repository API（MVP-1 明确 defer）。三者均超出当前 MVP-1 scope，故在 C1 成立的前提下按上述 conditions 推进。

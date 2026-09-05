@@ -1,20 +1,20 @@
-# ADR-007: Runnable Vertical Slice Before Full Integrations
+# ADR-007: 先构建可运行纵向切片，再完成全面集成
 
 **Status:** ACCEPTED  
-**Baseline:** Bootstrap v0.1
+**基线:** Bootstrap v0.1
 
-## Context
+## 背景
 
-Building all SysML, KG/RAG and MCP integrations before seeing an end-to-end runnable system creates long integration delays and encourages overengineering.
+在看到端到端可运行系统之前就构建全部 SysML、KG/RAG 和 MCP 集成，会造成长期集成延迟并助长过度工程。
 
-## Decision
+## 决策
 
-Build MVP-0 as a runnable end-to-end vertical slice using fixtures, in-memory repositories and stubbed replaceable adapters. Replace stubs incrementally in later MVPs.
+使用 fixture、内存仓库和可替换适配器桩构建 MVP-0，形成可运行的端到端纵向切片。在后续 MVP 中逐步替换桩。
 
-## Consequences
+## 影响
 
-The project gets early executable feedback. Interfaces must be designed carefully enough that later real integrations do not require rewriting the workflow.
+项目能够尽早获得可执行反馈。接口必须经过足够仔细的设计，使后续真实集成无需重写工作流。
 
-## Revisit When
+## 重新评估条件
 
-Revisit only when experiments, standards, compatibility constraints or engineering requirements demonstrate that the current decision materially blocks project goals.
+仅当实验、标准、兼容性约束或工程需求表明当前决策实质性阻碍项目目标时，才重新评估。

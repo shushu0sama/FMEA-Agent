@@ -1,6 +1,6 @@
-# MVP-1C DEPENDENCY REPRODUCTION REPORT
+# MVP-1C 依赖复现报告
 
-> 1C-0 Dependency Reproduction Gate — 2026-09-04
+> 1C-0 依赖复现门禁 — 2026-09-04
 > 目标：证明 PyPI `opensysml==0.4.0` 的 MVP-1C 所需 API 与 runtime 行为与 MVP-1A Spike（checkout 安装）逐项一致，允许进入 Adapter implementation。
 > 证据等级沿用 Spike 报告约定：`CONFIRMED_RUNTIME`（本机实际执行）/ `CONFIRMED_SOURCE`（官方 source 明确支持）/ `DOCUMENTED`。
 
@@ -12,7 +12,7 @@ PyPI `opensysml==0.4.0` 与 MVP-1A checkout（commit `ef03da889285a9a5c71bcec9dd
 
 附带一项必须在 1C Adapter Profile 记录的语义修正：**`Model.hash` 不是纯内容哈希**（见 F1）。
 
-## Tested Source
+## 已测试来源
 
 | 项 | 值 | 证据 |
 |---|---|---|
@@ -43,7 +43,7 @@ D:\code\SysML 2026.9.3\FMEA-Agent-SysML-Workspace\99_experiments\opensysml_pypi_
 | 新增 probe | 显式 connect/close + 孤儿检查、C1 unresolved-import 夹具、包内容对比脚本 |
 | 原始输出 | 全部留存于实验目录 `output/`（local evidence，不入库） |
 
-## Runtime（sysml-grpc）
+## 运行时（sysml-grpc）
 
 | 项 | 值 | 证据 |
 |---|---|---|
@@ -53,7 +53,7 @@ D:\code\SysML 2026.9.3\FMEA-Agent-SysML-Workspace\99_experiments\opensysml_pypi_
 | discovery | PyPI client 与 Spike 一致：命中缓存 digest-link，`ServerInfo.origin = '…\sysml-grpc-0b188ec140872c0f.exe, started by this client'`；未设置 `OPENSYSML_BINARY` / `OPENSYSML_GRPC_VERSION` | CONFIRMED_RUNTIME |
 | capabilities | 17 项（`parse_sources` / `query` / `type_facts` / `strict_conformance` / …），与 Spike 报告一致 | CONFIRMED_RUNTIME |
 
-## Compatibility Matrix
+## 兼容性矩阵
 
 逐项：checkout 结果（MVP-1A Spike 报告证据）vs PyPI 结果（本轮实测）。
 
@@ -80,7 +80,7 @@ D:\code\SysML 2026.9.3\FMEA-Agent-SysML-Workspace\99_experiments\opensysml_pypi_
 - Diagnostic 完整 locator：`severity/message/file/start_line/start_column/end_line/end_column/span` 全部可用。
 - C1 夹具（`Action Performance Example.sysml`，用户文件 import）：4 条 error（`unresolved reference: Action Decomposition` + 级联 takePicture/focus/shoot），与 Spike 记录一致；strict 抛 `ModelError` 且携带 partial model。
 
-## Differences / Findings
+## 差异 / 发现
 
 **F1（必须进入 1C Adapter Profile）— `Model.hash` 不是纯内容哈希，而是 load context 下的 fingerprint。**
 
@@ -102,7 +102,7 @@ model_hash = OpenSysML 当前模型 load context 下的 fingerprint。
 
 1C 要求：
 
-- adapter 必须定义 **documented deterministic path normalization / load policy**（例如固定 resolve 策略 + 统一路径形式），以提高同一 reference environment 内的可重复性；
+- adapter 必须定义 **有文档说明的确定性路径规范化 / 加载策略**（例如固定 resolve 策略 + 统一路径形式），以提高同一 reference environment 内的可重复性；
 - **禁止为了得到所谓"稳定 hash"自行重新实现 hash 算法**——`model_hash` 一律取 OpenSysML 返回值原样记录；
 - `model_hash` 只标识"该次加载的 name+content fingerprint"，不承担跨版本 identity（与 1B 契约语义一致）。
 
@@ -123,14 +123,14 @@ model_hash = OpenSysML 当前模型 load context 下的 fingerprint。
 
 **F5 — 依赖集合一致**：34 包、grpcio 1.83.1、protobuf 7.36.1，与 Spike 记录相同。
 
-## Known Limitations
+## 已知限制
 
 1. 结论证据基于 Windows 11 AMD64 reference environment（与 Spike 相同）；跨平台未验证，不作承诺。
 2. runtime 为本地缓存中的 sysml-grpc v0.4.3 二进制；自动校验下载路径（client digest 表只 pin 到 v0.3.0）未在本 gate 重新触发。v0.4.3 的 provisioning 方式（缓存路径 or `$OPENSYSML_BINARY` / `OPENSYSML_ALLOW_UNPINNED_DOWNLOAD`）需写进 1C Adapter 运维说明（C2）。
 3. F1 的 hash 语义验证覆盖单文件 load；多文件/其他 load 形式不在 MVP-1 范围（C1）。
 4. 本轮未把 `opensysml==0.4.0` 写入 production dependency（pyproject.toml 未改）；正式 pin 在 1C Adapter 实现时随 Dependency Inventory 登记落地。
 
-## Production Pin Recommendation
+## 生产依赖版本固定建议
 
 **PYPI_PIN_CONFIRMED**
 

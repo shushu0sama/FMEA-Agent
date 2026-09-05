@@ -1,11 +1,11 @@
-# FMEA Domain Rules
+# FMEA 领域规则
 
-- Baseline profile: AIAG-VDA FMEA.
-- Failure Mode, Failure Cause, Failure Mechanism and Failure Effect are distinct concepts.
-  - Failure Mechanism is an independent domain concept.
-  - MVP-0 does not require a dedicated FailureMechanismCandidate model.
-  - Missing an explicit model must not cause mechanism to be mislabeled as cause/mode/effect.
-  - An explicit Failure Mechanism model is deferred to a Failure-Knowledge-related MVP.
-- Missing risk data remains NOT_EVALUATED/UNKNOWN.
-- Do not invent proprietary S/O/D/AP rules.
-- Every important candidate should retain evidence/provenance and review status.
+- 方法基线：AIAG-VDA FMEA。
+- 失效模式（Failure Mode）、失效起因（Failure Cause）、失效机理（Failure Mechanism）和失效影响（Failure Effect）是不同概念。
+  - Failure Mechanism 是独立领域概念。
+  - MVP-0 不要求专门的 FailureMechanismCandidate 模型。
+  - 缺少显式模型时，不得将机理误标为起因、模式或影响。
+  - 显式 Failure Mechanism 模型延后到与故障知识相关的 MVP。
+- 缺失风险数据保持 NOT_EVALUATED/UNKNOWN。
+- 不得编造专有 S/O/D/AP 规则。
+- 每个重要候选项应保留证据、来源追踪和审核状态。

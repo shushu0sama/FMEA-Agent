@@ -1,7 +1,7 @@
-# Architecture Rules
+# 架构规则
 
-- Domain models must remain independent of LangGraph, Neo4j, MCP and LLM providers.
-- External technologies enter through adapters/ports.
-- Do not bypass the Canonical System Model for engineering facts.
-- System Model and Failure Model stay separate.
-- MVP-0 favors stubs and in-memory adapters over premature integrations.
+- 领域模型必须独立于 LangGraph、Neo4j、MCP 和 LLM 提供方。
+- 外部技术通过适配器与端口接入。
+- 工程事实不得绕过 Canonical System Model。
+- System Model 与 Failure Model 保持分离。
+- MVP-0 优先采用桩实现和内存适配器，避免过早集成。

@@ -1,5 +1,5 @@
 # FMEA Agent 长期开发指导与工程地基文档
-## FMEA Agent Foundation & Development Guide for Claude Code
+## 面向 Claude Code 的 FMEA Agent 工程地基与开发指南
 
 > 文档定位：本文件是 FMEA Agent 项目的长期“地基文档 / 项目宪法 / Claude Code 总体参考文档”之一。  
 > 适用对象：Claude Code、项目维护者、后续协作者、实验与评测脚本。  
@@ -35,7 +35,7 @@ Planning & Preparation
 
 本项目文档与代码不得复制或臆造受版权/授权约束的评分表和 Action Priority 矩阵。正式 S/O/D/AP 规则仅在获得授权规则来源后实现。
 
-## B. Runnable Vertical Slice First
+## B. 优先跑通可运行的纵向切片
 
 `[DECISION]`
 
@@ -94,7 +94,7 @@ SysML
 → Canonical System Model
 ```
 
-Phase 2 才负责 tool-independent Canonical semantics。
+Phase 2 才负责与工具无关的 Canonical 语义。
 
 ## D. Phase 5 / Phase 6 边界
 
@@ -123,7 +123,7 @@ audit
 approved/rejected result
 ```
 
-## E. Risk Strategy
+## E. 风险策略
 
 `[DECISION]`
 
@@ -145,7 +145,7 @@ NOT_EVALUATED
 
 禁止 LLM 在无规则依据时自由生成 S/O/D/AP。
 
-## F. Capability-first Phase 4
+## F. Phase 4 以能力为先
 
 `[DECISION]`
 
@@ -161,7 +161,7 @@ get_evidence()
 
 Neo4j、Qdrant、Docling、Ontology、MCP 均按需求增量加入，不要求同时部署。
 
-## G. Dependency Maturity
+## G. 依赖成熟度
 
 `[DECISION]`
 
@@ -175,9 +175,9 @@ WIP
 DEFERRED
 ```
 
-文档中出现项目名称不等于其已经获准作为 production dependency。
+文档中出现项目名称不等于其已经获准作为生产依赖。
 
-## H. Evidence Authority and Conflict
+## H. 证据权威性与冲突
 
 `[DECISION]`
 
@@ -606,7 +606,7 @@ V1 目标输出：
 
 # 5. 数据源分层与权威性
 
-## 5.1 Layer A：System Facts
+## 5.1 A 层：系统事实（System Facts）
 
 权威来源：
 
@@ -620,17 +620,17 @@ Structured Design Data
 
 负责：
 
-- What exists?
-- How are components connected?
-- What function is allocated where?
-- What is the system hierarchy?
-- What are the interfaces and flows?
-- What requirements constrain the design?
-- What is the model version?
+- 存在哪些对象？
+- 组件如何连接？
+- 各功能分配到哪里？
+- 系统层级是什么？
+- 有哪些接口和流？
+- 哪些需求约束设计？
+- 模型版本是什么？
 
 ---
 
-## 5.2 Layer B：Failure Knowledge
+## 5.2 B 层：故障知识（Failure Knowledge）
 
 来源：
 
@@ -647,16 +647,16 @@ Test Data
 
 负责：
 
-- What usually fails?
-- Why?
-- What effects have occurred?
-- Which failure mechanisms are known?
-- Which controls are commonly used?
-- What evidence supports a candidate?
+- 通常会发生哪些失效？
+- 原因是什么？
+- 曾出现哪些影响？
+- 已知哪些失效机理？
+- 通常使用哪些控制？
+- 哪些证据支持候选结论？
 
 ---
 
-## 5.3 Layer C：Reasoning
+## 5.3 C 层：推理
 
 来源：
 
@@ -680,7 +680,7 @@ Agent
 
 ---
 
-## 5.4 Layer D：Human Decision
+## 5.4 D 层：人工决策
 
 负责：
 
@@ -815,14 +815,14 @@ SourceReference
 
 Canonical Model 应：
 
-- typed；
-- versioned；
-- source-traceable；
-- parser-independent；
-- serialization-friendly；
-- deterministic；
-- testable；
-- stable ID；
+- 具备类型约束；
+- 支持版本管理；
+- 来源可追溯；
+- 与解析器无关；
+- 便于序列化；
+- 具有确定性；
+- 可测试；
+- 具备稳定 ID；
 - 支持 partial model；
 - 支持 validation。
 
@@ -1168,7 +1168,7 @@ Ontology 不应：
 
 # 13. Agent 架构
 
-## 13.1 Main Orchestrator
+## 13.1 主编排器
 
 `[BASELINE]`
 
@@ -1577,7 +1577,7 @@ Evidence
 
 # 18. 评测体系
 
-## 18.1 System Extraction
+## 18.1 系统信息提取
 
 ```text
 Component Extraction Accuracy
@@ -1590,7 +1590,7 @@ Traceability Accuracy
 
 ---
 
-## 18.2 Retrieval
+## 18.2 检索
 
 ```text
 Recall@K
@@ -1616,7 +1616,7 @@ Unsupported Claim Rate
 
 ---
 
-## 18.4 Human Collaboration
+## 18.4 人机协作
 
 ```text
 Accept Rate
@@ -1629,7 +1629,7 @@ Expert Agreement
 
 ---
 
-## 18.5 Dynamic Update
+## 18.5 动态更新
 
 未来：
 
@@ -1872,7 +1872,7 @@ Python
 
 ---
 
-## 22.2 Agent Orchestration
+## 22.2 Agent 编排
 
 ```text
 LangGraph
@@ -1882,7 +1882,7 @@ LangGraph
 
 ---
 
-## 22.3 Ecosystem Adapter
+## 22.3 生态适配层
 
 ```text
 LangChain
@@ -1892,7 +1892,7 @@ LangChain
 
 ---
 
-## 22.4 Data Contract
+## 22.4 数据契约
 
 ```text
 Pydantic
@@ -1902,7 +1902,7 @@ Typed Python
 
 ---
 
-## 22.5 Knowledge Graph
+## 22.5 知识图谱
 
 ```text
 Neo4j
@@ -1912,7 +1912,7 @@ Neo4j
 
 ---
 
-## 22.6 Ontology
+## 22.6 本体（Ontology）
 
 可使用：
 
@@ -1927,7 +1927,7 @@ n10s
 
 ---
 
-## 22.7 Local LLM / Embedding
+## 22.7 本地 LLM / Embedding
 
 本地实验可以复用：
 
@@ -2166,7 +2166,7 @@ REFACTOR
 
 ---
 
-# 30. Verification
+# 30. 验证
 
 Claude Code 不得用：
 
@@ -2202,7 +2202,7 @@ scripts/verify.sh
 
 ---
 
-# 31. Definition of Done
+# 31. 完成标准
 
 一个 Feature 只有满足以下条件才算完成：
 
@@ -2752,7 +2752,7 @@ except Exception:
 
 ---
 
-# 48. Observability
+# 48. 可观测性
 
 未来每次 Agent Run 应可记录：
 
@@ -2773,10 +2773,10 @@ final output
 
 用于：
 
-- reproducibility；
-- debugging；
-- experiment comparison；
-- audit。
+- 可复现性；
+- 调试；
+- 实验比较；
+- 审计。
 
 ---
 
@@ -2820,11 +2820,11 @@ Reranker
 
 Prompt 应：
 
-- versioned；
-- testable；
-- centralized；
-- associated with schema；
-- benchmarked。
+- 支持版本管理；
+- 可测试；
+- 集中管理；
+- 与 schema 关联；
+- 经过 benchmark 评测。
 
 不要在很多 node 内散落几十段难以追踪的字符串。
 

@@ -1,12 +1,12 @@
-# MVP-0 Specification — Runnable FMEA Agent Skeleton
+# MVP-0 规格说明 — 可运行的 FMEA Agent 骨架
 
-## 1. Goal
+## 1. 目标
 
-Create the first runnable FMEA Agent vertical slice.
+创建首个可运行的 FMEA Agent 纵向切片。
 
-The purpose is **not** to achieve engineering-quality FMEA intelligence.
+目的**不是**达到工程质量的 FMEA 智能水平。
 
-The purpose is to prove:
+目的是验证以下链路：
 
 ```text
 input
@@ -17,26 +17,26 @@ input
 → structured output
 ```
 
-with correct architecture boundaries.
+并确保架构边界正确。
 
-## 2. User Story
+## 2. 用户故事
 
-As a developer/researcher, I can run:
+作为开发者 / 研究人员，我可以运行：
 
 ```bash
 python -m fmea_agent demo examples/simple_pump.json
 ```
 
-and receive a structured candidate FMEA output without requiring:
+并获得结构化候选 FMEA 输出，而无需：
 
-- network access;
-- SysML server;
-- Neo4j;
-- vector DB;
-- external LLM;
-- MCP.
+- 网络访问；
+- SysML server；
+- Neo4j；
+- 向量数据库；
+- 外部 LLM；
+- MCP。
 
-## 3. Example Input
+## 3. 输入示例
 
 ```json
 {
@@ -59,7 +59,7 @@ and receive a structured candidate FMEA output without requiring:
 }
 ```
 
-## 4. Example Fixture Failure Knowledge
+## 4. Fixture 故障知识示例
 
 ```json
 {
@@ -76,9 +76,9 @@ and receive a structured candidate FMEA output without requiring:
 }
 ```
 
-## 5. Workflow
+## 5. 工作流
 
-The graph should expose the AIAG-VDA-shaped stages:
+图应暴露符合 AIAG-VDA 形态的步骤：
 
 ```text
 Planning & Preparation
@@ -90,21 +90,21 @@ Optimization
 Results Documentation
 ```
 
-MVP behavior:
+MVP 行为：
 
-| Stage | MVP-0 behavior |
+| 步骤 | MVP-0 行为 |
 |---|---|
-| Planning & Preparation | create AnalysisContext |
-| Structure Analysis | load fixture system/component |
-| Function Analysis | load function |
-| Failure Analysis | retrieve fixture candidate |
-| Risk Analysis | explicit `NOT_EVALUATED` |
-| Optimization | explicit `SKIPPED` |
-| Results Documentation | serialize candidate JSON |
+| 策划和准备 | 创建 AnalysisContext |
+| 结构分析 | 加载 fixture 系统 / 组件 |
+| 功能分析 | 加载功能 |
+| 失效分析 | 检索 fixture 候选项 |
+| 风险分析 | 显式为 `NOT_EVALUATED` |
+| 优化 | 显式为 `SKIPPED` |
+| 结果文件化 | 序列化候选 JSON |
 
-## 6. Architecture
+## 6. 架构
 
-Required concepts:
+必需概念：
 
 ```text
 domain/
@@ -114,7 +114,7 @@ agents/
 cli/
 ```
 
-Required ports:
+必需端口：
 
 ```text
 SystemModelRepository
@@ -123,11 +123,11 @@ LLMClient
 RiskStrategy
 ```
 
-`LLMClient` may not be invoked in the default demo.
+默认演示可以不调用 `LLMClient`。
 
-## 7. Minimal Domain Models
+## 7. 最小领域模型
 
-System:
+系统：
 
 ```text
 System
@@ -136,7 +136,7 @@ Function
 SourceReference
 ```
 
-FMEA:
+FMEA：
 
 ```text
 AnalysisContext
@@ -148,9 +148,9 @@ Evidence
 RiskAssessment
 ```
 
-## 8. Output
+## 8. 输出
 
-Example semantic shape:
+语义结构示例：
 
 ```json
 {
@@ -183,40 +183,40 @@ Example semantic shape:
 }
 ```
 
-## 9. Non-goals
+## 9. 非目标
 
-Do not implement in MVP-0:
+MVP-0 不实现：
 
-- OpenSysML;
-- SysML API;
-- full Canonical System Model;
-- Neo4j;
-- Qdrant;
-- Docling;
-- MCP;
-- full AIAG-VDA risk rules;
-- PDF/Excel UI;
-- autonomous multi-agent behavior;
-- human-review persistence;
-- failure propagation.
+- OpenSysML；
+- SysML API；
+- 完整 Canonical System Model；
+- Neo4j；
+- Qdrant；
+- Docling；
+- MCP；
+- 完整 AIAG-VDA 风险规则；
+- PDF/Excel UI；
+- 自主多 Agent 行为；
+- 人工审查持久化；
+- 失效传播。
 
-## 10. Tests
+## 10. 测试
 
-Required:
+必需测试：
 
-### Unit
+### 单元测试
 
-- domain model validation;
-- in-memory repository behavior;
-- risk `NOT_EVALUATED`;
-- output serialization.
+- 领域模型校验；
+- 内存仓库行为；
+- 风险为 `NOT_EVALUATED`；
+- 输出序列化。
 
-### Workflow
+### 工作流测试
 
-- fixture flows through all stages;
-- each stage has an explicit status.
+- Fixture 流经所有步骤；
+- 每一步都有显式状态。
 
-### Smoke
+### 冒烟测试
 
 ```text
 CLI demo exits 0
@@ -224,7 +224,7 @@ output JSON exists
 output validates
 ```
 
-## 11. Acceptance Criteria
+## 11. 验收标准
 
 ```text
 [ ] fresh environment can install project
@@ -238,8 +238,8 @@ output validates
 [ ] PROGRESS.md updated
 ```
 
-## 12. Definition of Success
+## 12. 成功定义
 
-MVP-0 is successful when:
+MVP-0 成功的条件是：
 
-> The project has a small but correctly layered executable FMEA workflow that can later replace each stub with a real engineering integration.
+> 项目具有一个小型但分层正确、可执行的 FMEA 工作流，后续可以用真实工程集成逐一替换各个桩。

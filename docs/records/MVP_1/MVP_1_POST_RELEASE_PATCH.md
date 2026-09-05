@@ -1,7 +1,7 @@
-# MVP-1 — Post-Release Documentation Patch Record
+# MVP-1 — 发布后文档补丁记录
 
-Status: RELEASED（v0.1.1）
-Date: 2026-09-04
+状态： RELEASED（v0.1.1）
+日期： 2026-09-04
 
 ```text
 Patch Review Baseline:   e367fd8579e1c7039871052a77aade4f1622a061
@@ -9,7 +9,7 @@ Independent Post-Release Patch Review: ACCEPTED
 Release Tag:             v0.1.1（annotated）
 ```
 
-Review conclusion：
+审查结论：
 
 ```text
 Benchmark Report correction:   ACCEPTED
@@ -23,7 +23,7 @@ uv.lock:                       unchanged
 Patch blocker:                 NONE
 ```
 
-## Context
+## 背景
 
 MVP-1 = RELEASED（annotated tag v0.1.0 → release-closeout commit
 `9c59b4b6ddb0ee78de211eb86aa635297342880f`）。v0.1.0 是不可变发布锚点，
@@ -38,7 +38,7 @@ patch（y）: release/baseline correction without major capability expansion
 
 不引入任何新 MVP capability。
 
-## Post-Release Audit 结果
+## 发布后审计结果
 
 ```text
 Git identity:       PASS
@@ -53,13 +53,13 @@ Current-state docs: FAIL — docs/evaluation/MVP_1_BENCHMARK_REPORT.md 两处
 
 ## 修正内容（docs-only）
 
-1. **Review Baseline anchor**（Benchmark Report 顶部 commit 表）：
+1. **审查基线锚点**（Benchmark Report 顶部 commit 表）：
    原标注 `Review Baseline: 5da0f11` 是 stale value。
    真实 Independent Release Review baseline = `369f09d`。
    修正后：`5da0f11` 保留为历史 Review Evidence amendment，
    `369f09d` 为最终 Review Baseline（与 Release Gate 一致）。
    历史不被删除，仅重新标注角色。
-2. **Release execution state**（Benchmark Report Release Gate 段）：
+2. **发布执行状态**（Benchmark Report Release Gate 段）：
    原文"merge master / release tag（不可变发布锚点）尚未执行"与实际
    Git 状态矛盾。更新为已执行事实：
    master merge `2871b23c`（--no-ff）/ release closeout `9c59b4b` /
@@ -83,7 +83,7 @@ MVP-1F = ACCEPTED
 MVP-2  = NOT_STARTED
 ```
 
-## Known Follow-up / Observation（不阻塞本 patch）
+## 已知后续事项 / 观察（不阻塞本补丁）
 
 - `pyproject.toml` 仍为 `version = "0.0.1"`（Post-Release Audit
   observation）。当前治理只定义 Git release tag version policy
@@ -104,7 +104,7 @@ README.md（current state 同步）
 Production code / tests / benchmark gold / pyproject.toml / uv.lock：
 零修改。
 
-## Verification — LOCAL
+## 验证 — LOCAL
 
 ```text
 uv lock --check:   PASS
@@ -118,7 +118,7 @@ git diff --check:  PASS
 
 CI：GitHub Actions NOT CONFIGURED（全部 LOCAL evidence）。
 
-## Release Gate — Patch
+## 发布门禁 — 补丁
 
 ```text
 [x] EXTERNAL_REVIEW — Independent Post-Release Patch Review ACCEPTED
@@ -130,11 +130,11 @@ Release execution（本 Session）:
     annotated tag v0.1.1
 ```
 
-## Next Stage
+## 下一阶段
 
 ```text
 MVP-2 Real Failure Knowledge — Read-only Planning（另开 Session；
 MVP-2 = NOT_STARTED）
 ```
 
-feature branch 不删除。
+不删除 feature 分支。

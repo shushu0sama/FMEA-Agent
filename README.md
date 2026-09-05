@@ -2,9 +2,8 @@
 
 可维护、证据可溯、MBSE 感知的 FMEA Agent。
 
-**当前版本：MVP-1 Real System Facts — RELEASED（current stable release tag: v0.1.1，2026-09-04）**
-（v0.1.0 = original MVP-1 capability release；v0.1.1 = docs-only
-post-release consistency patch，无 capability 变化。
+**当前版本：MVP-1 Real System Facts — RELEASED（当前稳定发布 tag： v0.1.1，2026-09-04）**
+（v0.1.0 = 原始 MVP-1 能力发布；v0.1.1 = 发布后的文档一致性补丁，无能力变化。
 MVP-0 Runnable Vertical Slice 已完成并作为回归基线保留）
 
 ## 当前能做什么
@@ -106,8 +105,9 @@ drift）→ docs-only patch → Independent Patch Review ACCEPTED
 ```
 
 下一步：MVP-2 Real Failure Knowledge — Read-only Planning（另开 Session）。
-Pre-MVP-2 governance/spec baseline is prepared as documentation only;
-production implementation remains `NOT_STARTED`.
+Pre-MVP-2 治理与 Spec 基线仅作为文档准备；生产实现仍为 `NOT_STARTED`。
+G0A-L 已补充中文文档语言政策，下一步先独立审核 G0A + G0A-L，再进入 G0B 规划。
+MVP-2 Implementation Plan 仍为 `NOT_STARTED pending spec review`。
 
 尚未实现（MVP-1 明确延后，不宣传为已有能力）：
 
@@ -126,10 +126,10 @@ docs/records/MVP_1/MVP_1_POST_RELEASE_PATCH.md（v0.1.1 docs patch release）
 
 ## 每次新 Session 首先读取
 
-1. `AGENTS.md`（canonical）/ `CLAUDE.md`（Claude Code compatibility）
+1. `AGENTS.md`（规范入口）/ `CLAUDE.md`（Claude Code 兼容入口）
 2. `PROGRESS.md`
 3. `docs/README.md`
-4. 当前 Spec / Plan（存在时）/ Previous Stage Record（`docs/records/`）
+4. 当前 Spec / Plan（存在时）/ 上一阶段记录（`docs/records/`）
 
 ## 本地 Claude Code 配置
 

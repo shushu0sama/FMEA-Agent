@@ -1,7 +1,7 @@
 # MVP-1 Claude Code 分 Session 提示词
 
-> **Lifecycle: HISTORICAL**
-> **Historical Planning Artifact**（2026-09-04 标记）
+> **生命周期：HISTORICAL**
+> **历史规划材料**（2026-09-04 标记）
 >
 > 这是 MVP-1 开始前的 Session 规划。
 > 真实执行历史以 Git + `docs/records/MVP_1/` 为准。
@@ -10,7 +10,7 @@
 > 本文件保留原规划内容，不用于判断项目当前状态。
 
 
-## Session 0 — Read-only planning
+## Session 0 — 只读规划
 
 ```text
 这是新的 FMEA Agent MVP-1 Session。
@@ -41,7 +41,7 @@ D:\code\SysML 2026.9.3\FMEA-Agent-SysML-Workspace\04_parsers_and_runtimes\OpenSy
 不要安装依赖，不要编码。
 ```
 
-## Session 1 — Feasibility Spike
+## Session 1 — 可行性探索
 
 ```text
 开始 MVP-1A OpenSysML Feasibility Spike。
@@ -74,7 +74,7 @@ docs/research/OPENSYSML_SPIKE_REPORT.md
 不要开始 production Adapter。
 ```
 
-## Session 2 — Snapshot Contracts
+## Session 2 — 快照契约
 
 ```text
 新的 MVP-1B Session。
@@ -90,7 +90,7 @@ docs/research/OPENSYSML_SPIKE_REPORT.md
 不要开始 Adapter。
 ```
 
-## Session 3 — OpenSysML Adapter
+## Session 3 — OpenSysML 适配器
 
 ```text
 新的 MVP-1C Session。
@@ -110,7 +110,7 @@ contract tests
 禁止 Canonical mapping / workflow rewrite / KG/RAG/MCP。
 ```
 
-## Session 4 — Canonical Mapping
+## Session 4 — 规范模型映射
 
 ```text
 新的 MVP-1D Session。
@@ -130,7 +130,7 @@ all ActionDefinition == Function
 更新 Mapping Matrix。
 ```
 
-## Session 5 — E2E Integration
+## Session 5 — 端到端集成
 
 ```text
 新的 MVP-1E Session。
@@ -149,7 +149,7 @@ Failure Knowledge / Risk / Optimization 保持原状。
 完成后跑全量回归。
 ```
 
-## Session 6 — Release Review
+## Session 6 — 发布审核
 
 ```text
 不要新增功能。

@@ -1,11 +1,11 @@
-# MVP-1F — Benchmark & Release Closeout Record
+# MVP-1F — 基准测试与发布收尾记录
 
-Status: ACCEPTED
-Date: 2026-09-04
+状态： ACCEPTED
+日期： 2026-09-04
 
-## 1. Objective
+## 1. 目标
 
-1F 是 validation + release readiness，不是 new feature stage：
+1F 是验证与发布就绪阶段，不是新功能阶段：
 
 ```text
 B0 project-owned exact benchmark
@@ -14,9 +14,9 @@ Benchmark Report + Release Gate 全项验证
 MVP-1 Release Record + 文档治理（Part A）
 ```
 
-## 2. Scope
+## 2. 范围
 
-In Scope:
+范围内：
 
 - B0：复用 `typed_inside_probe.sysml`（满足 Benchmark Spec 的 minimal
   fixture 要求），人工撰写 gold expected data
@@ -27,7 +27,7 @@ In Scope:
 - 文档治理基线（见 §4 与独立 commit）
 - MVP-1 Release Record
 
-Out of Scope:
+范围外：
 
 - 新 feature / 新 Mapping 语义
 - 修改 gold expected 迎合 bug
@@ -37,25 +37,25 @@ Out of Scope:
 
 Branch: `feature/mvp1-real-system-facts`
 
-Start Commit: `30aee28`（1E closeout fix，1F 基线）
+起始 Commit： `30aee28`（1E closeout fix，1F 基线）
 
-Implementation Commit(s):
+实现 Commit：
 
 - `389f216` docs: establish development records and session governance
   （Part A 治理）
 - `4f73d22` test/docs: complete MVP-1F benchmark and release candidate
   （Part B：benchmark + release records）
 - `5da0f11` docs: add per-item release gate evidence to MVP-1F record
-  （review evidence amendment）
+  （审查证据补充）
 - `d2c1767` docs: clarify release gate semantics, status vocabulary and
-  commit anchors（docs-only consistency amendment）
+  commit anchors（仅文档的一致性补充）
 - `369f09d` docs: fix SysML provenance and third-party license notices
-  （release-hygiene closeout，见 §9 Closeout Fixes）
+  （发布规范收尾，见 §9 收尾修正）
 
-Final Commit: `369f09d`（Independent Release Review Baseline；最终发布
+最终 Commit： `369f09d`（独立发布审查基线；最终发布
 锚点为 review 通过后的 merge commit 或 release tag）
 
-## 4. Delivered
+## 4. 交付内容
 
 - `tests/test_mvp1_benchmark.py` — 11 benchmark tests（B0 ×4 + B1 ×7）
 - `tests/fixtures/sysml/models/parts_example_2_official.sysml` —
@@ -70,7 +70,7 @@ Final Commit: `369f09d`（Independent Release Review Baseline；最终发布
 - README.md 更新（MVP-1 release candidate 状态）
 - `docs/research/SYSML_SOURCE_CATALOG.md` + fixtures README 溯源记录
 
-## 5. Key Decisions
+## 5. 关键决策
 
 - **B0 复用而非新建**：`typed_inside_probe.sysml` 已满足 Benchmark Spec
   的 minimal-fixture 要求（System/Component/Function/parent/allocation/
@@ -86,7 +86,7 @@ Final Commit: `369f09d`（Independent Release Review Baseline；最终发布
 - **F1 hash 处理**：benchmark 不断言 `model_hash` 值（load-context
   fingerprint）；B1 用 SHA256 固化外部文件字节不变性。
 
-## 6. Evidence
+## 6. 证据
 
 - Benchmark 报告：`docs/evaluation/MVP_1_BENCHMARK_REPORT.md`
 - Benchmark 测试：`tests/test_mvp1_benchmark.py`
@@ -95,7 +95,7 @@ Final Commit: `369f09d`（Independent Release Review Baseline；最终发布
   gold 注释）
 - 契约/回归：1C/1D/1E tests（不变，作为回归基线）
 
-## 7. Verification
+## 7. 验证
 
 ```text
 uv lock --check                 PASS（LOCAL）
@@ -113,13 +113,13 @@ git diff --check                PASS
 
 CI：GitHub Actions NOT CONFIGURED。全部为 LOCAL evidence。
 
-## 8. Release Gate
+## 8. 发布门禁
 
 Gate 语义拆为两层：Implementation / Verification Gate 由实现方在本阶段
 完成并逐项验证；Independent Release Review 是尚未完成的独立审核，
 不因实现验证通过而自动满足。
 
-### 8.1 Implementation / Verification Gate（LOCAL evidence，PASS 16/16）
+### 8.1 实现 / 验证门禁（LOCAL 证据，PASS 16/16）
 
 ```text
 [x] MVP-0 regression PASS            — demo run + 历史 tests 全通过
@@ -141,7 +141,7 @@ Gate 语义拆为两层：Implementation / Verification Gate 由实现方在本�
 [x] MVP-1 Stage Records complete     — docs/records/（MVP_0 + 1A–1F + Release）
 ```
 
-### 8.2 Independent Release Review — PASS
+### 8.2 独立发布审查 — PASS
 
 ```text
 [x] EXTERNAL_REVIEW — ACCEPTED
@@ -179,22 +179,22 @@ tag v0.1.0
 merge master / release tag 作为真正不可变的发布锚点，尚未执行；
 未通过：CHANGES_REQUIRED，回到实现方修改（本次未发生）。
 
-## 9. Problems Found During Development
+## 9. 开发中发现的问题
 
 - README.md 漂移（发现并修复）：README 仍称 "MVP-1 尚未开始"，与
   Git/tests 实际状态（1A–1E 完成）矛盾 —— 按 Implementation Truth 原则
   记录 discrepancy 并在 1F release documentation 中更新 README。
 - 无 production bug 暴露；无 benchmark RED。
 
-### Closeout Fixes（Independent Release Review — release-hygiene closeout）
+### 收尾修正（独立发布审查 — 发布规范收尾）
 
-Independent Release Review found:
+独立发布审查发现：
 
-- incorrect upstream commit transcription in fixture/source catalog
-- stale fixture-count wording
-- third-party EPL-2.0 license packaging hygiene
+- 夹具/来源目录中的上游 commit 转写错误
+- 夹具数量表述过时
+- 第三方 EPL-2.0 许可证打包规范问题
 
-Resolved in release-hygiene closeout：
+在发布规范收尾中解决：
 
 - 3 处 upstream commit 转写错误（缺位）→ 统一修正为正确
   `29a3d2acdd496…`（`tests/fixtures/sysml/README.md` ×2、
@@ -208,20 +208,20 @@ Resolved in release-hygiene closeout：
   两个 fixture 路径 / license text path）。
   不将 FMEA-Agent 项目自身声明为 EPL-2.0。
 
-## 10. Known Limitations
+## 10. 已知限制
 
-见 Benchmark Report §Known Limitations：
+见基准测试报告的已知限制部分：
 
 - 单文件子集（C1）；F1 hash 语义；`component_type=None`；
   B1 Function metrics N/A。
 
-## 11. Deferred
+## 11. 延后事项
 
 - B2 Vehicle Example（定义/用法区分、更大模型）—— 延后。
 - GitHub Actions 最小 CI —— 建议在 Independent Release Review 中评估
   （本任务不擅自新增 CI）。
 
-## 12. Files / Contracts Affected
+## 12. 涉及文件 / 契约
 
 ```text
 tests/test_mvp1_benchmark.py（新增）
@@ -238,12 +238,12 @@ CLAUDE.md / AGENTS.md（治理章节）
 README.md
 ```
 
-## 13. Final Assessment
+## 13. 最终评估
 
 ACCEPTED（Independent Release Review @ `369f09d`；merge master / tag
 尚未执行，RELEASED 状态另行记录）
 
-## 14. Next Stage
+## 14. 下一阶段
 
 Release closeout（另开 Session）：
 

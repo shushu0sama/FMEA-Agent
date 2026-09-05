@@ -1,10 +1,10 @@
-# MVP-1 Benchmark Specification
+# MVP-1 基准规格说明
 
 MVP-1 只评测：
 
 > 真实 SysML → System Facts → Canonical System Model。
 
-## B0 — Project-owned Minimal Fixture
+## B0 — 项目自有最小 Fixture
 
 建议：
 
@@ -22,13 +22,13 @@ expected parent relations
 expected source identifiers
 ```
 
-## B1 — OMG Training Example
+## B1 — OMG 训练示例
 
-从本地 `SysML-v2-Release` 选择小型 Training example。
+从本地 `SysML-v2-Release` 选择小型训练示例。
 
 用途：外部官方语法兼容。
 
-## B2 — Vehicle Example
+## B2 — 车辆示例
 
 候选：
 
@@ -46,7 +46,7 @@ larger model
 function semantics
 ```
 
-## Metrics
+## 指标
 
 ```text
 Component Extraction Precision/Recall
@@ -56,9 +56,9 @@ SourceReference Completeness
 Unsupported Element Reporting
 ```
 
-小数据集优先 exact expected set。
+小数据集优先使用精确预期集合。
 
-## Contract Test
+## 契约测试
 
 至少验证：
 
@@ -72,11 +72,11 @@ ownership
 diagnostics
 ```
 
-## Regression Gate
+## 回归门禁
 
-MVP-0 全部 79 tests 继续通过。
+MVP-0 全部 79 个测试继续通过。
 
-Release Gate：
+发布门禁：
 
 ```text
 MVP-0 regression                 PASS

@@ -1,10 +1,10 @@
-# FMEA Agent Progress
+# FMEA Agent 当前进度
 
-> CURRENT PROJECT STATE — 不是完整历史。
+> 当前项目状态快照，不是完整历史。
 > 历史执行记录：`docs/records/`（Stage Closeout / Release Record）。
 > 治理规则：`docs/governance/DEVELOPMENT_WORKFLOW_AND_RECORDS_POLICY.md`。
 
-## Project
+## 项目
 
 ```text
 Architecture baseline: v0.1
@@ -21,7 +21,7 @@ Post-Release Patch:    DONE（Independent Patch Review = ACCEPTED；
                        annotated tag v0.1.1）
 ```
 
-## Overall Roadmap
+## 总体路线图
 
 ```text
 MVP-0 COMPLETE（v0.0.1 tagged）
@@ -37,15 +37,15 @@ MVP-8 MCP
 MVP-9 Dynamic FMEA
 ```
 
-## Current MVP — MVP-1 Real System Facts
+## 当前 MVP — MVP-1 Real System Facts
 
-Goal:
+目标：
 
 > 用真实 SysML v2 File Mode 替换 MVP-0 的 synthetic system fixture，
 > 同时保持 MVP-0 的 Failure Knowledge、Risk、Optimization 和上层
 > Workflow 尽量不变。
 
-Pipeline（已实现）:
+链路（已实现）：
 
 ```text
 真实 .sysml
@@ -56,7 +56,7 @@ Pipeline（已实现）:
 → 现有 LangGraph Workflow
 ```
 
-In Scope:
+范围内：
 
 ```text
 System / Component / Function / SourceReference
@@ -65,7 +65,7 @@ minimal mapping + notices
 minimal benchmark（1F）
 ```
 
-Out of Scope（MVP-1 明确延后）:
+范围外（MVP-1 明确延后）：
 
 ```text
 SysML Repository API
@@ -78,7 +78,7 @@ Failure Propagation
 Dynamic FMEA
 ```
 
-## Stage Status
+## Stage 状态
 
 ```text
 1A Feasibility Spike          — COMPLETE（CONDITIONAL_GO）
@@ -106,9 +106,9 @@ Post-Release Patch            — DONE（2026-09-04，annotated tag v0.1.1；
 - Benchmark：`docs/evaluation/MVP_1_BENCHMARK_SPEC.md`
 - ADR-008：`docs/adr/ADR-008-opensysml-file-mode-first.md`
 
-## Current Blockers
+## 当前阻塞项
 
-No blocker。MVP-1 = RELEASED。Release 流程已全部完成：
+无阻塞项。MVP-1 = RELEASED，发布流程已全部完成：
 
 ```text
 merge master（2871b23c，--no-ff）
@@ -121,7 +121,7 @@ current-state drift）→ v0.1.1 docs-only patch → Independent Patch
 Review ACCEPTED → annotated tag v0.1.1（current stable patch）
 ```
 
-MVP-2 implementation blocker:
+MVP-2 实现的前置阻塞项：
 
 ```text
 Implementation Plan NOT_STARTED pending independent review of
@@ -129,7 +129,7 @@ docs/specs/MVP_2_REAL_FAILURE_KNOWLEDGE.md.
 Production implementation NOT_STARTED.
 ```
 
-## Current Known Limitations
+## 当前已知限制
 
 - 单文件子集；用户文件 import 不支持（C1，unresolved import 显式诊断）。
 - `Model.hash` = load-context fingerprint（F1），非跨路径/跨版本稳定 identity。
@@ -138,19 +138,19 @@ Production implementation NOT_STARTED.
 - system-level Function 暂不被 workflow 分析目标使用。
 - partial Snapshot 的 workflow 接入行为未单独覆盖。
 
-## Current Open Research Questions
+## 当前开放研究问题
 
-1. Exact canonical identity strategy across SysML commits.
-2. Final SysML-v2 → FMEA semantic mapping rules.
-3. Ground-truth construction process for aerospace examples.
-4. Evidence-confidence formulation.
-5. Licensed/authorized source for AIAG-VDA risk tables and AP rules.
-6. Best KG/vector fusion strategy after MVP-1/2.
-7. Propagation semantics across flow, interface, state and function.
-8. MVP-2 entity-resolution strategy for the existing name-only Neo4j graph.
-9. Credential/configuration policy for future read-only Neo4j adapter.
+1. 跨 SysML commit 的精确规范标识策略。
+2. 最终的 SysML-v2 → FMEA 语义映射规则。
+3. 航空航天示例的 Ground Truth 构建流程。
+4. 证据置信度的定义方式。
+5. AIAG-VDA 风险表与 AP 规则的许可或授权来源。
+6. MVP-1/2 之后的最优 KG/向量融合策略。
+7. 流、接口、状态与功能之间的传播语义。
+8. MVP-2 针对现有仅有名称的 Neo4j 图的实体解析策略。
+9. 未来只读 Neo4j 适配器的凭证与配置政策。
 
-## Current Acceptance Baseline
+## 当前验收基线
 
 ```text
 pytest:          223 passed（LOCAL，Windows；212 基线 + 11 benchmark）
@@ -164,13 +164,24 @@ master verification:
 CI:              GitHub Actions NOT CONFIGURED
 ```
 
-## Next Action
+## 当前补充治理状态
 
-MVP-1 = RELEASED（v0.1.0 = original capability release；
-v0.1.1 = current stable docs-only patch）。Post-Release Patch =
-DONE（Independent Patch Review ACCEPTED；annotated tag v0.1.1）。
+- G0A 基线：`4d38489f92c41ffa906c6d0b79a4fd34d6ecb422`，完整保留。
+- G0A-L：`READY_FOR_REVIEW`，文档中文化与语言治理；工作范围仅限项目自有 Markdown。
+  独立文档复核的两项措辞问题已修正；联合 G0A + G0A-L 审核待进行。
+- G0A-L 状态与本次验证证据：`docs/records/G0A_L_DOCUMENTATION_LOCALIZATION.md`。
+- 文档默认语言：zh-CN，保留英文技术标识符及原始代码块。
+- MVP-2 production implementation：`NOT_STARTED`。
+- MVP-2 Implementation Plan：`NOT_STARTED pending spec review`；本次不创建 Plan。
 
-后续 Session：
+## 下一步
+
+MVP-1 = RELEASED（v0.1.0 = 原始能力发布；
+v0.1.1 = 当前稳定文档补丁）。发布后补丁状态为
+DONE（独立补丁审核 ACCEPTED；附注 tag 为 v0.1.1）。
+
+后续会话先执行 **Independent Review of G0A + G0A-L**；用户审查当前 Spec 后，
+进入 **G0B MVP-2 Implementation Planning**。原规划顺序保留如下：
 
 ```text
 1. Independent review of Pre-MVP-2 governance/spec baseline:
@@ -184,7 +195,7 @@ DONE（Independent Patch Review ACCEPTED；annotated tag v0.1.1）。
 
 Patch 详情：`docs/records/MVP_1/MVP_1_POST_RELEASE_PATCH.md`。
 
-## Historical Records
+## 历史记录
 
 ```text
 docs/records/MVP_0/MVP_0_CLOSEOUT.md

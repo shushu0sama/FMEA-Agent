@@ -1,9 +1,9 @@
-# MVP-1E — Workflow Integration Closeout Record
+# MVP-1E — 工作流集成收尾记录
 
-Status: ACCEPTED
-Date: 2026-09-04（回填自 Git history + PROGRESS.md）
+状态： ACCEPTED
+日期： 2026-09-04（回填自 Git history + PROGRESS.md）
 
-## 1. Objective
+## 1. 目标
 
 实现 OpenSysML/canonical-backed `SystemModelRepository`，接入现有
 LangGraph workflow：
@@ -14,16 +14,16 @@ LangGraph workflow：
 
 不改变 Failure Knowledge / Risk / Optimization。
 
-## 2. Scope
+## 2. 范围
 
-In Scope:
+范围内：
 
 - `CanonicalSystemModelRepository`（实现 `SystemModelRepository`
   Protocol 四方法，不重新解析 SysML）
 - Function scope & allocation policy v1.1（1E-0 Gate 触发）
 - 真实 `.sysml` → workflow E2E
 
-Out of Scope:
+范围外：
 
 - Failure Knowledge / Risk / Optimization 改动
 - workflow 结构修改
@@ -33,15 +33,15 @@ Out of Scope:
 
 Branch: `feature/mvp1-real-system-facts`
 
-Start Commit: `ce37780`（1D）
+起始 Commit： `ce37780`（1D）
 
-Implementation Commit(s): `657a892` feat: add MVP-1E workflow integration via canonical-backed repository
+实现 Commit： `657a892` feat: add MVP-1E workflow integration via canonical-backed repository
 
-Closeout Commit(s): `30aee28` fix: prevent dangling function allocation and component parent ids
+收尾 Commit： `30aee28` fix: prevent dangling function allocation and component parent ids
 
-Final Commit: `30aee28`
+最终 Commit： `30aee28`
 
-## 4. Delivered
+## 4. 交付内容
 
 - `src/fmea_agent/adapters/inmemory/system_model.py` —
   `CanonicalSystemModelRepository`
@@ -59,7 +59,7 @@ Final Commit: `30aee28`
   `Function.allocated_to` target 必须解析到 `System.id` 或已存在的
   `Component.id`。3 个 regression tests。
 
-## 5. Key Decisions
+## 5. 关键决策
 
 - **1E-0 Integration Gate（新增 Gate，记录演化）**：原计划未含此 Gate。
   证据触发：1D 的 `allocated_to=[]` 无法满足
@@ -71,7 +71,7 @@ Final Commit: `30aee28`
 - system-level Function（`allocated_to=[System.id]`）现 workflow 只按
   component 查函数，系统级函数暂不被任何分析目标使用（未改 workflow）。
 
-## 6. Evidence
+## 6. 证据
 
 - 映射契约：`docs/architecture/SYSML_TO_CANONICAL_MAPPING.md`
   （Function Scope & Allocation Policy v1.1）
@@ -80,7 +80,7 @@ Final Commit: `30aee28`
 - 测试：`tests/test_canonical_repository.py`、
   `tests/test_canonical_mapping.py`（1E 增补）
 
-## 7. Verification
+## 7. 验证
 
 ```text
 1E-0 Gate（allocated_to 缺口 RED 固化）      PASS
@@ -100,7 +100,7 @@ ruff / mypy（strict）                       PASS（LOCAL）
 
 注：212 为 closeout fix 后的最终基线（当前 verify.py 输出 212 passed）。
 
-## 8. Problems Found During Development
+## 8. 开发中发现的问题
 
 - 1E-0 Gate：`allocated_to=[]` 契约缺口（§5）。
 - Closeout fix：dangling allocation / dangling parent —— unnamed 祖先
@@ -108,18 +108,18 @@ ruff / mypy（strict）                       PASS（LOCAL）
   悬空 `component-N` id；深层链条使 Component.parent_id 悬空并触发
   validator 崩溃。3 个 regression tests 固化。
 
-## 9. Known Limitations
+## 9. 已知限制
 
 - `Component.component_type` 保持 `None`（无证据规则）。
 - system-level Function 暂不被 workflow 分析目标使用。
 - partial Snapshot 的 workflow 接入行为未单独覆盖。
 
-## 10. Deferred
+## 10. 延后事项
 
 - Requirement / Port / Interface / Connection / Flow / State / Allocation。
 - 多系统模型 workflow 接入。
 
-## 11. Files / Contracts Affected
+## 11. 涉及文件 / 契约
 
 ```text
 src/fmea_agent/adapters/inmemory/system_model.py
@@ -132,11 +132,11 @@ tests/fixtures/sysml/models/typed_inside_probe.sysml
 docs/architecture/SYSML_TO_CANONICAL_MAPPING.md
 ```
 
-## 12. Final Assessment
+## 12. 最终评估
 
 ACCEPTED（含 closeout fix `30aee28`）
 
-## 13. Next Stage
+## 13. 下一阶段
 
 MVP-1F Benchmark & Release。
 进入条件：1E 基线稳定（212 passed）；B0/B1 benchmark 与 Release Gate

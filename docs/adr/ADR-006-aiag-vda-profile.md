@@ -1,20 +1,20 @@
-# ADR-006: AIAG-VDA FMEA as the Initial Method Profile
+# ADR-006: AIAG-VDA FMEA 作为初始方法配置
 
 **Status:** ACCEPTED  
-**Baseline:** Bootstrap v0.1
+**基线:** Bootstrap v0.1
 
-## Context
+## 背景
 
-The project needs a concrete FMEA process baseline to stabilize schemas and workflow semantics.
+项目需要具体的 FMEA 过程基线，以稳定 schema 和工作流语义。
 
-## Decision
+## 决策
 
-Use AIAG-VDA FMEA as the initial profile and shape the workflow around its seven-step process. Do not reproduce proprietary rating/AP tables. Implement risk rules only from authorized sources.
+使用 AIAG-VDA FMEA 作为初始配置，并围绕其七步过程构建工作流形态。不复制专有评分 / AP 表。仅从授权来源实现风险规则。
 
-## Consequences
+## 影响
 
-The first domain model becomes more concrete. Risk evaluation must remain strategy-based so future FMEA/FMECA profiles can be added.
+首个领域模型变得更具体。风险评估必须保持基于策略，以便未来添加 FMEA/FMECA 配置。
 
-## Revisit When
+## 重新评估条件
 
-Revisit only when experiments, standards, compatibility constraints or engineering requirements demonstrate that the current decision materially blocks project goals.
+仅当实验、标准、兼容性约束或工程需求表明当前决策实质性阻碍项目目标时，才重新评估。

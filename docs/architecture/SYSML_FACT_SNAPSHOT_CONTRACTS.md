@@ -1,6 +1,6 @@
-# SysML Fact Snapshot Contracts (MVP-1B)
+# SysML 事实快照契约（MVP-1B）
 
-> 规范性契约文档 v1.1 — APPROVED（2026-09-04，v1.0 Revision 2 + 澄清 A–D；v1.1 修正 `model_hash` 语义为 load-context fingerprint（F1）并登记 1C Adapter Profile）
+> 规范性契约文档 v1.1 — APPROVED（2026-09-04，v1.0 修订 2 + 澄清 A–D；v1.1 修正 `model_hash` 语义为 load-context fingerprint（F1）并登记 1C 适配器配置）
 > 代码 schema 为准：`src/fmea_agent/adapters/sysml/contracts.py`
 
 ## 1. 目的与定位
@@ -18,27 +18,27 @@
 
 ## 2. 设计原则
 
-1. Source-native facts, minimal normalization；
-2. Pure project-owned data（stdlib + pydantic v2 即可）；
-3. Identity honesty：source identity 语义为 parser-neutral，OpenSysML-specific 事实归 adapter profile；
-4. Facts-absence expressible：缺失事实用 `None` 表达，不推断；
-5. Diagnostics first-class：partial Snapshot 必须能通过 diagnostics 表达数据不完整的原因；
-6. Extensibility without domain churn：metatype / severity / relationship type 为自由字符串；
-7. Open-world fact envelope：closed-world 端点校验不下沉到 Snapshot；
-8. Parser-neutral contract：extraction scope / traversal / 排序属 adapter policy；
-9. Strictly JSON-safe：字段类型即 JSON 类型（pydantic `JsonValue`）。
+1. 保留来源原生事实，最小规范化；
+2. 纯项目自有数据（stdlib + pydantic v2 即可）；
+3. 如实表达身份：来源身份语义保持解析器中立，OpenSysML 专有事实归适配器配置；
+4. 能表达事实缺失：缺失事实用 `None` 表达，不推断；
+5. 诊断是一等数据：部分快照必须能通过诊断表达数据不完整的原因；
+6. 扩展无需频繁修改领域层：metatype / severity / relationship type 为自由字符串；
+7. 开放世界事实封装：封闭世界端点校验不下沉到 Snapshot；
+8. 解析器中立契约：提取范围 / 遍历 / 排序属适配器策略；
+9. 严格满足 JSON 安全要求：字段类型即 JSON 类型（pydantic `JsonValue`）。
 
 ## 3. 契约模型
 
 全部为 pydantic v2 `BaseModel`，`ConfigDict(extra="forbid")` —— 未知字段被拒绝，防止 runtime-specific data 穿透契约。
 
-### 3.1 SysMLSource — 来源 provenance
+### 3.1 SysMLSource — 来源追踪
 
 | 字段 | 类型 | 必填 | 语义 |
 |---|---|---|---|
 | `source_type` | `str`（非空） | 必填 | 来源形态。MVP-1 唯一值 `"sysml_file"`；其他值（如 `"sysml_repository"`）延后 |
 | `source_path` | `str \| None` | 条件必填 | 文件路径（原样保留）。`source_type=="sysml_file"` 时必填（V6） |
-| `source_version` | `str \| None` | 可选 | source/repository revision identity（如 repo commit）。File Mode 无可靠版本时填 `None`，不得从文件内容自动推断 |
+| `source_version` | `str \| None` | 可选 | 来源 / 仓库修订身份（如仓库 commit）。File Mode 无可靠版本时填 `None`，不得从文件内容自动推断 |
 | `model_hash` | `str \| None` | 可选 | parser 对本次加载提供的 load-context fingerprint。OpenSysML 1C 用 `Model.hash` **原样**填充（F1：不是纯内容哈希；见 §4） |
 | `parser` | `str`（非空） | 必填 | 底层解析引擎名（如 `"opensysml"`） |
 | `parser_version` | `str \| None` | 可选 | parser client 版本（如 `"0.4.0"`） |
@@ -79,7 +79,7 @@
 
 ### 3.4 SysMLDiagnostic — 诊断
 
-**Project-owned normalized diagnostic envelope**（不定义为"只能来自 OpenSysML parser"）：
+**项目自有的规范化诊断封装**（不定义为"只能来自 OpenSysML parser"）：
 
 | 字段 | 类型 | 必填 | 语义 |
 |---|---|---|---|
@@ -101,20 +101,20 @@
 
 | 字段 | 类型 | 必填 | 语义 |
 |---|---|---|---|
-| `source` | `SysMLSource` | 必填 | 来源 provenance |
-| `elements` | `list[SysMLElementFact]` | 可选（默认 `[]`） | Adapter 按 documented extraction scope 产出的 source element facts |
+| `source` | `SysMLSource` | 必填 | 来源追踪 |
+| `elements` | `list[SysMLElementFact]` | 可选（默认 `[]`） | 适配器按已文档化提取范围产出的来源元素事实 |
 | `relationships` | `list[SysMLRelationshipFact]` | 可选（默认 `[]`） | 显式关系事实 |
 | `diagnostics` | `list[SysMLDiagnostic]` | 可选（默认 `[]`） | 全部诊断；永不静默丢弃 |
 | `load_status` | `Literal["ok", "partial"]` | 必填 | `"ok"` = 无 error 诊断；`"partial"` = Snapshot 已产生但事实可能不完整（parse error 或其他显式 incomplete-extraction 原因）。仅强制单向蕴含（V5） |
 
-## 4. Identity Semantics（parser-neutral）
+## 4. 身份语义（解析器中立）
 
 - `source_id` = source-native element identity（非空字符串，snapshot 内唯一）。契约**不验证、不解析其格式**（不要求 FQN 形状）。
 - `owner_id` = owner element 的 source-native identity；由 adapter 经真实 traversal/parent context 建立；契约不定义字符串推导算法。
 - relationship `target_id` = target element 的 source-native identity；open-world。
 - Snapshot 不得生成 Canonical ID；1D Mapping 自铸 canonical id，并把 source identity 保留至 `SourceReference.source_element_id`。
 
-**当前 OpenSysML evidence（1C Adapter Profile，非永久契约语义）**：
+**当前 OpenSysML 证据（1C 适配器配置，非永久契约语义）**：
 
 - OpenSysML `Symbol.id` 为 name-derived FQN（如 `PerformProbe::hydraulicPump::motor`）— CONFIRMED_RUNTIME；
 - rename/move 改变 id（官方文档："A rename is a delete plus a create"）— CONFIRMED_SOURCE；
@@ -126,21 +126,21 @@
   - 不得用于判断工程实体跨版本 identity。
   - Adapter 义务：定义 documented deterministic path normalization / load policy（1C 采用 `expanduser().resolve(strict=True)`，同一绝对路径字符串用于 OpenSysML load 与 `source_path`）；`model_hash` 一律原样记录 `Model.hash` 返回值，禁止自行重实现 hash 算法以求"稳定 hash"。
 
-## 5. Relationship Semantics
+## 5. 关系语义
 
 - `type` 自由字符串；MVP-1 观察到 `"typing"`。Mapping 不认识的 kind 按 unsupported 处理。
 - `source_id` 必须在本 Snapshot 内可解析；`target_id` open-world（external/imported identity 允许）。**closed-world endpoint validation 属于 Canonical Model 层，不下沉到 Snapshot**。
 - containment 由 `owner_id` 承载，不物化为 relationship。
 - typing relationship 与元素 `type_facts.resolved_id` 并存时不得矛盾。
 
-## 6. Serialization
+## 6. 序列化
 
 - pydantic v2；`model_dump_json()` / `model_validate_json()` 往返语义相等（`==`）。
 - `properties` / `span` 以 `JsonValue` 类型化，Schema 层拒绝任意 runtime object；无自定义 encoder/decoder。
 - 不承诺 byte-identical dump（排序属 adapter policy；canonical deterministic serialization 延后）。
 - 无新依赖（`JsonValue` 为 pydantic v2 自带）。
 
-## 7. Validation Rules
+## 7. 校验规则
 
 | 编号 | 规则 | 强制方式 |
 |---|---|---|
@@ -155,10 +155,10 @@
 | V9 | 所有模型 `extra="forbid"`——未知字段 → ValidationError | 类型系统 + 测试 |
 | V10 | 必填字符串非空（`min_length=1`）：source_type/parser/adapter、source_id/metatype、type/source_id/target_id、severity/message | 类型系统 + 测试 |
 
-## 8. OpenSysML Adapter Profile（1C 已实现，2026-09-04）
+## 8. OpenSysML 适配器配置（1C 已实现，2026-09-04）
 
-以下属 MVP-1C `OpenSysMLFileAdapter` extraction policy（实现见
-`src/fmea_agent/adapters/sysml/open_sysml_file.py`），**不属于本 parser-neutral 契约**：
+以下属 MVP-1C `OpenSysMLFileAdapter` 提取策略（实现见
+`src/fmea_agent/adapters/sysml/open_sysml_file.py`），**不属于本解析器中立契约**：
 
 - dependency pin：`opensysml==0.4.0`（PyPI，精确 pin）+ `sysml-grpc v0.4.3` windows-amd64（SHA-256 见 Spike 报告与 Dependency Inventory）；
 - 单文件子集：用户文件 import 不支持，unresolved import 产出 error 诊断 + `load_status="partial"`；
@@ -174,14 +174,14 @@
 
 ## 9. C1–C4 覆盖
 
-| Condition | 契约落实点 |
+| 条件 | 契约落实点 |
 |---|---|
-| C1 single-file subset | unresolved import ⇒ error 诊断 + `load_status="partial"` 显式表达；adapter 禁止静默降级（Diagnostic Semantics） |
-| C2 dependency pin | `parser_version` + `runtime_version` 独立字段（1C contract test 断言）；`model_hash` 与 `source_version` 语义分离 |
+| C1 单文件子集 | unresolved import ⇒ error 诊断 + `load_status="partial"` 显式表达；adapter 禁止静默降级（诊断语义） |
+| C2 依赖版本固定 | `parser_version` + `runtime_version` 独立字段（1C contract test 断言）；`model_hash` 与 `source_version` 语义分离 |
 | C3 identity 语义 | `source_id` 为 source-native identity；OpenSysML rename⇒新 identity 为 adapter profile 证据；Snapshot 不铸 Canonical ID |
 | C4 performed action | `type_facts` 可选 + absence 语义（absence ≠ 无类型）；禁止推断；Mapping 按 UNKNOWN/NEEDS_RESEARCH |
 
-## 10. Out of Scope
+## 10. 范围外
 
 - Canonical Mapping（1D）；
 - Repository API / 多文件 import；

@@ -1,16 +1,14 @@
-# Neo4j Failure Knowledge Baseline
+# Neo4j 故障知识基线
 
-Status: REFERENCE
+状态：REFERENCE
 
-## 1. Purpose
+## 1. 目的
 
-This document records the existing Legacy Failure Knowledge Graph baseline for
-MVP-2 planning. It is research / baseline evidence, not production adapter
-implementation.
+本文记录用于 MVP-2 规划的现有遗留故障知识图谱（Legacy Failure Knowledge Graph）基线。它属于研究 / 基线证据，不是生产适配器实现。
 
-MVP-2 must treat the existing Neo4j graph as read-only.
+MVP-2 必须以只读方式使用现有 Neo4j 图谱。
 
-## 2. Database Baseline
+## 2. 数据库基线
 
 ```text
 Neo4j version: 5.26.0
@@ -18,11 +16,11 @@ Graph role:    Legacy Failure Knowledge Graph
 MVP-2 role:    read-only retrieval source
 ```
 
-MVP-2 does not rebuild this database.
+MVP-2 不重建此数据库。
 
-## 3. Node Labels and Counts
+## 3. 节点标签与数量
 
-| Label | Count |
+| 标签 | 数量 |
 |---|---:|
 | 故障起因 | 337 |
 | 故障模式 | 120 |
@@ -35,11 +33,11 @@ MVP-2 does not rebuild this database.
 | 关注要素层次 | 15 |
 | 上一高层次功能及要求 | 4 |
 
-Approximate domain node total: 878.
+领域节点总数约为 878。
 
-## 4. Relationship Schema and Counts
+## 4. 关系结构与数量
 
-| Source | Relationship | Target | Count |
+| 来源 | 关系 | 目标 | 数量 |
 |---|---|---|---:|
 | 故障模式 | 故障起因 | 故障起因 | 413 |
 | 故障模式 | 预防控制措施 | 预防控制措施 | 273 |
@@ -51,47 +49,43 @@ Approximate domain node total: 878.
 | 关注要素层次 | 功能 | 功能 | 23 |
 | 关注要素层次 | 上一高层次功能及要求 | 上一高层次功能及要求 | 4 |
 
-Approximate relationship total: 1365.
+关系总数约为 1365。
 
-## 5. Properties and Indexes
+## 5. 属性与索引
 
-Current main domain node properties are limited primarily to:
+当前主要领域节点的属性基本仅限于：
 
 ```text
 name
 ```
 
-Relationship properties:
+关系属性：
 
 ```text
 NONE
 ```
 
-Known infrastructure:
+已知基础设施：
 
-- name indexes for corresponding domain labels;
-- n10s infrastructure is present;
-- `n10s__Resource.uri` unique constraint is present.
+- 对应领域标签上存在 name 索引；
+- 存在 n10s 基础设施；
+- 存在 `n10s__Resource.uri` 唯一性约束。
 
-Detailed `SHOW INDEXES` / `SHOW CONSTRAINTS` output is not present in this
-repository baseline. Therefore exact index names, index type, owning label,
-properties, state and full constraint inventory are `UNKNOWN` here rather than
-invented.
+当前仓库基线中没有详细的 `SHOW INDEXES` / `SHOW CONSTRAINTS` 输出。因此，此处将准确的索引名称、索引类型、所属标签、属性、状态及完整约束清单标记为 `UNKNOWN`，不得编造。
 
-Minimum index / constraint evidence required before MVP-2 implementation:
+MVP-2 实现前至少需要以下索引 / 约束证据：
 
-| Category | Known baseline | Missing from repo evidence | MVP-2A capture requirement |
+| 类别 | 已知基线 | 仓库证据中缺失的内容 | MVP-2A 采集要求 |
 |---|---|---|---|
-| Domain node indexes | name indexes exist for corresponding domain labels | exact names, labels, properties, type and state | sanitized `SHOW INDEXES` table |
-| n10s constraint | `n10s__Resource.uri` unique constraint exists | exact name/type/state and any related constraints | sanitized `SHOW CONSTRAINTS` table |
-| Relationship indexes | none reported | whether any exist | sanitized `SHOW INDEXES` table |
+| 领域节点索引 | 对应领域标签上存在 name 索引 | 准确的名称、标签、属性、类型和状态 | 脱敏后的 `SHOW INDEXES` 表 |
+| n10s 约束 | 存在 `n10s__Resource.uri` 唯一性约束 | 准确的名称/类型/状态以及任何相关约束 | 脱敏后的 `SHOW CONSTRAINTS` 表 |
+| 关系索引 | 尚未报告 | 是否存在任何关系索引 | 脱敏后的 `SHOW INDEXES` 表 |
 
-The capture must be read-only and must not include connection strings,
-usernames, passwords or other secrets.
+采集必须只读，不得包含连接字符串、用户名、密码或其他秘密信息。
 
-## 6. Source Excel Relationship
+## 6. 与来源 Excel 的关系
 
-The legacy import path was:
+历史导入路径为：
 
 ```text
 Excel
@@ -100,10 +94,9 @@ Excel
 → Neo4j
 ```
 
-The graph therefore contains useful column-value co-occurrence structure, but it
-does not preserve complete source-row provenance as a first-class model.
+因此，图谱包含有用的列值共现结构，但未将完整的来源行追踪信息作为一等模型保留。
 
-Source workbook identity is not present in this repository baseline:
+当前仓库基线中没有来源工作簿的身份信息：
 
 ```text
 workbook path/name: UNKNOWN
@@ -113,36 +106,31 @@ source version:     UNKNOWN
 import timestamp:   UNKNOWN
 ```
 
-The user-provided legacy importer evidence indicates column-value nodes and
-row-created relationships for the labels and relationship types listed above.
-The original source row ID is not retained in the graph baseline.
+用户提供的历史导入器证据表明，上述标签和关系类型采用列值节点，并按行创建关系。图谱基线未保留原始来源行 ID。
 
-MVP-2A must capture sanitized source-file identity or explicitly confirm that it
-is unavailable before production adapter work begins.
+MVP-2A 必须在生产适配器工作开始前采集脱敏后的来源文件身份信息，或明确确认该信息不可获得。
 
-## 7. Legacy Import Script Behavior
+## 7. 历史导入脚本行为
 
-The historical importer is LEGACY / REFERENCE EVIDENCE only.
+历史导入器仅属于 LEGACY / REFERENCE EVIDENCE。
 
-Known behavior:
+已知行为：
 
-- uses `py2neo`;
-- connects to local Neo4j in the old implementation;
-- includes `graph.delete_all()` during initialization;
-- contains historical hard-coded credentials;
-- creates nodes mainly with `name`;
-- does not preserve provenance, source row or source version;
-- has a semantic mismatch in the `rel5` comment: the comment resembles
-  "Function to Failure Mode", while the actual relationship created is
-  `关注要素层次 → 故障模式`.
+- 使用 `py2neo`；
+- 旧实现连接本地 Neo4j；
+- 初始化时包含 `graph.delete_all()`；
+- 包含历史硬编码凭证（hard-coded credential）；
+- 主要使用 `name` 创建节点；
+- 不保留来源追踪、来源行或来源版本；
+- `rel5` 注释存在语义不一致：注释类似于
+  "Function to Failure Mode"，实际创建的关系却是
+  `关注要素层次 → 故障模式`。
 
-The importer should not be used as executable production code. If future work
-needs to inspect it, inspect it only as legacy reference evidence and redact all
-credential material from notes and commits.
+该导入器不应作为可执行生产代码使用。后续如需检查，只能将其作为历史参考证据，并从笔记和提交中删去所有凭证材料。
 
-## 8. Known Strengths
+## 8. 已知优势
 
-The graph is strongest for:
+图谱最擅长表达以下关系：
 
 ```text
 FailureMode
@@ -152,18 +140,17 @@ FailureMode
 → Detection Control
 ```
 
-These relationships are directly relevant to MVP-2 failure knowledge retrieval.
+这些关系与 MVP-2 故障知识检索直接相关。
 
-## 9. Known Limitations
+## 9. 已知限制
 
-The graph does not directly encode the complete original FMEA row-level analysis
-context:
+图谱未直接编码完整的原始 FMEA 行级分析上下文：
 
 ```text
 Component + Function + FailureMode
 ```
 
-Known missing generic direct relationships include:
+已知缺失的通用直接关系包括：
 
 ```text
 下一低分析层次 → 故障模式
@@ -171,46 +158,42 @@ Known missing generic direct relationships include:
 下一低层次功能 → 故障模式
 ```
 
-MVP-2 must address this through adapter contracts, context reconstruction and
-entity resolution. This limitation is not a reason to rebuild the database for
-MVP-2.
+MVP-2 必须通过适配器契约、上下文重建和实体解析处理这一限制。此限制不能作为在 MVP-2 中重建数据库的理由。
 
-## 10. Security Warning
+## 10. 安全警告
 
-Do not copy secrets from the legacy script into this repository.
+不得将历史脚本中的秘密信息复制到本仓库。
 
-Do not run the legacy importer against a production database.
+禁止针对生产数据库运行历史导入器（DO NOT RUN AGAINST PRODUCTION DATABASE）。
 
-The legacy script contains hard-coded credential material and `delete_all()`.
-It must not be added to the production path as-is.
+历史脚本包含硬编码凭证材料和 `delete_all()`。不得将其原样接入生产路径。
 
-## 11. MVP-2 Decision
+## 11. MVP-2 决策
 
-MVP-2 Neo4j integration is read-only.
+MVP-2 的 Neo4j 集成为只读。
 
-Out of scope for MVP-2:
+MVP-2 范围之外：
 
-- schema migration;
-- data rebuild;
-- production import script;
-- knowledge write-back;
-- Candidate to Approved write flow;
-- real LLM / RAG / Qdrant integration;
-- AIAG-VDA S/O/D/AP implementation.
+- schema 迁移；
+- 数据重建；
+- 生产导入脚本；
+- 知识写回；
+- Candidate 到 Approved 的写入流程；
+- 真实 LLM / RAG / Qdrant 集成；
+- AIAG-VDA S/O/D/AP 实现。
 
-## 12. Baseline Capture Method for MVP-2A
+## 12. MVP-2A 基线采集方法
 
-Before MVP-2 implementation starts, collect read-only baseline evidence from the
-existing database:
+在 MVP-2 实现开始前，从现有数据库只读采集基线证据：
 
-- Neo4j version;
-- label counts;
-- relationship schema and counts;
-- sampled node properties per label;
-- sampled relationship properties per type;
-- sanitized index inventory;
-- sanitized constraint inventory;
-- n10s component presence and version when available;
-- source workbook identity or explicit `UNKNOWN` status.
+- Neo4j 版本；
+- 标签数量；
+- 关系结构与数量；
+- 按标签抽样的节点属性；
+- 按类型抽样的关系属性；
+- 脱敏后的索引清单；
+- 脱敏后的约束清单；
+- n10s 组件是否存在，以及可获取的版本；
+- 来源工作簿身份信息，或明确的 `UNKNOWN` 状态。
 
-Do not run destructive importer code. Do not include secrets in the record.
+不得运行破坏性导入器代码。记录中不得包含秘密信息。

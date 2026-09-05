@@ -1,10 +1,10 @@
-# MVP-1 Specification — Real System Facts
+# MVP-1 规格说明 — 真实系统事实
 
-## 1. Goal
+## 1. 目标
 
 唯一主要目标：
 
-> 使用真实 SysML v2 File Mode 替换 MVP-0 的 synthetic system fixture，同时尽量不修改现有 FMEA Workflow。
+> 使用真实 SysML v2 File Mode 替换 MVP-0 的合成系统 fixture，同时尽量不修改现有 FMEA Workflow。
 
 目标链路：
 
@@ -18,7 +18,7 @@
 → Existing LangGraph Workflow
 ```
 
-## 2. Scope
+## 2. 范围
 
 第一版只要求：
 
@@ -29,7 +29,7 @@ Function
 SourceReference
 ```
 
-允许新增 parser-level contracts：
+允许新增解析器层契约：
 
 ```text
 SysMLSource
@@ -39,7 +39,7 @@ SysMLDiagnostic
 SysMLFactSnapshot
 ```
 
-## 3. Explicitly Deferred
+## 3. 明确延后
 
 ```text
 SysML Repository API
@@ -61,7 +61,7 @@ Failure Propagation
 Dynamic FMEA
 ```
 
-## 4. Reference Environment
+## 4. 参考环境
 
 ```text
 Windows 11
@@ -70,21 +70,21 @@ PowerShell
 uv
 ```
 
-Local research workspace:
+本地研究工作区：
 
 ```text
 D:\code\SysML 2026.9.3\FMEA-Agent-SysML-Workspace
 ```
 
-OpenSysML checkout:
+OpenSysML 检出目录：
 
 ```text
 D:\code\SysML 2026.9.3\FMEA-Agent-SysML-Workspace\04_parsers_and_runtimes\OpenSysML
 ```
 
-绝对路径只用于本地 Spike，不得进入 production code。
+绝对路径只用于本地 Spike，不得进入生产代码。
 
-## 5. SysMLFactSnapshot Boundary
+## 5. SysMLFactSnapshot 边界
 
 `SysMLFactSnapshot` 是 parser/API 事实快照，不是 `Canonical System Model`。
 
@@ -119,9 +119,9 @@ SysMLDiagnostic
 
 Snapshot 不得包含 FMEA 字段。
 
-## 6. OpenSysML Boundary
+## 6. OpenSysML 边界
 
-生产代码只依赖 OpenSysML public interface。
+生产代码只依赖 OpenSysML 公开接口。
 
 禁止把以下类型泄漏到 domain/application：
 
@@ -141,7 +141,7 @@ OpenSysMLFileAdapter
 → Canonical System Model
 ```
 
-## 7. Mapping
+## 7. 映射
 
 所有 SysML → Canonical 规则必须在 `SYSML_TO_CANONICAL_MAPPING.md` 登记：
 
@@ -159,7 +159,7 @@ DEFERRED
 PartDefinition == Component
 ```
 
-## 8. Error Handling
+## 8. 错误处理
 
 至少保留项目自有错误边界：
 
@@ -170,9 +170,9 @@ UnsupportedSysMLElement
 CanonicalMappingError
 ```
 
-OpenSysML exception 在 Adapter 内翻译。
+OpenSysML 异常在适配器内转换。
 
-## 9. Regression
+## 9. 回归
 
 MVP-0 的 79 个测试是回归基线。
 
@@ -185,7 +185,7 @@ Risk = NOT_EVALUATED
 Optimization = SKIPPED
 ```
 
-## 10. Acceptance Criteria
+## 10. 验收标准
 
 ```text
 [ ] Windows reference environment 可重复运行

@@ -1,20 +1,20 @@
-# ADR-004: Separate System Model and Failure Model
+# ADR-004: 分离 System Model 和 Failure Model
 
 **Status:** ACCEPTED  
-**Baseline:** Bootstrap v0.1
+**基线:** Bootstrap v0.1
 
-## Context
+## 背景
 
-Engineering structure/function facts and failure-analysis knowledge have different lifecycles, semantics and evidence requirements.
+工程结构 / 功能事实与失效分析知识具有不同的生命周期、语义和证据要求。
 
-## Decision
+## 决策
 
-Keep System Model and Failure Model logically separate and connect them through explicit mappings/references.
+保持 System Model 和 Failure Model 在逻辑上分离，通过显式映射 / 引用连接两者。
 
-## Consequences
+## 影响
 
-The schema remains clearer and multiple failure-analysis methods can evolve without corrupting engineering-model semantics.
+Schema 保持更清晰，多种失效分析方法可以演进而不破坏工程模型语义。
 
-## Revisit When
+## 重新评估条件
 
-Revisit only when experiments, standards, compatibility constraints or engineering requirements demonstrate that the current decision materially blocks project goals.
+仅当实验、标准、兼容性约束或工程需求表明当前决策实质性阻碍项目目标时，才重新评估。

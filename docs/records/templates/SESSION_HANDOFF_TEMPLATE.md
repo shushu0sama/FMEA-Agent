@@ -1,42 +1,42 @@
-# Session Handoff Template
+# 会话交接模板
 
-> Use only when one formal Stage must continue in a new session because context
-> is too long or the current session cannot safely continue. Do not use this as
-> a permanent current-state file after the Stage is closed.
+> 仅在上下文过长或当前会话无法安全继续，导致同一正式 Stage 必须换会话时使用。
+> Stage 关闭后，不将本文件作为永久的当前状态文件。
+> 正文使用简体中文；技术标识符、状态、路径、命令和输出保持原形。
 
 ## Stage
 
 MVP / Stage ID:
 
-Stage name:
+Stage 名称：
 
-Stage status:
+Stage 状态：
 
 ## Branch
 
-Repository:
+仓库：
 
 Branch:
 
-Expected HEAD:
+预期 HEAD：
 
-Working tree status:
+工作区状态：
 
 ## HEAD
 
-Latest confirmed commit:
+最近确认的 Commit：
 
-Relevant tags:
+相关 tag：
 
-## Completed
-
--
-
-## Current State
+## 已完成工作
 
 -
 
-## Tests
+## 当前状态
+
+-
+
+## 测试
 
 ```text
 pytest:
@@ -47,27 +47,27 @@ benchmark:
 git diff --check:
 ```
 
-Evidence classification:
+证据分类：
 
 ```text
 LOCAL / CI / EXTERNAL_REVIEW
 ```
 
-## Decisions
+## 决策
 
 -
 
-## Remaining Work
+## 剩余工作
 
 -
 
-## Known Problems
+## 已知问题
 
 -
 
-## Exact Next Action
+## 下一步具体动作
 
-Run:
+执行：
 
 ```text
 

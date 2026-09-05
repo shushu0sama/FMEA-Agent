@@ -1,7 +1,7 @@
-# Testing Rules
+# 测试规则
 
-- Add tests with every non-trivial behavior change.
-- External adapters require contract tests.
-- LLM behavior must have deterministic mock/fixture tests.
-- Do not claim completion without running relevant verification.
-- Preserve accepted benchmark cases as regression tests.
+- 每次非简单行为变更都应添加测试。
+- 外部适配器必须有契约测试。
+- LLM 行为必须有确定性模拟或夹具测试。
+- 未运行相关验证时，不得声称完成。
+- 将已接受的基准用例保留为回归测试。

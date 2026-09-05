@@ -1,11 +1,11 @@
-# Dependency Inventory v0.1
+# 依赖清单 v0.1
 
-> This file tracks important external dependencies and research repositories.
-> Exact versions/commits must be filled in when the dependency is actually integrated.
+> 本文件跟踪重要外部依赖和研究仓库。
+> 依赖实际集成时必须补齐精确版本/提交。
 
-## Classification
+## 分类
 
-Reuse:
+复用分类：
 
 ```text
 S = Self-build
@@ -14,7 +14,7 @@ D = Direct reuse
 R = Reference only
 ```
 
-Maturity:
+成熟度：
 
 ```text
 STABLE
@@ -24,68 +24,68 @@ WIP
 DEFERRED
 ```
 
-## Core Development Dependencies
+## 核心开发依赖
 
-| Project | URL | Role | Reuse | Maturity | Current decision |
+| 项目 | URL | 作用 | 复用分类 | 成熟度 | 当前决策 |
 |---|---|---|---|---|---|
-| Pydantic | https://github.com/pydantic/pydantic | Domain/data contracts | D | STABLE | Use |
-| pytest | https://github.com/pytest-dev/pytest | Testing | D | STABLE | Use |
-| Ruff | https://github.com/astral-sh/ruff | Lint/format | D | STABLE | Use |
-| mypy | https://github.com/python/mypy | Static type checking | D | STABLE | Use |
-| LangGraph | https://github.com/langchain-ai/langgraph | Stateful workflow orchestration | D/W | STABLE/CANDIDATE | Baseline orchestrator |
-| MCP Python SDK | https://github.com/modelcontextprotocol/python-sdk | MCP protocol | D | STABLE | Phase 8; do not reimplement |
-| langchain-mcp-adapters | https://github.com/langchain-ai/langchain-mcp-adapters | Consume MCP from LangChain/LangGraph | D/W | CANDIDATE | Pin and contract-test when adopted |
+| Pydantic | https://github.com/pydantic/pydantic | 领域/数据契约 | D | STABLE | 使用 |
+| pytest | https://github.com/pytest-dev/pytest | 测试 | D | STABLE | 使用 |
+| Ruff | https://github.com/astral-sh/ruff | 检查/格式化 | D | STABLE | 使用 |
+| mypy | https://github.com/python/mypy | 静态类型检查 | D | STABLE | 使用 |
+| LangGraph | https://github.com/langchain-ai/langgraph | 有状态工作流编排 | D/W | STABLE/CANDIDATE | 基线编排器 |
+| MCP Python SDK | https://github.com/modelcontextprotocol/python-sdk | MCP 协议 | D | STABLE | 阶段 8；不要重新实现 |
+| langchain-mcp-adapters | https://github.com/langchain-ai/langchain-mcp-adapters | 从 LangChain/LangGraph 使用 MCP | D/W | CANDIDATE | 采用时固定版本并执行契约测试 |
 
 ## SysML / MBSE
 
-| Project | URL | Role | Reuse | Maturity | Current decision |
+| 项目 | URL | 作用 | 复用分类 | 成熟度 | 当前决策 |
 |---|---|---|---|---|---|
-| SysML-v2-Release | https://github.com/Systems-Modeling/SysML-v2-Release | Official models/examples/spec artifacts | D/R | STABLE/CANDIDATE | Benchmark/reference |
-| SysML-v2-Pilot-Implementation | https://github.com/Systems-Modeling/SysML-v2-Pilot-Implementation | Reference implementation | R | CANDIDATE | Semantic cross-check |
-| SysML-v2-API-Services | https://github.com/Systems-Modeling/SysML-v2-API-Services | Repository/REST access | D/W | CANDIDATE | Repository Mode |
-| SysML-v2-API-Cookbook | https://github.com/Systems-Modeling/SysML-v2-API-Cookbook | API recipes | D/R | CANDIDATE | Reuse traversal patterns |
-| OpenSysML | https://github.com/Open-MBEE/OpenSysML | `.sysml` runtime/parser/Python-gRPC integration | D/W | STABLE (pinned) | Active — MVP-1C File Mode adapter（record 见下） |
-| SYSMOD SysML v2 | https://github.com/MBSE4U/sysmod-sysmlv2 | Delivery Drone/model examples | D/R | CANDIDATE | Benchmark |
-| SYSMOD SysML v2 API/MCP | https://github.com/Open-MBEE/sysmod-sysmlv2-api | SysML API + MCP pattern | W/R | WIP | Architecture/MCP reference; do not bind core domain |
-| SysML-v2 Applications and Examples | https://github.com/Open-MBEE/SysML-v2-Applications-and-Examples | CubeSat/spacecraft examples | D/R | CANDIDATE | Aerospace benchmark |
+| SysML-v2-Release | https://github.com/Systems-Modeling/SysML-v2-Release | 官方模型/示例/规范产物 | D/R | STABLE/CANDIDATE | 基准测试/参考 |
+| SysML-v2-Pilot-Implementation | https://github.com/Systems-Modeling/SysML-v2-Pilot-Implementation | 参考实现 | R | CANDIDATE | 语义交叉检查 |
+| SysML-v2-API-Services | https://github.com/Systems-Modeling/SysML-v2-API-Services | 仓库/REST 访问 | D/W | CANDIDATE | Repository Mode |
+| SysML-v2-API-Cookbook | https://github.com/Systems-Modeling/SysML-v2-API-Cookbook | API 用例示范 | D/R | CANDIDATE | 复用遍历模式 |
+| OpenSysML | https://github.com/Open-MBEE/OpenSysML | `.sysml` 运行时/解析器/Python-gRPC 集成 | D/W | STABLE（已固定版本） | 已启用 — MVP-1C File Mode 适配器（记录见下） |
+| SYSMOD SysML v2 | https://github.com/MBSE4U/sysmod-sysmlv2 | Delivery Drone/模型示例 | D/R | CANDIDATE | 基准测试 |
+| SYSMOD SysML v2 API/MCP | https://github.com/Open-MBEE/sysmod-sysmlv2-api | SysML API + MCP 模式 | W/R | WIP | 架构/MCP 参考；不得绑定核心领域 |
+| SysML-v2 Applications and Examples | https://github.com/Open-MBEE/SysML-v2-Applications-and-Examples | CubeSat/航天器示例 | D/R | CANDIDATE | 航空航天基准测试 |
 
-## Knowledge / Retrieval / Documents
+## 知识 / 检索 / 文档
 
-| Project | URL | Role | Reuse | Maturity | Current decision |
+| 项目 | URL | 作用 | 复用分类 | 成熟度 | 当前决策 |
 |---|---|---|---|---|---|
-| Neo4j Python Driver | https://github.com/neo4j/neo4j-python-driver | Graph persistence/query | D/W | STABLE | Graph-storage baseline |
-| neosemantics | https://github.com/neo4j-labs/neosemantics | RDF/OWL/SKOS/SHACL bridge | D/W | CANDIDATE | Use when ontology integration needs it |
-| RDFLib | https://github.com/RDFLib/rdflib | RDF/Turtle/SPARQL processing | D | STABLE | Utility |
-| Qdrant | https://github.com/qdrant/qdrant | Vector retrieval | D/W | STABLE | Candidate; not required for MVP-0 |
-| Docling | https://github.com/docling-project/docling | PDF/Office structured parsing | D/W | STABLE/CANDIDATE | Candidate; add when document ingestion is required |
-| pandas | https://github.com/pandas-dev/pandas | Tabular FMEA processing | D | STABLE | Use when needed |
-| openpyxl | https://openpyxl.readthedocs.io/ | Excel I/O | D | STABLE | Use; source repository is linked from official docs |
+| Neo4j Python Driver | https://github.com/neo4j/neo4j-python-driver | 图持久化/查询 | D/W | STABLE | 图存储基线 |
+| neosemantics | https://github.com/neo4j-labs/neosemantics | RDF/OWL/SKOS/SHACL 桥接 | D/W | CANDIDATE | 本体集成需要时使用 |
+| RDFLib | https://github.com/RDFLib/rdflib | RDF/Turtle/SPARQL 处理 | D | STABLE | 工具 |
+| Qdrant | https://github.com/qdrant/qdrant | 向量检索 | D/W | STABLE | 候选；MVP-0 不要求 |
+| Docling | https://github.com/docling-project/docling | PDF/Office 结构化解析 | D/W | STABLE/CANDIDATE | 候选；需要文档摄取时添加 |
+| pandas | https://github.com/pandas-dev/pandas | 表格化 FMEA 处理 | D | STABLE | 按需使用 |
+| openpyxl | https://openpyxl.readthedocs.io/ | Excel I/O | D | STABLE | 使用；源码仓库链接见官方文档 |
 
-## MCP Implementations
+## MCP 实现
 
-| Project | URL | Role | Reuse | Maturity | Current decision |
+| 项目 | URL | 作用 | 复用分类 | 成熟度 | 当前决策 |
 |---|---|---|---|---|---|
-| Official MCP Reference Servers | https://github.com/modelcontextprotocol/servers | MCP patterns/reference | D/R | STABLE/CANDIDATE | Reference |
-| Neo4j MCP | https://github.com/neo4j/mcp | Generic graph MCP | D/W | CANDIDATE | Reuse rather than build generic Neo4j MCP |
-| Neo4j Labs MCP | https://github.com/neo4j-contrib/mcp-neo4j | Experimental graph MCP examples | R | EXPERIMENTAL | Secondary reference |
-| Qdrant MCP | https://github.com/qdrant/mcp-server-qdrant | Vector-search MCP | D/W | CANDIDATE | Reuse if MCP vector access needed |
-| Docling MCP | https://github.com/docling-project/docling-mcp | Document-processing MCP | D/W | CANDIDATE | Reuse if agent-facing doc processing needed |
-| SYSMOD SysML MCP | https://github.com/Open-MBEE/sysmod-sysmlv2-api | SysML/SYSMOD agent tools | W/R | WIP | Study/wrap; methodology-specific |
+| Official MCP Reference Servers | https://github.com/modelcontextprotocol/servers | MCP 模式/参考 | D/R | STABLE/CANDIDATE | 参考 |
+| Neo4j MCP | https://github.com/neo4j/mcp | 通用图 MCP | D/W | CANDIDATE | 复用，不自建通用 Neo4j MCP |
+| Neo4j Labs MCP | https://github.com/neo4j-contrib/mcp-neo4j | 实验性图 MCP 示例 | R | EXPERIMENTAL | 次要参考 |
+| Qdrant MCP | https://github.com/qdrant/mcp-server-qdrant | 向量搜索 MCP | D/W | CANDIDATE | 需要 MCP 向量访问时复用 |
+| Docling MCP | https://github.com/docling-project/docling-mcp | 文档处理 MCP | D/W | CANDIDATE | 需要面向 Agent 的文档处理时复用 |
+| SYSMOD SysML MCP | https://github.com/Open-MBEE/sysmod-sysmlv2-api | SysML/SYSMOD Agent 工具 | W/R | WIP | 研究/封装；具有方法论专属性 |
 
-## Active Dependency Records (MVP-0, integrated 2026-09-04)
+## 已启用依赖记录（MVP-0，集成于 2026-09-04）
 
-Locked by `uv.lock`. Build backend: hatchling (via `uv`).
+由 `uv.lock` 锁定。构建后端：hatchling（通过 `uv`）。
 
-| Package | Selected version | License | Role |
+| 包 | 选定版本 | 许可证 | 作用 |
 |---|---|---|---|
-| pydantic | 2.13.5 | MIT | Domain/data contracts |
-| pytest | 8.4.2 | MIT | Testing |
-| ruff | 0.16.6 | MIT | Lint/format |
-| mypy | 1.20.2 | MIT | Type checking |
+| pydantic | 2.13.5 | MIT | 领域/数据契约 |
+| pytest | 8.4.2 | MIT | 测试 |
+| ruff | 0.16.6 | MIT | 检查/格式化 |
+| mypy | 1.20.2 | MIT | 类型检查 |
 
-## Active Dependency Record — OpenSysML (MVP-1C, integrated 2026-09-04)
+## 已启用依赖记录 — OpenSysML（MVP-1C，集成于 2026-09-04）
 
-Pin rationale and reproduction evidence:
+版本固定依据与复现证据：
 `docs/research/OPENSYSML_SPIKE_REPORT.md`（1A）+
 `docs/research/OPENSYSML_DEPENDENCY_REPRODUCTION_REPORT.md`（1C-0，PYPI_PIN_CONFIRMED）。
 
@@ -115,9 +115,9 @@ Upgrade policy:    一次只升级一个 major integration；contract tests + MV
 Upgrade policy: one dev-dependency major at a time; run `pytest` + `ruff check .` + `mypy src` before accepting.
 ```
 
-## Reference Baseline — Existing Neo4j Failure Knowledge (Pre-MVP-2, 2026-09-04)
+## 参考基线 — 现有 Neo4j 故障知识（Pre-MVP-2，2026-09-04）
 
-Detailed baseline:
+详细基线：
 `docs/research/NEO4J_FAILURE_KNOWLEDGE_BASELINE.md`.
 
 ```text
@@ -130,9 +130,9 @@ Security:      legacy importer is reference evidence only; do not copy secrets
                or run destructive import behavior against production
 ```
 
-## Integration Record Template
+## 集成记录模板
 
-When a dependency becomes active, fill:
+启用依赖时填写：
 
 ```text
 Selected version:
@@ -145,9 +145,9 @@ Replacement option:
 Upgrade policy:
 ```
 
-## Upgrade Policy
+## 升级政策
 
-For:
+对于：
 
 ```text
 OpenSysML
@@ -160,7 +160,7 @@ Qdrant
 Docling
 ```
 
-upgrade one major integration at a time:
+每次只升级一个主要集成：
 
 ```text
 read changelog
@@ -171,12 +171,12 @@ read changelog
 → merge
 ```
 
-Do not bulk-upgrade the entire stack.
+不得批量升级整个技术栈。
 
-## MCP Compatibility Note
+## MCP 兼容性说明
 
-The MCP ecosystem evolves quickly.
-Always verify the exact SDK/protocol compatibility of:
+MCP 生态变化迅速。
+集成时必须验证以下组件的精确 SDK/协议兼容性：
 
 ```text
 MCP Python SDK
@@ -184,4 +184,4 @@ LangChain MCP adapters
 third-party MCP servers
 ```
 
-at integration time and pin working versions.
+并固定可用版本。

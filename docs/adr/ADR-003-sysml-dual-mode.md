@@ -1,20 +1,20 @@
-# ADR-003: Keep SysML File Mode and Repository Mode
+# ADR-003: 保留 SysML File Mode 和 Repository Mode
 
 **Status:** ACCEPTED  
-**Baseline:** Bootstrap v0.1
+**基线:** Bootstrap v0.1
 
-## Context
+## 背景
 
-Offline benchmarks and research need file-based models, while engineering scenarios need repository/version-aware access.
+离线基准和研究需要基于文件的模型，而工程场景需要具备仓库 / 版本感知能力的访问方式。
 
-## Decision
+## 决策
 
-Keep both File Mode and Repository Mode behind a common system-model port.
+在共同的系统模型端口之后同时保留 File Mode 和 Repository Mode。
 
-## Consequences
+## 影响
 
-Two adapters must be maintained and cross-adapter consistency becomes a benchmark concern.
+必须维护两个适配器，跨适配器一致性成为基准关注点。
 
-## Revisit When
+## 重新评估条件
 
-Revisit only when experiments, standards, compatibility constraints or engineering requirements demonstrate that the current decision materially blocks project goals.
+仅当实验、标准、兼容性约束或工程需求表明当前决策实质性阻碍项目目标时，才重新评估。

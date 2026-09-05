@@ -1,9 +1,9 @@
-# MVP-1D — Canonical Mapping Closeout Record
+# MVP-1D — 规范映射收尾记录
 
-Status: COMPLETE
-Date: 2026-09-04（回填自 Git history + PROGRESS.md）
+状态： COMPLETE
+日期： 2026-09-04（回填自 Git history + PROGRESS.md）
 
-## 1. Objective
+## 1. 目标
 
 实现 `CanonicalSystemMapper`：
 
@@ -14,9 +14,9 @@ SysMLFactSnapshot → Canonical System Model
 第一版只处理 selected root PartUsage → System、named nested PartUsage →
 Component、typed ActionUsage → Function；必须有显式 root-selection policy。
 
-## 2. Scope
+## 2. 范围
 
-In Scope:
+范围内：
 
 - root-selection policy v1（显式 `root_source_id` 或唯一候选；0/多候选 → error）
 - Canonical Identity policy v1（`system-1`/`component-N`/`function-N`，
@@ -26,7 +26,7 @@ In Scope:
 - `CanonicalMappingError`
 - mapping matrix 更新（TENTATIVE → CONFIRMED 证据）
 
-Out of Scope:
+范围外：
 
 - SystemModelRepository / workflow 接入（1E）
 - Requirement / Port / Interface / Connection / Flow / State / Allocation
@@ -35,15 +35,15 @@ Out of Scope:
 
 Branch: `feature/mvp1-real-system-facts`
 
-Start Commit: `4f141dd`（1C closeout fix）
+起始 Commit： `4f141dd`（1C closeout fix）
 
-Implementation Commit(s): `ce37780` feat: add MVP-1D SysML-to-Canonical mapping with explicit root policy
+实现 Commit： `ce37780` feat: add MVP-1D SysML-to-Canonical mapping with explicit root policy
 
-Closeout Commit(s): `ce37780`（同 commit，closeout 记录写入 PROGRESS）
+收尾 Commit： `ce37780`（同 commit，closeout 记录写入 PROGRESS）
 
-Final Commit: `ce37780`
+最终 Commit： `ce37780`
 
-## 4. Delivered
+## 4. 交付内容
 
 - `src/fmea_agent/adapters/sysml/canonical_mapping.py` —
   `CanonicalSystemMapper.map_snapshot(snapshot, *, root_source_id=None)`
@@ -56,7 +56,7 @@ Final Commit: `ce37780`
 - 文档：`SYSML_TO_CANONICAL_MAPPING.md`（root-selection / canonical
   identity / notice 语义）、`CANONICAL_SYSTEM_MODEL_SPEC.md` §15
 
-## 5. Key Decisions
+## 5. 关键决策
 
 - **Root Selection Policy v1**：显式 `root_source_id` 或唯一 named
   top-level partUsage 候选；0/多候选 → `CanonicalMappingError` 列出候选。
@@ -69,13 +69,13 @@ Final Commit: `ce37780`
 - performed/untyped ActionUsage 不映射（C4，NEEDS_RESEARCH notice）。
 - partDef/actionDef/package/其他 metatype 一律 notice。
 
-## 6. Evidence
+## 6. 证据
 
 - 映射契约：`docs/architecture/SYSML_TO_CANONICAL_MAPPING.md`
   （Implementation Record：TENTATIVE → CONFIRMED 证据表）
 - 测试：`tests/test_canonical_mapping.py`
 
-## 7. Verification
+## 7. 验证
 
 ```text
 真实 .sysml → Snapshot → Canonical E2E         PASS（perform_probe 实测输出）
@@ -95,24 +95,24 @@ ruff / mypy（strict）                          PASS（LOCAL）
 无 Neo4j/Qdrant/MCP/real LLM                   PASS
 ```
 
-## 8. Problems Found During Development
+## 8. 开发中发现的问题
 
 - 多候选 root 模型（sibling_roots_probe）暴露 auto-root 歧义 →
   显式 root-selection policy 已按计划处理。
 
-## 9. Known Limitations
+## 9. 已知限制
 
 - Function 初版映射为 `allocated_to=[]`（v1.0）——1E 发现无法满足
   `list_functions(element_id)` workflow 契约（见 1E-0 Gate）。
 - `Component.component_type` 保持 `None`（无证据规则）。
 - partial Snapshot 的 workflow 接入行为未覆盖（映射层已支持）。
 
-## 10. Deferred
+## 10. 延后事项
 
 - Requirement / Port / Interface / Connection / Flow / State / Allocation。
 - 多系统模型（多 root）的自动处理。
 
-## 11. Files / Contracts Affected
+## 11. 涉及文件 / 契约
 
 ```text
 src/fmea_agent/adapters/sysml/canonical_mapping.py
@@ -124,11 +124,11 @@ docs/architecture/SYSML_TO_CANONICAL_MAPPING.md
 docs/architecture/CANONICAL_SYSTEM_MODEL_SPEC.md
 ```
 
-## 12. Final Assessment
+## 12. 最终评估
 
 COMPLETE
 
-## 13. Next Stage
+## 13. 下一阶段
 
 MVP-1E Workflow Integration。
 进入条件：canonical-backed `SystemModelRepository` 满足现有

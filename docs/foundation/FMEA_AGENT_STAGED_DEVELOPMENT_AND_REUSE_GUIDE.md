@@ -1,5 +1,5 @@
 # FMEA Agent 分阶段开发路线、MVP 与开源复用指南
-## FMEA Agent Staged Development, MVP & Reuse Guide for Claude Code
+## 面向 Claude Code 的 FMEA Agent 分阶段开发、MVP 与复用指南
 
 > **文档定位**：本文件是 `FMEA_AGENT_FOUNDATION_GUIDE.md` 的执行配套文档。  
 > Foundation Guide 回答“项目是什么、边界是什么、长期原则是什么”；本文件回答“**每个阶段具体做什么、哪些必须自己写、哪些不要自己写、MVP 如何验收、哪些开源项目/MCP 可以直接复用**”。  
@@ -7,7 +7,7 @@
 > **版本**：v0.1  
 > **基线日期**：2026-09-03  
 > **状态**：Living Document  
-> **开发原则**：Reuse first, wrap second, implement core semantics ourselves.
+> **开发原则**：优先复用，其次包装，核心语义由本项目自行实现。
 
 ---
 
@@ -314,7 +314,7 @@ application/
 api/
 ```
 
-### S0-2 Definition of Done
+### S0-2 完成标准
 
 必须适合本 FMEA 项目，而不是复制普通 Web 项目的完成标准。
 
@@ -621,7 +621,7 @@ element_id
 version
 ```
 
-### S1-5 SysML semantic fixtures
+### S1-5 SysML 语义测试夹具
 
 必须建立自己的：
 
@@ -923,7 +923,7 @@ get_children(element_id)
 
 这是 FMEA Agent 最重要的长期接口之一。
 
-### S2-2 Stable ID Strategy
+### S2-2 稳定 ID 策略
 
 明确：
 
@@ -933,14 +933,14 @@ canonical_id
 version_id
 ```
 
-### S2-3 Mapping
+### S2-3 映射
 
 ```text
 OpenSysML → Canonical
 REST API → Canonical
 ```
 
-### S2-4 Validation
+### S2-4 验证
 
 验证：
 
@@ -950,7 +950,7 @@ REST API → Canonical
 - duplicate IDs；
 - source trace。
 
-### S2-5 Serialization
+### S2-5 序列化
 
 支持：
 
@@ -1091,7 +1091,7 @@ End Effect
 
 ## 6.3 MVP 3 用户功能
 
-### Historical FMEA Import
+### 历史 FMEA 导入
 
 支持首批：
 
@@ -1101,7 +1101,7 @@ End Effect
 .json
 ```
 
-### FMEA Validation
+### FMEA 验证
 
 检测：
 
@@ -1116,11 +1116,11 @@ Missing evidence
 Broken item references
 ```
 
-### Risk Strategy Interface
+### 风险策略接口
 
 风险评估必须通过可替换的 `RiskStrategy`。MVP-0/早期阶段允许 `NoOpRiskStrategy → NOT_EVALUATED`。正式 AIAG-VDA S/O/D/AP 逻辑只从授权规则来源实现。
 
-### Deterministic Risk Calculation
+### 确定性风险计算
 
 例如：
 
@@ -1130,7 +1130,7 @@ RPN = S × O × D
 
 禁止 LLM 负责乘法。
 
-### Export
+### 导出
 
 首批支持：
 
@@ -1647,7 +1647,7 @@ LangGraph
 
 但仍采用：
 
-> Single orchestrated workflow first.
+> 优先采用单一编排工作流。
 
 Phase 5 只负责形成**有证据、结构化、可验证的 Candidate**。正式的语义验证、Risk/Policy Gate 与 Human Review 进入 Phase 6。
 
@@ -1967,7 +1967,7 @@ unsupported claim
 
 注意：
 
-> Evidence confidence ≠ failure probability.
+> 证据置信度 ≠ 失效概率。
 
 ### S6-4 Human decision persistence
 
@@ -2346,12 +2346,12 @@ https://github.com/modelcontextprotocol/servers
 
 | MCP | URL | 本项目用途 | 建议 |
 |---|---|---|---|
-| SYSMOD SysML MCP | https://github.com/Open-MBEE/sysmod-sysmlv2-api | SysML model query reference | 包装/借鉴 |
-| Neo4j MCP | https://github.com/neo4j/mcp | Graph query | 直接复用 |
-| Qdrant MCP | https://github.com/qdrant/mcp-server-qdrant | Vector search | 直接复用 |
-| Docling MCP | https://github.com/docling-project/docling-mcp | Document processing | 直接复用 |
-| MCP Filesystem | https://github.com/modelcontextprotocol/servers | Dev/tooling | 直接复用 |
-| MCP Git | https://github.com/modelcontextprotocol/servers | Dev/tooling | 直接复用 |
+| SYSMOD SysML MCP | https://github.com/Open-MBEE/sysmod-sysmlv2-api | SysML 模型查询参考 | 包装/借鉴 |
+| Neo4j MCP | https://github.com/neo4j/mcp | 图查询 | 直接复用 |
+| Qdrant MCP | https://github.com/qdrant/mcp-server-qdrant | 向量搜索 | 直接复用 |
+| Docling MCP | https://github.com/docling-project/docling-mcp | 文档处理 | 直接复用 |
+| MCP Filesystem | https://github.com/modelcontextprotocol/servers | 开发工具支持 | 直接复用 |
+| MCP Git | https://github.com/modelcontextprotocol/servers | 开发工具支持 | 直接复用 |
 | LangChain MCP Adapter | https://github.com/langchain-ai/langchain-mcp-adapters | LangGraph 消费 MCP | 直接复用但锁版本 |
 
 ---

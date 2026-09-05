@@ -1,9 +1,9 @@
-# MVP-1A — OpenSysML Feasibility Spike Closeout Record
+# MVP-1A — OpenSysML 可行性探查收尾记录
 
-Status: COMPLETE（gate 结论 CONDITIONAL_GO）
-Date: 2026-09-04（回填自 Git history + PROGRESS.md）
+状态： COMPLETE（gate 结论 CONDITIONAL_GO）
+日期： 2026-09-04（回填自 Git history + PROGRESS.md）
 
-## 1. Objective
+## 1. 目标
 
 验证 OpenSysML 能否作为 MVP-1 的 SysML v2 File Mode 事实源：
 
@@ -14,16 +14,16 @@ load/parse、diagnostics、query/traversal、IDs、ownership
 
 自建 minimal model + 至少一个官方 Training example。
 
-## 2. Scope
+## 2. 范围
 
-In Scope:
+范围内：
 
 - OpenSysML public API 实证（只读，不修改第三方 repo）
 - Windows 11 + Python client + sysml-grpc runtime
 - 生成 `docs/research/OPENSYSML_SPIKE_REPORT.md`
 - Gate：GO / CONDITIONAL_GO / NO_GO
 
-Out of Scope:
+范围外：
 
 - production Adapter 实现
 - 修改 FMEA Agent production code
@@ -33,25 +33,25 @@ Out of Scope:
 
 Branch: `feature/mvp1-real-system-facts`
 
-Start Commit: `c520586` docs: prepare MVP-1 real system facts development
+起始 Commit： `c520586` docs: prepare MVP-1 real system facts development
 
-Implementation Commit(s):
+实现 Commit：
 
 - `8a50850` docs: align MVP-1 progress with file-mode scope
 - `41be670` docs: add MVP-1A OpenSysML feasibility spike report
 
-Closeout Commit(s): `94b618f` docs: close MVP-1A with CONDITIONAL_GO
+收尾 Commit： `94b618f` docs: close MVP-1A with CONDITIONAL_GO
 
-Final Commit: `94b618f`
+最终 Commit： `94b618f`
 
-## 4. Delivered
+## 4. 交付内容
 
 - `docs/research/OPENSYSML_SPIKE_REPORT.md`（详细实证证据）
 - `docs/research/OPENSYSML_FEASIBILITY_SPIKE.md`（spike 设计）
 - `docs/adr/ADR-008-opensysml-file-mode-first.md`（ACCEPTED）
 - 1A 结论与 binding conditions C1–C4 写入 PROGRESS.md
 
-## 5. Key Decisions
+## 5. 关键决策
 
 - Gate 结论：**CONDITIONAL_GO**（不是无条件 GO）。
 - ADR-008：File Mode first；Repository API / MCP 延后。
@@ -64,15 +64,15 @@ Final Commit: `94b618f`
 - C4 — performed ActionUsage public facts 不足以推导 function typing；
   禁止发明类型关系；Mapping 按 UNKNOWN / NEEDS_RESEARCH 处理。
 
-## 6. Evidence
+## 6. 证据
 
-Detailed evidence（不复制）:
+详细证据（不复制）：
 
 - `docs/research/OPENSYSML_SPIKE_REPORT.md`
 - `docs/research/OPENSYSML_FEASIBILITY_SPIKE.md`
 - `docs/adr/ADR-008-opensysml-file-mode-first.md`
 
-## 7. Verification
+## 7. 验证
 
 ```text
 Spike probes（OpenSysML checkout，真实 runtime） PASS（LOCAL，Windows）
@@ -81,20 +81,20 @@ Spike probes（OpenSysML checkout，真实 runtime） PASS（LOCAL，Windows）
 
 本阶段未修改 production code；无 pytest 增量。
 
-## 8. Problems Found During Development
+## 8. 开发中发现的问题
 
 - OpenSysML `Symbol.children` 为方法（非属性）— 记录于 adapter 阶段采用。
 - performed ActionUsage typing 链接缺失（C4 来源）。
 
-## 9. Known Limitations
+## 9. 已知限制
 
 - 单文件子集（C1）；跨版本 identity 不稳定（C3）。
 
-## 10. Deferred
+## 10. 延后事项
 
 - SysML Repository API、MCP（ADR-008）。
 
-## 11. Files / Contracts Affected
+## 11. 涉及文件 / 契约
 
 ```text
 docs/research/OPENSYSML_SPIKE_REPORT.md
@@ -104,11 +104,11 @@ docs/architecture/SYSML_TO_CANONICAL_MAPPING.md（初始矩阵）
 PROGRESS.md
 ```
 
-## 12. Final Assessment
+## 12. 最终评估
 
 COMPLETE — 结论 CONDITIONAL_GO（binding conditions C1–C4）
 
-## 13. Next Stage
+## 13. 下一阶段
 
 MVP-1B Snapshot Contracts。
 进入条件：C1–C4 纳入 1B 契约设计。

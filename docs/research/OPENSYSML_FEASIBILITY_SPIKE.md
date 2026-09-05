@@ -1,9 +1,9 @@
-# OpenSysML Feasibility Spike
+# OpenSysML 可行性探查
 ## MVP-1A
 
 目的：在生产 Adapter 编码前，用当前 Windows 11 + 本地 OpenSysML checkout 验证真实 API。
 
-## Local checkout
+## 本地 checkout
 
 ```text
 D:\code\SysML 2026.9.3\FMEA-Agent-SysML-Workspace\04_parsers_and_runtimes\OpenSysML
@@ -11,7 +11,7 @@ D:\code\SysML 2026.9.3\FMEA-Agent-SysML-Workspace\04_parsers_and_runtimes\OpenSy
 
 第三方仓库保持只读。
 
-## Step 1 — 记录版本
+## 步骤 1 — 记录版本
 
 ```powershell
 git -C "D:\code\SysML 2026.9.3\FMEA-Agent-SysML-Workspace\04_parsers_and_runtimes\OpenSysML" status
@@ -21,7 +21,7 @@ git -C "D:\code\SysML 2026.9.3\FMEA-Agent-SysML-Workspace\04_parsers_and_runtime
 
 记录 branch / commit / remote / license。
 
-## Step 2 — 阅读当前真实文档
+## 步骤 2 — 阅读当前真实文档
 
 优先检查：
 
@@ -36,7 +36,7 @@ cmd/sysml-grpc/
 api/proto/
 ```
 
-## Step 3 — 独立实验
+## 步骤 3 — 独立实验
 
 推荐：
 
@@ -46,7 +46,7 @@ FMEA-Agent-SysML-Workspace\99_experiments\opensysml_mvp1_spike
 
 不要在 OpenSysML repo 内写自研实验。
 
-## Step 4 — 必须验证
+## 步骤 4 — 必须验证
 
 1. Python client 的实际安装方式。
 2. `sysml-grpc` 是否自动启动、如何解析 binary、Windows x64 是否可重复运行。
@@ -63,7 +63,7 @@ FMEA-Agent-SysML-Workspace\99_experiments\opensysml_mvp1_spike
 
 不要根据记忆猜 API；以当前 checkout、文档、测试和真实运行结果为准。
 
-## Spike Output
+## 探查产出
 
 必须生成：
 
@@ -89,7 +89,7 @@ known limitations
 GO / CONDITIONAL_GO / NO_GO
 ```
 
-## GO Gate
+## GO 门禁
 
 允许继续生产实现的最低条件：
 

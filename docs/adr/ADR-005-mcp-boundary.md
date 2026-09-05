@@ -1,20 +1,20 @@
-# ADR-005: MCP as an External Capability Boundary
+# ADR-005: MCP 作为外部能力边界
 
 **Status:** ACCEPTED  
-**Baseline:** Bootstrap v0.1
+**基线:** Bootstrap v0.1
 
-## Context
+## 背景
 
-MCP is valuable for exposing/querying tools across agents, but protocol concerns should not become domain concerns.
+MCP 有助于跨 Agent 暴露 / 查询工具，但协议关注点不应成为领域关注点。
 
-## Decision
+## 决策
 
-Use MCP at external capability boundaries. Domain and canonical models must not import MCP SDK types.
+在外部能力边界使用 MCP。领域模型和规范模型不得导入 MCP SDK 类型。
 
-## Consequences
+## 影响
 
-The project can reuse existing MCP servers and expose stable FMEA capabilities later without making MCP a mandatory runtime for core logic.
+项目可以复用现有 MCP servers，并在未来暴露稳定的 FMEA 能力，而不将 MCP 变为核心逻辑的必需运行时。
 
-## Revisit When
+## 重新评估条件
 
-Revisit only when experiments, standards, compatibility constraints or engineering requirements demonstrate that the current decision materially blocks project goals.
+仅当实验、标准、兼容性约束或工程需求表明当前决策实质性阻碍项目目标时，才重新评估。

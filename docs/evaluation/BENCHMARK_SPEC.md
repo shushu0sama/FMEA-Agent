@@ -1,14 +1,14 @@
-# FMEA Agent Benchmark Specification v0.1
+# FMEA Agent 基准规格说明 v0.1
 
-## 1. Purpose
+## 1. 目的
 
-Every new capability must be evaluated against the layer it is intended to improve.
+每项新能力都必须针对其预期改进的层级进行评估。
 
-The benchmark system prevents:
+基准体系旨在避免以下判断：
 
-> "the system has more features, therefore it must be better."
+> “系统功能更多，所以一定更好。”
 
-## 2. Evaluation Layers
+## 2. 评估层级
 
 ```text
 L0 Software / Contract
@@ -21,62 +21,62 @@ L6 Failure Propagation
 L7 Dynamic Update
 ```
 
-## 3. MVP-0 Benchmark
+## 3. MVP-0 基准
 
-MVP-0 is a software architecture benchmark, not an AI-quality benchmark.
+MVP-0 是软件架构基准，不是 AI 质量基准。
 
-### Required
+### 必需项
 
-1. Fresh install succeeds.
-2. Unit tests pass.
-3. Demo command exits successfully.
-4. All seven AIAG-VDA-shaped workflow stages produce an explicit status.
-5. Structured JSON output validates.
-6. Risk may be `NOT_EVALUATED`.
-7. Optimization may be `SKIPPED`.
-8. Evidence points to demo fixture source.
-9. No external service is required.
+1. 全新安装成功。
+2. 单元测试通过。
+3. 演示命令成功退出。
+4. 符合 AIAG-VDA 形态的七个工作流步骤均产出显式状态。
+5. 结构化 JSON 输出通过校验。
+6. 风险可以为 `NOT_EVALUATED`。
+7. 优化可以为 `SKIPPED`。
+8. 证据指向演示 fixture 来源。
+9. 不需要外部服务。
 
-### Pass/Fail
+### 通过 / 失败
 
-MVP-0 passes only if the end-to-end vertical slice is repeatable offline.
+只有端到端纵向切片可离线重复运行时，MVP-0 才通过。
 
-## 4. Level 1 — SysML Fact Extraction
+## 4. Level 1 — SysML 事实提取
 
-Primary datasets:
+主要数据集：
 
 ```text
 OMG SysML v2 Training examples
 OMG/Simple Vehicle
 ```
 
-Measure:
+测量项：
 
-- element extraction precision;
-- element extraction recall;
-- relationship extraction precision;
-- relationship extraction recall;
-- source-reference completeness.
+- 元素提取精确率；
+- 元素提取召回率；
+- 关系提取精确率；
+- 关系提取召回率；
+- 来源引用完整性。
 
-First implementation may use exact expected fixture counts and IDs before larger statistical evaluation.
+首次实现可以先使用 fixture 的精确预期数量和 ID，再进行更大规模的统计评估。
 
-## 5. Level 2 — Canonical Mapping
+## 5. Level 2 — 规范映射
 
-Evaluate:
+评估：
 
 ```text
 source fact
 → expected canonical concept
 ```
 
-Metrics:
+指标：
 
-- mapping accuracy;
-- reference integrity;
-- canonical relationship correctness;
-- cross-adapter consistency.
+- 映射准确率；
+- 引用完整性；
+- 规范关系正确性；
+- 跨适配器一致性。
 
-Important test:
+重要测试：
 
 ```text
 OpenSysML canonical output
@@ -84,17 +84,17 @@ vs
 Repository API canonical output
 ```
 
-for the same model/version.
+针对同一模型 / 版本。
 
-## 6. Level 3 — Failure Knowledge Retrieval
+## 6. Level 3 — 故障知识检索
 
-Datasets:
+数据集：
 
-- curated historical FMEA;
-- curated failure records;
-- selected technical documents.
+- 经整理的历史 FMEA；
+- 经整理的失效记录；
+- 选定的技术文档。
 
-Metrics:
+指标：
 
 ```text
 Recall@K
@@ -105,11 +105,11 @@ Entity Resolution Accuracy
 Source Trace Completeness
 ```
 
-## 7. Level 4 — FMEA Candidate Quality
+## 7. Level 4 — FMEA 候选质量
 
-Ground truth should be human-verified.
+参考真值应经过人工验证。
 
-Metrics:
+指标：
 
 ```text
 Failure Mode Precision
@@ -121,7 +121,7 @@ Unsupported Claim Rate
 Evidence Coverage
 ```
 
-Prefer separate evaluation for:
+优先分别评估：
 
 ```text
 local_effect
@@ -129,9 +129,9 @@ next_higher_level_effect
 end_effect
 ```
 
-## 8. Level 5 — Verification / Human Collaboration
+## 8. Level 5 — 验证 / 人机协作
 
-Metrics:
+指标：
 
 ```text
 Accept Rate
@@ -143,16 +143,16 @@ Reviewer Agreement
 Validator True-positive/False-positive rates
 ```
 
-## 9. Level 6 — Failure Propagation
+## 9. Level 6 — 失效传播
 
-Primary systems:
+主要系统：
 
 ```text
 Delivery Drone
 CubeSat / Spacecraft
 ```
 
-Metrics:
+指标：
 
 ```text
 Path Precision
@@ -163,9 +163,9 @@ Unsupported Propagation Rate
 
 ## 10. Level 7 — Dynamic FMEA
 
-Controlled model-change experiments.
+受控的模型变更实验。
 
-Metrics:
+指标：
 
 ```text
 Affected-item Precision
@@ -175,33 +175,33 @@ Version Trace Completeness
 Unnecessary Reanalysis Rate
 ```
 
-## 11. Benchmark Dataset Levels
+## 11. 基准数据集层级
 
-Recommended progression:
+推荐递进顺序：
 
-### Dataset A — Unit semantic fixtures
+### 数据集 A — 单元语义 fixture
 
-Tiny hand-crafted models.
+人工构建的微型模型。
 
-### Dataset B — Simple Vehicle
+### 数据集 B — Simple Vehicle
 
-First end-to-end engineering-model benchmark.
+首个端到端工程模型基准。
 
-### Dataset C — Delivery Drone
+### 数据集 C — Delivery Drone
 
-Cross-level structure/function/interface benchmark.
+跨层级的结构 / 功能 / 接口基准。
 
-### Dataset D — CubeSat / spacecraft
+### 数据集 D — CubeSat / 航天器
 
-Aerospace-domain benchmark.
+航空航天领域基准。
 
-### Dataset E — larger heterogeneous system
+### 数据集 E — 更大的异构系统
 
-Scalability only after earlier levels are stable.
+只有在前面层级稳定后才评估可扩展性。
 
-## 12. Ground Truth Format
+## 12. 参考真值格式
 
-Every benchmark case should record:
+每个基准案例应记录：
 
 ```text
 case_id
@@ -214,20 +214,20 @@ review_status
 notes
 ```
 
-FMEA ground truth should preserve uncertainty.
-Do not force one answer when multiple engineering answers are defensible.
+FMEA 参考真值应保留不确定性。
+当多个工程答案均有合理依据时，不应强制只保留一个答案。
 
-## 13. Regression Policy
+## 13. 回归政策
 
-Every accepted benchmark becomes a regression case unless explicitly retired.
+每个已接受的基准都成为回归案例，除非明确退役。
 
-An architecture/dependency upgrade must not silently reduce benchmark performance.
+架构 / 依赖升级不得静默降低基准表现。
 
-## 14. Threshold Policy
+## 14. 阈值政策
 
-Do not invent arbitrary research thresholds too early.
+不要过早编造任意研究阈值。
 
-Use three states:
+使用三个状态：
 
 ```text
 BASELINE_MEASURED
@@ -235,11 +235,11 @@ TARGET_PROPOSED
 RELEASE_GATE
 ```
 
-A numerical `RELEASE_GATE` becomes mandatory only after sufficient benchmark data exists and the team has explicitly accepted it.
+只有在已有充分基准数据且团队明确接受后，数值 `RELEASE_GATE` 才成为强制要求。
 
-## 15. Experiment Record
+## 15. 实验记录
 
-Important AI changes should record:
+重要 AI 变更应记录：
 
 ```text
 Hypothesis

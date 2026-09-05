@@ -1,6 +1,6 @@
-# SysML Source Catalog
+# SysML 来源目录
 
-## Local Workspace
+## 本地工作区
 
 ```text
 D:\code\SysML 2026.9.3\FMEA-Agent-SysML-Workspace
@@ -29,17 +29,17 @@ D:\code\SysML 2026.9.3\FMEA-Agent-SysML-Workspace
 https://github.com/Open-MBEE/OpenSysML
 ```
 
-Role: File Mode parser/runtime, Python/gRPC integration.
+作用：File Mode 解析器/运行时，Python/gRPC 集成。
 
 ### SysML-v2-Release
 
-Expected logical location:
+预期逻辑位置：
 
 ```text
 01_official_sysml_v2\SysML-v2-Release
 ```
 
-Role in MVP-1:
+在 MVP-1 中的作用：
 
 ```text
 Training examples
@@ -47,7 +47,7 @@ Vehicle examples
 semantic reference
 ```
 
-External source records used in MVP-1 (MVP-1F, 2026-09-04):
+MVP-1 使用的外部来源记录（MVP-1F，2026-09-04）：
 
 ```text
 repository: https://github.com/Systems-Modeling/SysML-v2-Release
@@ -66,13 +66,13 @@ model 2 (1F B1 benchmark fixture, unmodified copy):
 
 ### API Services / API Cookbook
 
-MVP-1: REFERENCE ONLY. Repository Mode deferred.
+MVP-1：REFERENCE ONLY。Repository Mode 延后。
 
 ### Delivery Drone / Aerospace
 
-MVP-1 primary implementation: DEFERRED.
+MVP-1 主要实现：DEFERRED。
 
-## Policy
+## 政策
 
 第三方仓库：
 
@@ -80,9 +80,9 @@ MVP-1 primary implementation: DEFERRED.
 read-only research sources
 ```
 
-Production code 不得硬编码本地 D 盘路径。
+生产代码不得硬编码本地 D 盘路径。
 
-使用 external model 时记录：
+使用外部模型时记录：
 
 ```text
 repository URL

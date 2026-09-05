@@ -1,9 +1,9 @@
-# MVP-1C — OpenSysML Adapter Closeout Record
+# MVP-1C — OpenSysML 适配器收尾记录
 
-Status: COMPLETE
-Date: 2026-09-04（回填自 Git history + PROGRESS.md）
+状态： COMPLETE
+日期： 2026-09-04（回填自 Git history + PROGRESS.md）
 
-## 1. Objective
+## 1. 目标
 
 实现 `OpenSysMLFileAdapter`：
 
@@ -14,9 +14,9 @@ Date: 2026-09-04（回填自 Git history + PROGRESS.md）
 包含 dependency pin、exception translation、diagnostics retention、
 contract tests。
 
-## 2. Scope
+## 2. 范围
 
-In Scope:
+范围内：
 
 - `opensysml==0.4.0` 精确 pin + sysml-grpc v0.4.3（C2）
 - 1C-0 Dependency Reproduction Gate（独立 throwaway venv 复现验证）
@@ -25,7 +25,7 @@ In Scope:
   `UnsupportedSysMLElement`
 - 真实 `.sysml` fixtures（含官方 Training Example 未修改副本）
 
-Out of Scope:
+范围外：
 
 - Canonical Mapping / System / Component / Function（1D）
 - KG / RAG / MCP / real LLM
@@ -34,21 +34,21 @@ Out of Scope:
 
 Branch: `feature/mvp1-real-system-facts`
 
-Start Commit: `bb9e44d`（1B closeout）
+起始 Commit： `bb9e44d`（1B closeout）
 
-Implementation Commit(s):
+实现 Commit：
 
 - `4d15bf0` docs: confirm OpenSysML PyPI dependency for MVP-1C（1C-0 Gate）
 - `3cb02ef` feat: add MVP-1C OpenSysML file-mode adapter
 
-Closeout Commit(s):
+收尾 Commit：
 
 - `61c69d8` docs: close MVP-1C with F1 hash semantics correction
 - `4f141dd` fix: preserve source traversal order and relax orphan check (MVP-1C)
 
-Final Commit: `4f141dd`
+最终 Commit： `4f141dd`
 
-## 4. Delivered
+## 4. 交付内容
 
 - `src/fmea_agent/adapters/sysml/open_sysml_file.py` —
   `load(file_path) -> SysMLFactSnapshot`；`expanduser().resolve(strict=True)`
@@ -67,7 +67,7 @@ Final Commit: `4f141dd`
   PID 集合比对；新增 fixtures `sibling_roots_probe.sysml` /
   `no_usage_probe.sysml` + regression tests
 
-## 5. Key Decisions
+## 5. 关键决策
 
 - **1C-0 Dependency Reproduction Gate（新增 Gate，记录演化）**：
   原 1C 计划未含独立复现 Gate。证据触发：1A Spike 的 checkout 证据
@@ -86,16 +86,16 @@ Final Commit: `4f141dd`
 - orphan 检查：digest-link 进程名 `sysml-grpc-0b188ec140872c0f`，
   用通配符 `sysml-grpc*` 检查；不误伤已有合法进程（PID 集合比对）。
 
-## 6. Evidence
+## 6. 证据
 
-Detailed evidence（不复制）:
+详细证据（不复制）：
 
 - `docs/research/OPENSYSML_SPIKE_REPORT.md`（1A）
 - `docs/research/OPENSYSML_DEPENDENCY_REPRODUCTION_REPORT.md`（1C-0）
 - `docs/architecture/SYSML_FACT_SNAPSHOT_CONTRACTS.md` §4/§8（F1、Adapter Profile）
 - `tests/fixtures/sysml/README.md`（fixture 溯源）
 
-## 7. Verification
+## 7. 验证
 
 ```text
 opensysml==0.4.0 精确 pin                       PASS
@@ -122,7 +122,7 @@ MVP-0 demo regression                           PASS
 注：162 为 closeout commit 记录数；4f141dd 增加 traversal-order /
 orphan regression 后为 164（1D 记录中的基线）。
 
-## 8. Problems Found During Development
+## 8. 开发中发现的问题
 
 - F1：hash 语义与直觉不符 → 契约修正（§5）。
 - sibling 遍历顺序 bug（`_walk()` 顶层顺序）→ RED 固化 + 修复。
@@ -130,18 +130,18 @@ orphan regression 后为 164（1D 记录中的基线）。
 - digest-link 自动下载回退：client 0.4.0 digest 表只 pin 到 v0.3.0
   （v0.4.3 不在表内，属已知限制）。
 
-## 9. Known Limitations
+## 9. 已知限制
 
 - 单文件子集；用户文件 import 不支持（C1）。
 - `Model.hash` 为 load-context fingerprint（F1）。
 - performed ActionUsage 无 typing facts（C4）。
 - runtime provisioning 依赖本机缓存 / 环境变量。
 
-## 10. Deferred
+## 10. 延后事项
 
 - Repository API / MCP / 多文件 import。
 
-## 11. Files / Contracts Affected
+## 11. 涉及文件 / 契约
 
 ```text
 src/fmea_agent/adapters/sysml/open_sysml_file.py
@@ -155,11 +155,11 @@ docs/research/DEPENDENCY_INVENTORY.md
 docs/research/OPENSYSML_DEPENDENCY_REPRODUCTION_REPORT.md
 ```
 
-## 12. Final Assessment
+## 12. 最终评估
 
 COMPLETE（含 1C-0 Gate PYPI_PIN_CONFIRMED）
 
-## 13. Next Stage
+## 13. 下一阶段
 
 MVP-1D Canonical Mapping。
 进入条件：Snapshot 契约稳定、Adapter 隔离、C1–C4/F1 语义固化。

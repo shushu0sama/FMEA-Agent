@@ -1,54 +1,53 @@
-# AIAG-VDA FMEA Profile v1
-## FMEA Agent Domain Baseline
+# AIAG-VDA FMEA 语义配置 v1
+## FMEA Agent 领域基线
 
-## 1. Purpose
+## 1. 目的
 
-This document defines the project-specific FMEA semantic profile used by FMEA Agent v1.
+本文档定义 FMEA Agent v1 使用的项目专用 FMEA 语义配置。
 
-The baseline methodology is:
+基线方法为：
 
 > **AIAG-VDA FMEA**
 
-This file defines the data and workflow concepts needed by the software.
-It does **not** reproduce proprietary rating tables, Action Priority matrices, handbook text, or copyrighted scoring content.
+本文档定义软件需要的数据和工作流概念，**不**复制专有评分表、Action Priority 矩阵、手册文本或受版权保护的评分内容。
 
-Before implementing production-grade S/O/D/AP logic, the project must obtain an authorized rule source.
+实现生产级 S/O/D/AP 逻辑之前，项目必须取得授权规则来源。
 
-## 2. Seven-Step Workflow Shape
+## 2. 七步工作流形态
 
-The software workflow should be able to represent:
+软件工作流应能够表达：
 
-1. Planning and Preparation
-2. Structure Analysis
-3. Function Analysis
-4. Failure Analysis
-5. Risk Analysis
-6. Optimization
-7. Results Documentation
+1. 策划和准备
+2. 结构分析
+3. 功能分析
+4. 失效分析
+5. 风险分析
+6. 优化
+7. 结果文件化
 
-For early MVPs, a step may be `NOT_EVALUATED` or `SKIPPED`, provided this is explicit.
+早期 MVP 的某一步可以为 `NOT_EVALUATED` 或 `SKIPPED`，但必须明确表示。
 
-## 3. Core Analysis Objects
+## 3. 核心分析对象
 
 ### 3.1 AnalysisContext
 
-Represents:
+表达：
 
-- analysis ID;
-- title;
-- scope;
-- system/model version;
-- assumptions;
-- exclusions;
-- analysis status;
-- method profile;
-- created/updated metadata.
+- 分析 ID；
+- 标题；
+- 范围；
+- 系统 / 模型版本；
+- 假设；
+- 排除项；
+- 分析状态；
+- 方法配置；
+- 创建 / 更新元数据。
 
 ### 3.2 FMEAItem
 
-Represents the analyzed item.
+表示被分析的对象。
 
-Required baseline fields:
+必需的基线字段：
 
 ```text
 id
@@ -60,9 +59,9 @@ source_refs
 
 ### 3.3 Function
 
-Represents intended behavior or function.
+表示预期行为或功能。
 
-Baseline fields:
+基线字段：
 
 ```text
 id
@@ -75,13 +74,13 @@ source_refs
 
 ### 3.4 FailureMode
 
-Definition:
+定义：
 
-> The manner in which a function/item fails to meet the intended function or requirement.
+> 功能 / 分析对象未能满足预期功能或需求的方式。
 
-Keep distinct from cause and effect.
+须与起因和影响区分。
 
-Baseline fields:
+基线字段：
 
 ```text
 id
@@ -95,11 +94,11 @@ evidence_refs
 
 ### 3.5 FailureCause
 
-Definition:
+定义：
 
-> A condition, mechanism, event or lower-level reason that can lead to the failure mode.
+> 可能导致失效模式的条件、机理、事件或较低层级原因。
 
-Baseline fields:
+基线字段：
 
 ```text
 id
@@ -112,9 +111,9 @@ evidence_refs
 
 ### 3.6 FailureMechanism
 
-Optional explicit mechanism concept.
+可选的显式机理概念。
 
-Examples of semantic category only:
+以下仅为语义类别示例：
 
 ```text
 wear
@@ -124,11 +123,11 @@ software logic defect
 electrical degradation
 ```
 
-Do not force every cause to have a mechanism in MVP-0.
+MVP-0 不强制每个起因都有机理。
 
 ### 3.7 FailureEffect
 
-Effects must support level.
+影响必须支持层级。
 
 ```text
 LOCAL
@@ -136,7 +135,7 @@ NEXT_HIGHER_LEVEL
 END_EFFECT
 ```
 
-Baseline fields:
+基线字段：
 
 ```text
 id
@@ -149,40 +148,37 @@ evidence_refs
 
 ### 3.8 Control
 
-Support at least semantic categories:
+至少支持以下语义类别：
 
 ```text
 PREVENTION
 DETECTION
 ```
 
-Historical controls retrieved from a source record must be distinguishable from
-agent-generated recommendations.
+从来源记录检索到的历史控制必须能与 Agent 生成的建议区分。
 
 ### 3.9 RecommendedAction
 
-Represents a candidate or approved optimization action.
+表示候选或已批准的优化措施。
 
-Recommended actions are analysis outputs. They must not be confused with
-historical prevention or detection controls unless source evidence explicitly
-supports that interpretation.
+推荐措施是分析输出。除非来源证据明确支持相应解释，否则不得将其与历史预防控制或探测控制混淆。
 
 ### 3.10 Evidence
 
-Every non-trivial candidate may link to evidence.
+每个非简单候选项都可以关联证据。
 
-Evidence can support:
+证据可以支撑：
 
-- item/function fact;
-- failure mode;
-- cause;
-- effect;
-- risk recommendation;
-- optimization recommendation.
+- 分析对象 / 功能事实；
+- 失效模式；
+- 起因；
+- 影响；
+- 风险建议；
+- 优化建议。
 
-## 4. Risk Model
+## 4. 风险模型
 
-Risk is implemented through a strategy interface.
+通过策略接口实现风险评估。
 
 ```python
 class RiskStrategy(Protocol):
@@ -190,7 +186,7 @@ class RiskStrategy(Protocol):
         ...
 ```
 
-Possible implementations:
+可能的实现：
 
 ```text
 NoOpRiskStrategy
@@ -201,15 +197,15 @@ CustomEnterpriseRiskStrategy
 
 ### 4.1 MVP-0
 
-Allowed result:
+允许的结果：
 
 ```text
 risk_status = NOT_EVALUATED
 ```
 
-### 4.2 Future AIAG-VDA Implementation
+### 4.2 未来 AIAG-VDA 实现
 
-Future authorized implementation may support:
+未来经授权的实现可以支持：
 
 ```text
 Severity
@@ -218,13 +214,11 @@ Detection
 Action Priority
 ```
 
-Rules must not be invented by the LLM.
+规则不得由 LLM 编造。
 
-## 5. Field Authority
+## 5. 字段权威性
 
-Current implementation uses `KnowledgeStatus` values to keep unsupported claims
-explicit. Long-term semantics should separate three axes instead of collapsing
-them into one field:
+当前实现使用 `KnowledgeStatus` 值显式表示无依据的断言。长期语义应区分三个维度，而不是将其合并到一个字段：
 
 ```text
 Origin axis:
@@ -242,11 +236,9 @@ REVIEWED
 APPROVED
 ```
 
-The current enum/code does not need to change until a later implementation
-stage. The semantic requirement is that documentation and output must not treat
-retrieved knowledge, inference, candidate analysis and approval as equivalent.
+当前 enum / 代码在后续实现阶段之前无需改变。语义要求是：文档和输出不得将检索知识、推断、候选分析和批准视为等价。
 
-Recommended status vocabulary:
+推荐的状态词汇：
 
 ```text
 FACT
@@ -258,34 +250,34 @@ APPROVED
 UNKNOWN
 ```
 
-Example policy:
+示例政策：
 
-| Field | May be auto-populated | LLM may suggest | Human confirmation |
+| 字段 | 是否可自动填充 | LLM 是否可建议 | 人工确认 |
 |---|---:|---:|---:|
-| Item | yes, from model | no | when model ambiguity exists |
-| Function | yes, from model | yes | important functions |
-| Failure Mode | retrieved/candidate | yes | required before approval |
-| Failure Cause | retrieved/candidate | yes | required before approval |
-| Failure Effect | candidate | yes | required before approval |
-| S/O/D | only with rules/data | limited | required for formal release |
-| AP | derived from authorized strategy | no free-form | required for formal release |
-| Evidence | retrieved | summarize only | evidence relevance may be reviewed |
+| Item | 可以，来自模型 | 不可以 | 模型存在歧义时 |
+| Function | 可以，来自模型 | 可以 | 重要功能 |
+| Failure Mode | 检索所得 / 候选 | 可以 | 批准前必须确认 |
+| Failure Cause | 检索所得 / 候选 | 可以 | 批准前必须确认 |
+| Failure Effect | 候选 | 可以 | 批准前必须确认 |
+| S/O/D | 仅在有规则 / 数据时 | 有限 | 正式发布必须确认 |
+| AP | 从授权策略推导 | 不允许自由生成 | 正式发布必须确认 |
+| Evidence | 检索所得 | 仅可总结 | 可审查证据相关性 |
 
-## 6. Semantic Validation Rules
+## 6. 语义校验规则
 
-Minimum rules:
+最低规则：
 
-1. An FMEA row requires an item and function context.
-2. Failure Mode must describe failure of intended function/requirement, not merely repeat a cause.
-3. Cause and Effect must not be silently merged.
-4. Effects should identify an effect level when possible.
-5. A risk value must declare its source/strategy.
-6. Missing information must remain `UNKNOWN` / `NOT_EVALUATED`, not be fabricated.
-7. Approved results must retain evidence and review metadata.
+1. FMEA 行需要分析对象和功能上下文。
+2. Failure Mode 必须描述预期功能 / 需求的失效，不能仅重复起因。
+3. Cause 和 Effect 不得静默合并。
+4. 在可能的情况下，影响应标明影响层级。
+5. 风险值必须声明其来源 / 策略。
+6. 缺失信息必须保持为 `UNKNOWN` / `NOT_EVALUATED`，不得编造。
+7. 已批准结果必须保留证据和审查元数据。
 
-## 7. MVP-0 Minimum Schema
+## 7. MVP-0 最小 Schema
 
-MVP-0 only needs:
+MVP-0 只需要：
 
 ```text
 AnalysisContext
@@ -298,25 +290,25 @@ Evidence
 RiskAssessment(status=NOT_EVALUATED)
 ```
 
-Optimization controls/actions can remain optional.
+优化控制 / 措施可以保持可选。
 
-## 8. Future Extensions
+## 8. 未来扩展
 
-Later phases may add:
+后续阶段可以增加：
 
-- richer structure trees;
-- function networks;
-- prevention/detection controls;
-- authorized AIAG-VDA AP rules;
-- action tracking;
-- responsibility/due dates;
-- revision history;
-- special characteristics;
-- enterprise extensions;
-- additional FMEA/FMECA profiles through strategy/profile separation.
+- 更丰富的结构树；
+- 功能网络；
+- 预防 / 探测控制；
+- 经授权的 AIAG-VDA AP 规则；
+- 措施跟踪；
+- 责任人 / 截止日期；
+- 修订历史；
+- 特殊特性；
+- 企业扩展；
+- 通过策略 / 配置分离支持其他 FMEA/FMECA 配置。
 
-## 9. Non-goal
+## 9. 非目标
 
-Do not hard-code the whole FMEA methodology into LangGraph prompts.
+不得将完整 FMEA 方法硬编码到 LangGraph 提示词中。
 
-The domain model and validators remain authoritative.
+领域模型和校验器保持权威性。

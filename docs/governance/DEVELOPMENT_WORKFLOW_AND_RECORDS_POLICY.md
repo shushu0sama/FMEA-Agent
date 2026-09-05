@@ -1,4 +1,4 @@
-# Development Workflow & Records Policy
+# 开发流程与记录治理政策
 
 > 长期工程治理规范。CLAUDE.md / AGENTS.md 引用本文件；细节以此为准。
 > 建立于 2026-09-04（MVP-1F 治理升级）。
@@ -41,12 +41,12 @@ PROGRESS ≠ Full History
 
 - Plan 是计划。真实执行与 Plan 不一致时，不重写 Plan 假装计划从未变化，
   由 Stage Record 记录真实演化。
-- 旧 Prompt 保留原样，但必须标明 historical planning artifact。
+- 旧 Prompt 的历史规划内容必须保留，并标明历史规划材料；按第 14 节进行语言翻译时，不得改变其当时含义，原代码块仍保持原样。
 - 一次性实验结论不进入 architecture。
 
-## 2. Dual Source-of-Truth Policy
+## 2. 双重事实来源政策
 
-### 2.1 Implementation Truth（现在实际上实现了什么）
+### 2.1 实现事实（Implementation Truth：现在实际上实现了什么）
 
 优先级：
 
@@ -65,7 +65,7 @@ PROGRESS ≠ Full History
 若 Git、tests、文档三者矛盾：不要猜、不要静默修正文档来迎合实现、
 必须明确记录 discrepancy。
 
-### 2.2 Normative Project Truth（项目应该遵守什么）
+### 2.2 规范依据（Normative Project Truth：项目应该遵守什么）
 
 主要来源：
 
@@ -112,7 +112,7 @@ ACCEPTED 或 CHANGES_REQUIRED
 最终 Acceptance 由独立 review 决定。
 `READY_FOR_REVIEW` 只说明实现验证完成、等待审核，不隐含 Acceptance。
 
-### 3.2 Stage Definition of Done
+### 3.2 Stage 完成条件
 
 正式 Stage 不得声明 COMPLETE / IMPLEMENTED，除非：
 
@@ -137,7 +137,7 @@ ACCEPTED 或 CHANGES_REQUIRED
 
 没有运行验证时，禁止使用 `COMPLETE` / `ACCEPTED` / `PASS`。
 
-## 4. Anti-Drift Gate
+## 4. 防漂移检查关口（Anti-Drift Gate）
 
 ### 4.1 每个正式 Stage 开始前
 
@@ -168,7 +168,7 @@ ACCEPTED 或 CHANGES_REQUIRED
 [ ] next stage explicitly stated
 ```
 
-## 5. Scope Drift Detection
+## 5. 范围漂移检测
 
 每次 Stage closeout 必须回答：
 
@@ -328,7 +328,7 @@ not independently preserved as Git commit
 - 详细证据只在一处（Single Source of Detailed Evidence）：
   Stage Record 引用 research/architecture 文档，不复制内容。
 
-## 13. Pre-1.0 Release Version Policy
+## 13. 1.0 之前的发布版本政策
 
 版本形态：`v0.x.y`
 
@@ -352,3 +352,53 @@ v0.1.0 = MVP-1 Real System Facts
 - Tag 只指向已通过 Independent Release Review、完成 merge 与 master
   verification 的 commit（release-closeout commit）。
 - MVP Release Record 记录 tag 名与 merge commit 锚点。
+
+## 14. 文档语言与术语政策（Documentation Language & Terminology Policy）
+
+**Project documentation language = zh-CN（简体中文）。**
+
+除非用户或当前任务明确要求英文，Coding Agent 新建的项目自有 Markdown 必须以中文为主体。
+修改中文文档时，不得无理由将中文段落改写为英文。Codex 与 Claude Code 遵循相同规则，
+各自仍按 `AGENTS.md` / `CLAUDE.md` 的完整指令结构加载，本政策不改变指令加载架构。
+
+适用内容包括项目 README、PROGRESS、Agent 指令、记忆与交接文档，以及 Spec、Plan、
+Architecture、ADR、Research Report、Benchmark Report、Stage Record、Release Record、
+Session Handoff、Coding Agent Prompt、Completion Report 和所有项目自有模板。
+适用目录包括 `docs/product/`、`docs/architecture/`、`docs/domain/`、`docs/specs/`、
+`docs/plans/`、`docs/governance/`、`docs/evaluation/`、`docs/research/`、`docs/records/`、
+`docs/prompts/`、`docs/adr/`、`docs/foundation/` 及其他项目自有 Markdown 所在位置。
+
+### 14.1 保留 canonical form
+
+以下内容保持英文或原始 canonical form：代码、类名、函数名、变量名、enum 值、schema 标识符、
+JSON key、协议/API/CLI 名称、文件路径、shell command、Cypher query、URL、Git branch、
+Git tag、commit SHA、精确 commit message、技术/产品/标准/库/包名称，以及项目机器状态值。
+例如 `FailureKnowledgeRepository`、`SourceReference`、`NOT_STARTED`、`READY_FOR_REVIEW`、
+`ACTIVE`、`REFERENCE`、`HISTORICAL`、`SUPERSEDED` 不翻译，不因中文化重命名文件或生产类。
+
+代码块、CLI/test/Git output、原始外部资料、原始导入证据、上游原文副本、vendor 文件、
+`LICENSE*` 和 `third_party/licenses/**` 不翻译或改写。许可证必须逐字保留。
+短引用允许保留原文，周围采用中文解释。不得把旧 importer 中的真实凭证复制到任何文档。
+
+### 14.2 术语与历史完整性
+
+中文可读性与技术标识符稳定性优先。重要术语首次出现可采用“中文（English Canonical Term）”，
+后续按语境使用中文或 canonical term，无需逐句双语。
+术语以 `docs/domain/FMEA_GLOSSARY.md` 为准，补充规范见
+`docs/governance/LANGUAGE_AND_TERMINOLOGY_POLICY.md`。
+
+历史文档可翻译正文，但不得更改历史 Stage 状态、测试数量、commit SHA、基准结果、
+当时已知限制、原计划与预测，也不得删除差异或把历史改写成当前设计。
+非语言事实问题另记后续任务，不在翻译中顺便修复。既有代码块内英文按原样保留。
+
+### 14.3 文档语言检查关口（Documentation Language Gate）
+
+- [ ] 新增 project-owned 文档主体语言为中文
+- [ ] 修改文档没有无故把中文转换成英文
+- [ ] code/schema/API canonical identifiers 未被误译
+- [ ] raw evidence / third-party text 未被篡改
+- [ ] status / paths / commands 保持 canonical form
+- [ ] terminology 与 FMEA_GLOSSARY 一致
+
+执行文档翻译时，额外核对历史事实、代码块完整性、路径引用和凭证扫描。
+统计剩余英文正文时排除代码块与受保护原文；仅保留英文技术标识符不构成语言检查失败。

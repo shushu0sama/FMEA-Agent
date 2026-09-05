@@ -1,13 +1,12 @@
-# FMEA Agent V1 Architecture
+# FMEA Agent V1 架构
 
 Status: ACTIVE
 
-## 1. Purpose
+## 1. 目的
 
-This document defines the long-lived V1 architecture boundary. It does not
-describe every implemented feature as current capability.
+本文档定义长期有效的 V1 架构边界，不将所有功能都描述为当前已实现的能力。
 
-## 2. Layering
+## 2. 分层
 
 ```text
 User / API
@@ -25,71 +24,67 @@ Adapters
 Engineering / Knowledge / External Sources
 ```
 
-LangGraph is the orchestration baseline. The FMEA domain model remains
-project-owned and framework-independent.
+LangGraph 是编排基线。FMEA 领域模型保持项目自有且独立于框架。
 
-## 3. Dependency Rule
+## 3. 依赖规则
 
-`domain/` must not depend directly on:
+`domain/` 不得直接依赖：
 
-- Neo4j driver;
-- LangGraph;
-- LangChain;
-- Qdrant client;
-- OpenSysML runtime;
-- MCP SDK;
-- any specific LLM provider;
-- CLI or UI frameworks.
+- Neo4j driver；
+- LangGraph；
+- LangChain；
+- Qdrant client；
+- OpenSysML runtime；
+- MCP SDK；
+- 任何特定 LLM 提供商；
+- CLI 或 UI 框架。
 
-External technologies belong behind ports and adapters.
+外部技术应置于端口和适配器之后。
 
-## 4. Engineering Context Boundary
+## 4. 工程上下文边界
 
-Engineering Context adapters convert external engineering sources into
-project-owned facts and then into the Canonical System Model.
+Engineering Context 适配器将外部工程来源转换为项目自有事实，再转换为规范系统模型（Canonical System Model）。
 
-Current implemented source:
+当前已实现的来源：
 
-- SysML v2 File Mode through OpenSysML into `SysMLFactSnapshot`.
+- 通过 OpenSysML 进入 `SysMLFactSnapshot` 的 SysML v2 File Mode。
 
-Planned / future sources:
+规划 / 未来来源：
 
-- SysML Repository API;
-- MBSE repositories;
-- BOM;
-- Product Design Manual and design documentation;
-- PLM and requirements databases.
+- SysML Repository API；
+- MBSE 仓库；
+- BOM；
+- Product Design Manual 和设计文档；
+- PLM 和需求数据库。
 
-The Canonical System Model is the long-term boundary between engineering-model
-adapters and FMEA logic. The domain must not become SysML-specific.
+Canonical System Model 是工程模型适配器与 FMEA 逻辑之间的长期边界。领域层不得变为 SysML 专用实现。
 
-## 5. Failure Knowledge Boundary
+## 5. 故障知识边界
 
-Failure Knowledge adapters convert external failure knowledge into
-project-owned source-knowledge records.
+Failure Knowledge 适配器将外部故障知识转换为项目自有的来源知识记录。
 
-Current implemented source:
+当前已实现的来源：
 
-- MVP-0 fixture / in-memory knowledge for regression.
+- 用于回归的 MVP-0 fixture / 内存知识。
 
-MVP-2 source:
+MVP-2 来源：
 
-- Existing Neo4j Failure Knowledge Base, read-only.
+- 现有 Neo4j Failure Knowledge Base，只读。
 
-Future sources:
+未来来源：
 
-- historical FMEA Excel / CSV;
-- FMEA reports;
-- reviewed failure, test and maintenance records;
-- document-derived knowledge.
+- 历史 FMEA Excel / CSV；
+- FMEA 报告；
+- 已审查的失效、测试和维护记录；
+- 从文档提取的知识。
 
-Neo4j is an adapter/storage baseline, not the domain boundary.
+Neo4j 是适配器 / 存储基线，不是领域边界。
 
-## 6. Source Knowledge vs Candidate Analysis
+## 6. 来源知识与候选分析
 
-Failure knowledge retrieval and FMEA candidate construction are separate steps.
+故障知识检索和 FMEA 候选构建是独立步骤。
 
-The target chain is:
+目标链路如下：
 
 ```text
 CSM / Engineering Context
@@ -101,73 +96,57 @@ CSM / Engineering Context
 → FailureModeCandidate
 ```
 
-The repository contract should not permanently require exact display-name pairs
-such as `(item_name, function_name)`, and a Neo4j adapter should not be forced
-to return analysis-side `FailureModeCandidate` objects directly.
+仓库契约不应永久要求精确的显示名称对，例如 `(item_name, function_name)`；也不应强制 Neo4j 适配器直接返回分析侧 `FailureModeCandidate` 对象。
 
-## 7. Evidence and Provenance
+## 7. 证据和来源追踪
 
-Evidence and provenance are first-class data. The architecture must retain:
+证据和来源追踪是一等数据。架构必须保留：
 
-- engineering source references;
-- failure knowledge source references;
-- retrieval evidence;
-- mapping / entity-resolution evidence;
-- analysis status;
-- review / approval metadata when that stage exists.
+- 工程来源引用；
+- 故障知识来源引用；
+- 检索证据；
+- 映射 / 实体解析证据；
+- 分析状态；
+- 相应阶段存在时的审查 / 批准元数据。
 
-Unsupported claims must remain explicit as `UNKNOWN`, `NOT_EVALUATED` or
-candidate-only content.
+无依据的断言必须显式保留为 `UNKNOWN`、`NOT_EVALUATED` 或仅为候选的内容。
 
-## 8. Entity Resolution
+## 8. 实体解析
 
-Entity Resolution connects engineering context to failure knowledge when source
-schemas do not share stable identifiers.
+当来源 schema 不共享稳定标识符时，实体解析（Entity Resolution）负责连接工程上下文与故障知识。
 
-MVP-2 must account for the known Neo4j gap: the existing graph strongly links
-FailureMode to Cause, Effect, Prevention Control and Detection Control, but it
-does not directly encode full row-level `Component + Function + FailureMode`
-analysis context.
+MVP-2 必须考虑已知 Neo4j 缺口：现有图中 FailureMode 与 Cause、Effect、Prevention Control 和 Detection Control 的关联较强，但并未直接编码完整的行级 `Component + Function + FailureMode` 分析上下文。
 
-Entity resolution must preserve ambiguity rather than silently selecting a
-single source hit.
+实体解析必须保留歧义，不得静默选择单个来源命中。
 
-## 9. LLM Boundary
+## 9. LLM 边界
 
-LLMs are provider-neutral behind `LLMClient` or future equivalent ports.
+LLM 位于 `LLMClient` 或未来等效端口之后，保持提供商中立。
 
-MVP-2 does not call a real LLM. MVP-3 introduces evidence-grounded LLM
-generation only after real failure knowledge retrieval exists.
+MVP-2 不调用真实 LLM。MVP-3 仅在真实故障知识检索已存在后，引入以证据为依据的 LLM 生成。
 
-LLM output is candidate or inference unless reviewed and approved.
+LLM 输出在经过审查和批准前属于候选或推断。
 
 ## 10. RiskStrategy
 
-Risk evaluation remains behind `RiskStrategy`.
+风险评估保持在 `RiskStrategy` 之后。
 
-MVP-2 does not implement AIAG-VDA S/O/D/AP or Action Priority logic. Authorized
-risk rules require a licensed or independently authorized source.
+MVP-2 不实现 AIAG-VDA S/O/D/AP 或 Action Priority 逻辑。授权风险规则需要有许可或独立授权的来源。
 
-## 11. Human Review Boundary
+## 11. 人工审查边界
 
-Human review is a formal workflow boundary. Candidate content can be generated,
-retrieved and checked automatically, but approval requires explicit review
-state.
+人工审查是正式工作流边界。候选内容可以自动生成、检索和检查，但批准需要明确的审查状态。
 
-Review persistence and future knowledge lifecycle are planned after the real
-failure knowledge and evidence-grounded generation stages.
+审查持久化和未来知识生命周期安排在真实故障知识及以证据为依据的生成阶段之后。
 
-## 12. External Capability Boundary
+## 12. 外部能力边界
 
-API, MCP and external tools are capability boundaries, not domain models.
+API、MCP 和外部工具是能力边界，不是领域模型。
 
-The project may expose or consume tools later, but the domain should remain
-usable without MCP-specific request/response classes.
+项目未来可以暴露或调用工具，但领域层应能够在不使用 MCP 专用请求 / 响应类的情况下运行。
 
-## 13. Future KnowledgeWriter Boundary
+## 13. 未来 KnowledgeWriter 边界
 
-Knowledge write-back is not part of MVP-2.
+知识写回不属于 MVP-2。
 
-The long-term architecture may add a `KnowledgeWriter` or equivalent boundary
-after Human Review defines how a Candidate becomes reviewed or approved source
-knowledge. MVP-2 remains read-only.
+在 Human Review 定义 Candidate 如何成为经审查或已批准的来源知识之后，长期架构可以增加 `KnowledgeWriter` 或等效边界。MVP-2 保持只读。

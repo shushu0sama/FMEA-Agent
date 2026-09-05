@@ -1,37 +1,39 @@
-# <MVP ID> — Release Record
+# <MVP ID> — 发布记录
+
+> 正文以简体中文（zh-CN）为主体；Status、技术标识符、路径、命令、Git 标识符和原始输出保持 canonical form。
 
 Status:
-Release Candidate Commit:
-Date:
+发布候选 Commit：
+日期：
 
 ## MVP
 
-## Objective
+## 目标
 
-## Delivered Capabilities
+## 已交付能力
 
-## Architecture Boundaries
+## 架构边界
 
-## Stage Summary
+## Stage 汇总
 
 （每个 Stage 一行，链接 Stage Record）
 
-## Benchmark
+## 基准测试
 
-## Regression
+## 回归验证
 
-## Dependency Baseline
+## 依赖基线
 
-## Known Limitations
+## 已知限制
 
-## Deferred Capabilities
+## 延后能力
 
-## Open Research Questions
+## 开放研究问题
 
-## Release Gate
+## 发布检查关口
 
-## Recommended Next MVP
+## 建议的下一 MVP
 
-## Historical Records
+## 历史记录
 
 （链接全部 Stage Record）

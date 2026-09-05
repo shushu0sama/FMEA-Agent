@@ -1,143 +1,132 @@
-# MVP-2 Specification — Real Failure Knowledge
+# MVP-2 规格说明 — 真实故障知识
 
 Status: ACTIVE SPEC / PLANNING ONLY
 
-## 1. Goal
+## 1. 目标
 
-Replace MVP-0 fixture failure knowledge with read-only retrieval from real
-failure knowledge sources, starting with the existing Neo4j Failure Knowledge
-Base, while preserving MVP-0/MVP-1 behavior and architecture boundaries.
+从现有 Neo4j Failure Knowledge Base 开始，以对真实故障知识来源的只读检索替换 MVP-0 fixture 故障知识，同时保留 MVP-0/MVP-1 行为及架构边界。
 
-MVP-2 production implementation is `NOT_STARTED`.
+MVP-2 生产实现状态为 `NOT_STARTED`。
 
-## 2. Problem Statement
+## 2. 问题说明
 
-The current `FailureKnowledgeRepository` is keyed by exact display-name pairs:
+当前 `FailureKnowledgeRepository` 以精确的显示名称对为键：
 
 ```text
 (item_name, function_name) → list[FailureModeCandidate]
 ```
 
-That is sufficient for a fixture, but it is not a stable long-term query
-contract for real engineering knowledge. The existing Neo4j graph also does not
-directly encode full row-level `Component + Function + FailureMode` context.
+这足以支持 fixture，但不是适用于真实工程知识的稳定长期查询契约。现有 Neo4j 图也未直接编码完整的行级 `Component + Function + FailureMode` 上下文。
 
-MVP-2 must define and implement a source-knowledge retrieval boundary that can
-support entity resolution, ambiguity and evidence without binding the domain to
-Neo4j or returning analysis-side candidates directly from storage.
+MVP-2 必须定义并实现来源知识检索边界，以支持实体解析、歧义和证据，同时避免将领域层绑定到 Neo4j，或直接从存储返回分析侧候选项。
 
-## 3. Current Baseline
+## 3. 当前基线
 
-Implemented baseline:
+已实现基线：
 
-- MVP-0 fixture failure library and in-memory lookup.
-- MVP-1 real SysML v2 File Mode into the Canonical System Model.
-- Implemented CSM subset: `System`, `Component`, `Function`,
-  `SourceReference`.
-- No real Neo4j adapter.
-- No Neo4j Python driver dependency.
-- No Qdrant / RAG / real LLM / Human Review / risk scoring.
+- MVP-0 fixture 故障库和内存查找。
+- MVP-1 真实 SysML v2 File Mode 进入 Canonical System Model。
+- 已实现的 CSM 子集：`System`、`Component`、`Function`、`SourceReference`。
+- 尚无真实 Neo4j 适配器。
+- 尚无 Neo4j Python driver 依赖。
+- 尚无 Qdrant / RAG / 真实 LLM / Human Review / 风险评分。
 
-External baseline evidence:
+外部基线证据：
 
-- Existing Neo4j 5.26.0 Legacy Failure Knowledge Graph.
-- Primary graph strength: FailureMode to Cause, Effect, Prevention Control and
-  Detection Control.
-- Detailed baseline: `docs/research/NEO4J_FAILURE_KNOWLEDGE_BASELINE.md`.
+- 现有 Neo4j 5.26.0 Legacy Failure Knowledge Graph。
+- 图的主要优势：FailureMode 到 Cause、Effect、Prevention Control 和 Detection Control 的关联。
+- 详细基线：`docs/research/NEO4J_FAILURE_KNOWLEDGE_BASELINE.md`。
 
-## 4. Stage Capability Decomposition
+## 4. 阶段能力分解
 
-2A Existing Knowledge Compatibility Baseline:
+2A 现有知识兼容性基线：
 
-- verify current implementation contracts and fixture behavior;
-- preserve MVP-0/MVP-1 regressions;
-- record compatibility constraints before changing interfaces.
+- 验证当前实现契约和 fixture 行为；
+- 保留 MVP-0/MVP-1 回归；
+- 在改变接口前记录兼容性约束。
 
-2B Failure Knowledge Contracts:
+2B 故障知识契约：
 
-- define project-owned query and hit/source-knowledge contracts;
-- keep source knowledge distinct from analysis-side candidates;
-- define evidence and provenance requirements.
+- 定义项目自有的查询与命中 / 来源知识契约；
+- 保持来源知识与分析侧候选项的区分；
+- 定义证据和来源追踪要求。
 
-2C Neo4j Read Adapter:
+2C Neo4j 只读适配器：
 
-- read from existing Neo4j through an adapter behind a project-owned port;
-- do not expose Neo4j driver types outside the adapter;
-- do not mutate the database.
+- 通过项目自有端口之后的适配器读取现有 Neo4j；
+- 不在适配器之外暴露 Neo4j driver 类型；
+- 不修改数据库。
 
-2D Entity Resolution & Context Reconstruction:
+2D 实体解析与上下文重建：
 
-- connect CSM item/function context to source knowledge;
-- preserve ambiguity and confidence/evidence;
-- reconstruct usable context from the existing graph without rebuilding it.
+- 将 CSM 分析对象 / 功能上下文连接到来源知识；
+- 保留歧义及置信度 / 证据；
+- 从现有图重建可用上下文，不重建数据库。
 
-2E Workflow Integration:
+2E 工作流集成：
 
-- map source knowledge hits into `FailureModeCandidate` analysis output;
-- keep workflow statuses explicit;
-- preserve risk as `NOT_EVALUATED` unless authorized rules exist.
+- 将来源知识命中映射为 `FailureModeCandidate` 分析输出；
+- 保持工作流状态显式；
+- 除非存在授权规则，否则风险保持 `NOT_EVALUATED`。
 
-2F Benchmark & Release:
+2F 基准与发布：
 
-- evaluate Level 3 Failure Knowledge Retrieval;
-- run MVP-0/MVP-1 regression;
-- update records and current-state docs after implementation review.
+- 评估 Level 3 Failure Knowledge Retrieval；
+- 运行 MVP-0/MVP-1 回归；
+- 实现审查后更新记录和当前状态文档。
 
-This spec defines WHAT. It does not create `docs/plans/MVP_2_IMPLEMENTATION_PLAN.md`.
+本规格说明定义“做什么”，不创建 `docs/plans/MVP_2_IMPLEMENTATION_PLAN.md`。
 
-## 5. In Scope
+## 5. 范围内
 
-- Real Failure Knowledge source contracts.
-- Read-only Neo4j retrieval adapter behind a port.
-- Entity resolution between CSM context and failure knowledge.
-- Context reconstruction from the existing graph.
-- Evidence and provenance for retrieved source knowledge.
-- Mapping from retrieved source knowledge to candidate analysis objects.
-- Backward compatibility with MVP-0 fixture behavior where needed for tests.
-- Level 3 benchmark design and release evidence.
+- 真实故障知识来源契约。
+- 端口之后的 Neo4j 只读检索适配器。
+- CSM 上下文与故障知识之间的实体解析。
+- 从现有图重建上下文。
+- 检索所得来源知识的证据和来源追踪。
+- 从检索所得来源知识到候选分析对象的映射。
+- 在测试需要的地方向后兼容 MVP-0 fixture 行为。
+- Level 3 基准设计和发布证据。
 
-## 6. Out of Scope
+## 6. 范围外
 
-- Modifying `src/` or tests during this governance baseline session.
-- Rebuilding the Neo4j database.
-- Running legacy importer against production.
-- Installing Neo4j driver before an implementation plan is reviewed.
-- Schema migration.
-- Knowledge write-back.
-- Candidate to Approved write flow.
-- Real LLM generation.
-- RAG / Qdrant integration.
-- MCP integration.
-- AIAG-VDA S/O/D/AP or Action Priority implementation.
-- Human Review implementation.
-- Failure Propagation.
-- Changing MVP-1 SysML capability.
+- 在本次治理基线会话中修改 `src/` 或测试。
+- 重建 Neo4j 数据库。
+- 对生产数据库运行旧导入器。
+- 在实现计划经过审查前安装 Neo4j driver。
+- Schema 迁移。
+- 知识写回。
+- Candidate 到 Approved 的写入流程。
+- 真实 LLM 生成。
+- RAG / Qdrant 集成。
+- MCP 集成。
+- AIAG-VDA S/O/D/AP 或 Action Priority 实现。
+- Human Review 实现。
+- 失效传播。
+- 改变 MVP-1 SysML 能力。
 
-## 7. Domain Semantics
+## 7. 领域语义
 
-MVP-2 must preserve distinctions among:
+MVP-2 必须保留以下概念的区分：
 
-- Failure Mode;
-- Failure Cause;
-- Failure Mechanism;
-- Failure Effect;
-- Prevention Control;
-- Detection Control;
-- Recommended Action;
-- Evidence.
+- 失效模式（Failure Mode）；
+- 失效起因（Failure Cause）；
+- 失效机理（Failure Mechanism）；
+- 失效影响（Failure Effect）；
+- 预防控制（Prevention Control）；
+- 探测控制（Detection Control）；
+- 推荐措施（Recommended Action）；
+- 证据（Evidence）。
 
-Historical controls retrieved from source knowledge must be distinguishable from
-agent-generated recommendations.
+从来源知识中检索到的历史控制必须能与 Agent 生成的建议区分。
 
-Missing information remains `UNKNOWN` or absent with explicit status. It must
-not be fabricated.
+缺失信息保持为 `UNKNOWN`，或以明确状态表示缺失。不得编造。
 
-## 8. Source Knowledge vs Candidate
+## 8. 来源知识与候选项
 
-Failure knowledge source records are not the same thing as analysis-side FMEA
-candidates.
+故障知识来源记录与分析侧 FMEA 候选项不是同一概念。
 
-The intended chain is:
+预期链路如下：
 
 ```text
 CSM / Engineering Context
@@ -149,82 +138,73 @@ CSM / Engineering Context
 → FailureModeCandidate
 ```
 
-The final contract names may be frozen in 2B. This spec intentionally avoids
-over-implementing class names.
+最终契约名称可以在 2B 冻结。本规格说明有意避免过早落实过多类名。
 
-## 9. Evidence and Provenance Requirements
+## 9. 证据和来源追踪要求
 
-Each source hit should retain:
+每个来源命中应保留：
 
-- source system identity;
-- source record or graph locator where available;
-- matched entities;
-- relationship path or source structure;
-- retrieval rationale;
-- entity-resolution status;
-- confidence or applicability metadata when defined;
-- limitations when provenance is unavailable.
+- 来源系统身份；
+- 可用时的来源记录或图定位信息；
+- 匹配的实体；
+- 关系路径或来源结构；
+- 检索依据；
+- 实体解析状态；
+- 已定义时的置信度或适用性元数据；
+- 来源追踪不可用时的局限。
 
-When the legacy graph lacks row-level provenance, the adapter must represent
-that absence explicitly rather than inventing a source row.
+旧图缺少行级来源追踪时，适配器必须显式表达这种缺失，不得编造来源行。
 
-## 10. Entity Resolution Requirements
+## 10. 实体解析要求
 
-Entity resolution must support:
+实体解析必须支持：
 
-- matching CSM item/component/function context to Neo4j labels and names;
-- ambiguity preservation;
-- no silent overwrite of conflicting matches;
-- no dependence on display names as the only long-term identity strategy;
-- traceable evidence for each accepted match.
+- 将 CSM 分析对象 / 组件 / 功能上下文匹配到 Neo4j 标签和名称；
+- 保留歧义；
+- 不静默覆盖冲突匹配；
+- 不将显示名称作为唯一的长期身份策略；
+- 每个接受的匹配都有可追踪证据。
 
-Exact display-name matching may remain as a compatibility baseline or fallback,
-but it must not be the long-term canonical query contract.
+精确显示名称匹配可以保留为兼容性基线或回退方式，但不得成为长期规范查询契约。
 
-## 11. Repository Semantic Contract Requirements
+## 11. 仓库语义契约要求
 
-The `FailureKnowledgeRepository` contract must evolve from fixture-specific
-candidate lookup toward source-knowledge retrieval.
+`FailureKnowledgeRepository` 契约必须从 fixture 专用的候选查找演进为来源知识检索。
 
-The repository should not be required to return `FailureModeCandidate` directly
-from storage. Candidate construction belongs in an application/domain mapping
-step that can attach analysis context and evidence.
+不应要求仓库直接从存储返回 `FailureModeCandidate`。候选构建属于应用 / 领域映射步骤，该步骤可以附加分析上下文和证据。
 
-## 12. Neo4j Read-only Boundary
+## 12. Neo4j 只读边界
 
-MVP-2 Neo4j behavior is read-only.
+MVP-2 的 Neo4j 行为为只读。
 
-The adapter must not:
+适配器不得：
 
-- call destructive graph operations;
-- run production write queries;
-- execute schema migrations;
-- import Excel into Neo4j;
-- copy legacy credentials;
-- expose driver-specific types outside the adapter.
+- 调用破坏性图操作；
+- 运行生产写入查询；
+- 执行 schema 迁移；
+- 将 Excel 导入 Neo4j；
+- 复制旧凭据；
+- 在适配器之外暴露 driver 专有类型。
 
-## 13. Excel and Ontology Roles
+## 13. Excel 和本体的作用
 
-Historical Excel / CSV can be a source of failure knowledge when explicitly
-ingested through governed contracts. The legacy Excel importer is reference
-evidence only and must not become the production path as-is.
+历史 Excel / CSV 在通过受治理契约明确摄取后，可以成为故障知识来源。旧 Excel 导入器仅作为参考证据，不得原样成为生产路径。
 
-Ontology / n10s presence may inform future semantics, but MVP-2 must not depend
-on ontology migration or RDF rebuild to retrieve the existing baseline graph.
+Ontology / n10s 的存在可以为未来语义提供参考，但 MVP-2 不得依赖本体迁移或 RDF 重建来检索现有基线图。
 
-## 14. Backward Compatibility
+## 14. 向后兼容
 
-MVP-2 must preserve:
+MVP-2 必须保留：
 
-- MVP-0 demo behavior unless explicitly changed by a reviewed spec/plan;
-- MVP-1 real SysML pipeline;
-- `RiskAssessment(status=NOT_EVALUATED)` behavior without authorized risk rules;
-- explicit `SKIPPED` optimization when no optimization capability exists;
-- architecture rule that `domain/` does not depend on Neo4j.
+- MVP-0 演示行为，除非经审查的规格 / 计划明确改变它；
+- MVP-1 真实 SysML 链路；
+- 无授权风险规则时的 `RiskAssessment(status=NOT_EVALUATED)` 行为；
+- 无优化能力时显式的 `SKIPPED` 优化；
+- `domain/` 不依赖 Neo4j 的架构规则。
 
-## 15. Regression Requirements
+## 15. 回归要求
 
-Implementation stages must run the configured verification suite:
+实现阶段必须运行已配置的验证套件：
 
 ```text
 pytest
@@ -233,12 +213,11 @@ mypy src
 git diff --check
 ```
 
-Where full production verification is not relevant to docs-only work, the
-report must say so explicitly.
+如果完整生产验证不适用于仅文档工作，报告必须明确说明。
 
-## 16. Benchmark Expectations
+## 16. 基准预期
 
-MVP-2 adds Level 3 Failure Knowledge Retrieval evaluation:
+MVP-2 增加 Level 3 Failure Knowledge Retrieval 评估：
 
 ```text
 Recall@K
@@ -249,40 +228,36 @@ Entity Resolution Accuracy
 Source Trace Completeness
 ```
 
-Numerical release gates should not be invented until the team accepts benchmark
-data and thresholds.
+团队接受基准数据和阈值之前，不得编造数值发布门槛。
 
-## 17. Acceptance Criteria
+## 17. 验收标准
 
-- Existing Neo4j baseline is documented and treated as read-only.
-- Source-knowledge contracts distinguish retrieval hits from candidates.
-- Repository contract no longer depends solely on exact display-name pair
-  lookup as the long-term canonical interface.
-- Entity resolution preserves ambiguity and evidence.
-- Workflow integration maps source knowledge into candidates without making
-  unreviewed content approved.
-- MVP-0/MVP-1 regressions remain green.
-- No real LLM / RAG / MCP / risk scoring / Human Review implementation enters
-  MVP-2.
-- Documentation and records accurately state MVP-2 implementation status.
+- 现有 Neo4j 基线已形成文档，并按只读处理。
+- 来源知识契约区分检索命中与候选项。
+- 仓库契约的长期规范接口不再仅依赖精确显示名称对查找。
+- 实体解析保留歧义和证据。
+- 工作流集成将来源知识映射为候选项，不将未经审查内容变为已批准内容。
+- MVP-0/MVP-1 回归持续通过。
+- MVP-2 不引入真实 LLM / RAG / MCP / 风险评分 / Human Review 实现。
+- 文档和记录准确说明 MVP-2 实现状态。
 
-## 18. Known Risks
+## 18. 已知风险
 
-- Legacy graph lacks row-level provenance.
-- Domain labels are Chinese and mostly name-only.
-- Relationship properties are absent.
-- Function/component context may require reconstruction from indirect paths.
-- Exact names may not align with CSM names.
-- n10s infrastructure exists but may not encode the needed FMEA semantics.
-- Driver/version and credential handling must be planned before implementation.
+- 旧图缺少行级来源追踪。
+- 领域标签为中文，且多数仅有名称。
+- 关系属性缺失。
+- 功能 / 组件上下文可能需要从间接路径重建。
+- 精确名称可能与 CSM 名称不一致。
+- n10s 基础设施存在，但可能未编码所需 FMEA 语义。
+- 实现前必须规划 driver / 版本和凭据处理。
 
-## 19. Deferred Capabilities
+## 19. 延后能力
 
-- Knowledge write-back.
-- Candidate to Approved persistence.
-- Real LLM evidence-grounded generation.
-- Qdrant / KG-RAG fusion.
-- AIAG-VDA risk strategy and AP rules.
-- Human Review workflow.
-- Failure Propagation.
-- MCP tools and external capability exposure.
+- 知识写回。
+- Candidate 到 Approved 的持久化。
+- 真实 LLM 以证据为依据的生成。
+- Qdrant / KG-RAG 融合。
+- AIAG-VDA 风险策略和 AP 规则。
+- Human Review 工作流。
+- 失效传播。
+- MCP 工具和外部能力暴露。
