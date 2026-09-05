@@ -1,8 +1,8 @@
 # Demo V1 D7 — 集成验收与演示交付
 
 日期：2026-09-05
-Stage status: READY_FOR_REVIEW
-Closeout status: READY_FOR_REVIEW
+Stage status: ACCEPTED
+Closeout status: PENDING_PUSH（技术已接受，远端保存核对中）
 技术范围：Demo V1 / D7，A01–A12；人工工程质量 NOT_ACCEPTED。
 
 ## 1. 起点、范围与实际演化
@@ -74,8 +74,18 @@ run_id、文件字节数和 AppTest 覆盖边界见[验收报告第 4 节](../..
 审查者 `/root/d7_independent_review`，只读检查；初步未发现 CRITICAL/IMPORTANT。
 EXTERNAL_REVIEW：539 passed in 28.83s；Ruff/mypy src50/lock104/diff PASS。
 另 6 组真实 UI 三文件上传 AppTest 探查通过，详见验收报告第 5 节；不访问真实服务或 `.env.local`。
-固定提交范围最终审查、发现与修复（如有）、提交/推送状态在实际完成后回填。
-不会把工作区初步通过写作固定基线最终 ACCEPTED。
+实施提交 `f550a0dff52b68c035c266f7205eb3330c7b4f01`，送审范围 `dadc36c..f550a0d`，11 文件。
+独立最终结论 **ACCEPTED（仅受限 Demo V1 / D7 技术范围）**；未解决 CRITICAL=0 / IMPORTANT=0 / MINOR=0。
+无需审核后代码修复；新增脚本/测试与首轮全套验证版本 hash 一致，现有 UI 唯一修改为标题文案。
+固定 HEAD 另复验 E2E + UI **22 passed in 4.08s**，Ruff、mypy src+smoke51、lock104、总范围 diff PASS；
+三份 LOCAL 脱敏真实摘要与矩阵记录一致。审核结束分支正确、工作区/index 干净。
+最终治理回填只改状态/审核证据，不扩大工程质量或正式 MVP 验收。
+
+Git：首次标准 push 返回 SSL_read unexpected EOF / sideband disconnect（输出含 Everything up-to-date，
+但退出码为 1，不能据此认定成功）；随后 ls-remote 和仅命令级 HTTP/1.1 push 也遇到 TLS EOF。
+未禁用 TLS 验证、修改永久 Git 配置或 force push。远端保存仍需实际查回确认。
+本机公开工件 hash 与摘要一致；变更文件凭证形态扫描 0 hits；中文/术语/原文边界检查通过。
+浏览器临时页面关闭；8501/8502 测试进程已停止，监听检查为空。
 
 ## 6. 限制与下一步
 

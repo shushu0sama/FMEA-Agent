@@ -18,7 +18,7 @@ Current MVP:           MVP-1 Real System Facts（stable） /
                        Demo V1 End-to-End FMEA（D7 acceptance）
 MVP status:            RELEASED（v0.1.0 = original capability release；
                        v0.1.1 = current stable docs-only patch）
-Current Stage:         Demo D7 集成验收（READY_FOR_REVIEW）
+Current Stage:         Demo D7 集成验收（ACCEPTED；远端保存核对中）
 Post-Release Patch:    DONE（Independent Patch Review = ACCEPTED；
                        annotated tag v0.1.1）
 ```
@@ -33,7 +33,7 @@ Demo 不替代或重编号 MVP，也不等同于 FMEA 方法七步法。当前�
 ```text
 MVP-0 COMPLETE（v0.0.1 tagged）
 MVP-1 Real System Facts       — RELEASED（v0.1.0 capability；v0.1.1 stable patch）
-Demo V1 End-to-End FMEA       — D0–D6 ACCEPTED；D7 READY_FOR_REVIEW
+Demo V1 End-to-End FMEA       — D0–D7 技术 ACCEPTED；工程质量未验收
 MVP-2 Real Failure Knowledge  — NOT_STARTED（PLANNING ONLY；
                                   原草案作为完整检索阶段参考）
 MVP-3 Evidence-grounded LLM
@@ -138,7 +138,7 @@ MVP-2 规划与实现边界：
 C-1 final re-review: ACCEPTED（仅限 credential remediation）。
 Standalone MVP-2 G0B: NOT_STARTED（完整检索阶段未单独开工）。
 Demo D0: ACCEPTED；新增 Demo Spec / Plan，复审决定见 D0 记录。
-Demo D1–D6: ACCEPTED；D7: READY_FOR_REVIEW。
+Demo D1–D7: 技术 ACCEPTED；工程质量未验收。
 ```
 
 ## 当前已知限制
@@ -169,13 +169,14 @@ Demo D1–D6: ACCEPTED；D7: READY_FOR_REVIEW。
 ## 当前 D7 集成验收状态
 
 - [验收报告](docs/evaluation/DEMO_V1_ACCEPTANCE_REPORT.md)：A01–A12 矩阵、三类独立场景、MVP-2/3 复用能力与正式差距。
-- [D7 记录](docs/records/DEMO_V1/D7_DEMO_RELEASE.md)：起点 dadc36c，当前 checkout 单目标 D7 分支；独立最终审查待回填。
+- [D7 记录](docs/records/DEMO_V1/D7_DEMO_RELEASE.md)：起点 dadc36c，当前 checkout 单目标 D7 分支；独立最终审查 ACCEPTED，基线 f550a0d；远端保存核对中。
 - LOCAL：539 项测试、Ruff、mypy、离线 lock104、Demo 专项325项、B0/B1 11项通过。
 - LOCAL 真实 Neo4j 来源查回/定位/无结果 PASS（20 hits、truncated=true）；真实 DeepSeek 通用/schema smoke PASS。
 - LOCAL 公开资料完整服务 smoke PASS（8候选、2请求、独立三格式导出）；检索 FAKE_NO_MATCH，未外发私有图正文。
 - 标准浏览器演示包/补问/未知继续/来源/三格式真实下载通过；故障另用明确 fake 注入，详见验收记录。
-- 技术演示 READY_FOR_REVIEW；人工工程质量 NOT_ACCEPTED（无人工抽查）。CI NOT_CONFIGURED。
-- 独立 reviewer 已完成首轮539项及6组 AppTest 入口探查，无未解决发现；固定提交最终审查尚未完成。
+- 技术演示 ACCEPTED；人工工程质量 NOT_ACCEPTED（无人工抽查）。CI NOT_CONFIGURED。
+- EXTERNAL_REVIEW：首轮539项/6组入口探查，固定基线另22项 E2E/UI及Ruff/mypy/lock/diff通过；
+  独立最终 ACCEPTED，0 CRITICAL / 0 IMPORTANT / 0 MINOR。Git push 遇 TLS EOF，待远端核实。
 - 没有依赖升级或基准 gold 变化；不合并 master、不移动发布 tag，不将 D7 等同 MVP-7 或正式 MVP-2/3/5 发布。
 
 ## D6 验证与审核基线（已接受）
@@ -344,9 +345,9 @@ SysML 与 Neo4j 案例仍独立；无匹配、相关但适用性待确认、推�
 Demo 可用自动测试减少人工准备，但不以同源派生资料或模型自己生成的答案验证工程正确率。
 历史讨论见 [信息对齐台账](docs/product/MVP_2_PREPLANNING_ALIGNMENT.md)，现为 HISTORICAL。
 
-当前 D7 已实现集成回归、三个独立场景、验收矩阵与差距登记，等待固定提交独立最终审核。
+当前 D7 集成回归、三个独立场景、验收矩阵与差距登记已通过独立技术审核；远端保存核对中。
 详细状态和证据以上方 D7 专节、验收报告与阶段记录为准，不重复执行 D2–D6。
-D7 技术接受后，下一建议任务为正式 MVP-2/3 当期 Spec 差距核对与独立工程样例/人工抽查准备，
+下一建议任务为正式 MVP-2/3 当期 Spec 差距核对与独立工程样例/人工抽查准备，
 复用已有 Demo 实现；需另行确定正式阶段范围，不自动启动全部后续 MVP。
 真实服务分别通过不等于私有图与模型完整联合验证；工程质量仍未验收。
 

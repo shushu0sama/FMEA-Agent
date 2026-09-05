@@ -113,7 +113,7 @@ D7 最新本机真实结果为 PASS（通用 JSON 与完整 schema，6 条候选
 （含一次有限重试），响应上限 1 MiB，输出始终待审核的推断/候选，无 S/O/D/AP。
 应用生成入口使用 D3 未排除参考，保留原检索审计；图错误须显式选择继续才生成。
 上下文事实的精确原文检查不是工程真实性认证。详见 [D4 记录](docs/records/DEMO_V1/D4_DEEPSEEK_AND_GENERATION_VALIDATION.md)。
-D5 会话/补问恢复与 D6 报告/UI 均已通过独立审核；D7 集成验收 READY_FOR_REVIEW，
+D5 会话/补问恢复与 D6 报告/UI 均已通过独立审核；D7 技术集成验收 ACCEPTED，
 [A01–A12 矩阵和真实结果](docs/evaluation/DEMO_V1_ACCEPTANCE_REPORT.md)区分技术演示与人工工程质量。
 
 本机私有 `.env.local` 已由 Git 忽略；需显式加 `--env-file .env.local`，例如
@@ -185,7 +185,7 @@ drift）→ docs-only patch → Independent Patch Review ACCEPTED
 → annotated tag v0.1.1（current stable patch；无 capability 变化）
 ```
 
-D7 集成验收已实现，等待固定提交独立最终审核；阶段记录见 [D7 收尾](docs/records/DEMO_V1/D7_DEMO_RELEASE.md)。
+D7 已通过独立技术审核（f550a0d，0 未解决发现）；阶段记录见 [D7 收尾](docs/records/DEMO_V1/D7_DEMO_RELEASE.md)。
 已实现输入资料、只读检索和 DeepSeek 适配/校验；真实 DeepSeek 与 Neo4j 独立 smoke 均通过，
 会话工作流、UI 和完整候选报告现已接入；公开资料完整服务验证明确使用 FAKE_NO_MATCH。
 下一建议任务为正式 MVP-2/3 差距核对与独立工程样例/人工抽查；私有图与模型完整集成和工程质量仍未验收。

@@ -2,7 +2,7 @@
 
 Lifecycle: ACTIVE
 日期：2026-09-05
-技术演示状态：READY_FOR_REVIEW（LOCAL 验证通过，等待独立最终审核）
+技术演示状态：ACCEPTED（独立最终审核，仅受限 Demo V1 / D7 技术范围）
 人工工程质量状态：NOT_ACCEPTED（没有人工关键结论抽查）
 
 依据：[已接受 Spec](../specs/DEMO_V1_END_TO_END_FMEA.md) A01–A12、
@@ -112,7 +112,11 @@ run_id=`97076d53430442869b73d126dbcf57c3`，1 候选、2 请求。
 另 6 组真实上传 AppTest 入口检查通过：NO_MATCH/三格式/改名失效、错误引用、FACT 空来源、空生成、
 仓库异常/无自动重查/明确降级/保留 ERROR；下载与重绘不增调用，内部异常不泄漏。
 另用真实 Neo4j adapter + fake driver/LLM 验证 HITS、四条独立关系、UNKNOWN 适用性与无虚构表行。
-固定提交范围的最终审核尚待回填；这些独立自动验证不属于人工工程质量抽查。
+固定最终审核范围 `dadc36c..f550a0dff52b68c035c266f7205eb3330c7b4f01`，11 文件；结论 **ACCEPTED**。
+未解决 CRITICAL=0 / IMPORTANT=0 / MINOR=0。首轮全套验证的新增脚本/测试 hash 与送审版本一致；
+固定 HEAD 另复验 D7 E2E + UI 共 22 passed in 4.08s，Ruff、mypy src+smoke51、lock104、完整范围 diff PASS。
+A01–A12、MVP-2/3 差距及三份 LOCAL 脱敏真实摘要与记录一致；工作区/index 干净。
+这些独立自动验证不属于人工工程质量抽查。最终仅治理回填，未改变被审代码。
 CI：NOT_CONFIGURED。EXTERNAL_REVIEW 不替代 LOCAL 真实服务证据。
 
 ## 6. 正式 MVP-2/3 的复用能力与验收差距

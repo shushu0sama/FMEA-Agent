@@ -15,7 +15,7 @@ LangGraph 负责明确的 Demo 状态转换；Streamlit 仅作为应用入口。
 
 Lifecycle: ACTIVE
 Status: ACCEPTED（D0 独立计划审查）
-Implementation: D1–D6 ACCEPTED；D7 READY_FOR_REVIEW
+Implementation: D1–D7 技术 ACCEPTED；人工工程质量 NOT_ACCEPTED
 起点与本次准备证据：[D0 记录](../records/DEMO_V1/D0_SPEC_AND_PLAN.md)。
 
 D0–D7 是 Demo V1 的内部工作步骤，保留原 MVP 能力路线；对应关系与收尾归入原则以
@@ -375,7 +375,7 @@ D6 执行证据见 [D6 记录](../records/DEMO_V1/D6_REPORTS_AND_LOCAL_UI.md)。
   保留空来源、错误引用、无结果和连接故障的集成回归；不要求生成文本逐字相同。
 - [x] 执行 `python scripts/verify.py`、`uv lock --check --offline`、Demo全套、B0/B1、两个live smoke，
   在验收矩阵中逐项登记 LOCAL / EXTERNAL_REVIEW，未运行不填PASS。
-- [ ] 独立审查者从用户入口运行/核对报告、无匹配和故障，所有IMPORTANT问题修复后复验。
+- [x] 独立审查者从用户入口运行/核对报告、无匹配和故障，所有IMPORTANT问题修复后复验。
 - [x] 分开报告“技术演示状态”和“人工工程质量状态”；无人工抽查时后者未验收，
   无真实接口配置时前者仅离线演示，不称真实端到端通过。
 - [x] 更新真实能力、已知限制、启动命令、实际依赖许可证与 lock；仅对Demo创建收尾，
@@ -383,7 +383,7 @@ D6 执行证据见 [D6 记录](../records/DEMO_V1/D6_REPORTS_AND_LOCAL_UI.md)。
 - [x] 在同一验收报告中列出 MVP-2/3 已实现能力、对应代码/测试证据、已知限制与正式验收差距；
   后续依当期正式 MVP Spec 复用、补齐和独立验收，不另起重复实现，不把 D7 当成 MVP-7。
 
-D7 当前 READY_FOR_REVIEW；LOCAL 与真实场景证据见[验收报告](../evaluation/DEMO_V1_ACCEPTANCE_REPORT.md)，
+D7 当前技术 ACCEPTED（独立审核 f550a0d，0 未解决发现）；LOCAL 与真实场景证据见[验收报告](../evaluation/DEMO_V1_ACCEPTANCE_REPORT.md)，
 独立最终审查与提交推送见[D7 记录](../records/DEMO_V1/D7_DEMO_RELEASE.md)。工程质量 NOT_ACCEPTED。
 
 ## 排期与交接
