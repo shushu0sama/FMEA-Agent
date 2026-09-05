@@ -204,6 +204,8 @@ DONE（独立补丁审核 ACCEPTED；附注 tag 为 v0.1.1）。
 前端 UI 和 FMEA 报告的端到端 Demo；目标约一周，允许放缓。
 该目标超出现有仅检索的 MVP-2 草案。当前进行范围重对齐，阶段重排与 Demo 设计仍待确认，
 详见[信息对齐第 9 节](docs/product/MVP_2_PREPLANNING_ALIGNMENT.md#9-完整问卷答复与-demo-目标澄清)。
+首个 Demo 资料来源已确认：从现有 SysML 派生并标注演示资料；用户已有 DeepSeek API 可用于后续接入。
+具体 SysML 文件、官方模型标识/接口及本机配置尚未核验，未执行模型调用。
 用户已明确：**现有 SysML 与 Neo4j 数据独立，案例没有关系与重合**，不得假设同一案例配对。
 已确认事实、待答问题及本轮文档盘点集中在
 [规划前信息对齐](docs/product/MVP_2_PREPLANNING_ALIGNMENT.md)；Alignment status 为 `IN_PROGRESS`。
