@@ -11,14 +11,14 @@ Architecture baseline: v0.1
 Development mode:      Runnable Vertical Slice First
 FMEA profile:          AIAG & VDA FMEA Handbook（First Edition, 2019；
                        Seven-Step Approach）
-Current branch:        codex/demo-v1-d1-input-pack
+Current branch:        codex/demo-v1-d2-input-contracts
 MVP-1 Review Baseline: 369f09d
 C-1 Review Baseline:   70052a0（ACCEPTED，2026-09-05）
 Current MVP:           MVP-1 Real System Facts（stable） /
-                       Demo V1 End-to-End FMEA（D1 input pack）
+                       Demo V1 End-to-End FMEA（D2 input/evidence contracts）
 MVP status:            RELEASED（v0.1.0 = original capability release；
                        v0.1.1 = current stable docs-only patch）
-Current Stage:         Demo D1 固定案例与演示资料（ACCEPTED）
+Current Stage:         Demo D2 输入/证据契约与旧导出修复（READY_FOR_REVIEW）
 Post-Release Patch:    DONE（Independent Patch Review = ACCEPTED；
                        annotated tag v0.1.1）
 ```
@@ -33,7 +33,7 @@ Demo 不替代或重编号 MVP，也不等同于 FMEA 方法七步法。当前�
 ```text
 MVP-0 COMPLETE（v0.0.1 tagged）
 MVP-1 Real System Facts       — RELEASED（v0.1.0 capability；v0.1.1 stable patch）
-Demo V1 End-to-End FMEA       — D0/D1 ACCEPTED；D2–D7 NOT_STARTED
+Demo V1 End-to-End FMEA       — D0/D1 ACCEPTED；D2 READY_FOR_REVIEW；D3–D7 NOT_STARTED
 MVP-2 Real Failure Knowledge  — NOT_STARTED（PLANNING ONLY；
                                   原草案作为完整检索阶段参考）
 MVP-3 Evidence-grounded LLM
@@ -138,7 +138,7 @@ MVP-2 规划与实现边界：
 C-1 final re-review: ACCEPTED（仅限 credential remediation）。
 Standalone MVP-2 G0B: NOT_STARTED（完整检索阶段未单独开工）。
 Demo D0: ACCEPTED；新增 Demo Spec / Plan，复审决定见 D0 记录。
-Demo D1 implementation: ACCEPTED；D2–D7: NOT_STARTED。
+Demo D1: ACCEPTED；D2: READY_FOR_REVIEW；D3–D7: NOT_STARTED。
 ```
 
 ## 当前已知限制
@@ -149,8 +149,8 @@ Demo D1 implementation: ACCEPTED；D2–D7: NOT_STARTED。
 - `Component.component_type` 保持 `None`（无证据规则）。
 - system-level Function 暂不被 workflow 分析目标使用。
 - partial Snapshot 的 workflow 接入行为未单独覆盖。
-- 最终 JSON 未完整保留内部来源引用、候选关联 ID、起因机理/证据和影响状态/证据；
-  当前导出不能作为完整工程证据档案。需在真实知识输出契约及集成前明确修复。
+- D2 已补齐旧 JSON 的 item/function ID、source_refs、候选关联 ID、起因机理/证据和影响状态/证据；
+  原 CLI 仍不是自包含的完整 Demo 报告，D6 的报告导出尚未实现。
 - Python 包元数据仍为 `0.0.1`；原发布审核已将其列为非阻塞观察，包发布前需明确同步政策。
 - 后续事项及适用边界：`docs/records/G0A_R_FINAL_C1_REVIEW.md` 第 5 节。
 
@@ -166,7 +166,17 @@ Demo D1 implementation: ACCEPTED；D2–D7: NOT_STARTED。
 8. MVP-2 针对现有仅有名称的 Neo4j 图的实体解析策略。
 9. 未来只读 Neo4j 适配器的凭证与配置政策。
 
-## 当前 D1 验证与审核状态
+## 当前 D2 验证与审核状态
+
+- [D2 记录](docs/records/DEMO_V1/D2_INPUT_EVIDENCE_AND_LEGACY_EXPORT.md)：范围、接口细化、验证与审核。
+- LOCAL：`scripts/verify.py` → 325 passed in 17.88s；Ruff PASS；mypy src PASS（32 files）。
+  新增 92 项 D2 测试；既有 CLI、SysML、B0/B1、D1 及 orphan 回归通过。
+- 新增 optional extra `demo`：pypdf 6.17.0、openpyxl 3.1.5，传递 et-xmlfile 2.0.0；
+  既有锁定版本未升级，`uv lock --check --offline` PASS。
+- EXTERNAL_REVIEW：待独立 D2 审核，当前 READY_FOR_REVIEW。
+- D3–D7 未实现；本次没有调用 DeepSeek/Neo4j，也不宣布完整 Demo 或工程质量通过。
+
+## D1 验证与审核基线（已接受）
 
 - D1 来源与收尾证据：[D1 记录](docs/records/DEMO_V1/D1_FIXED_CASE_AND_INPUT_PACK.md)。
 - LOCAL：`scripts/verify.py` → 233 passed in 13.62s；Ruff PASS；mypy src PASS。
@@ -175,7 +185,7 @@ Demo D1 implementation: ACCEPTED；D2–D7: NOT_STARTED。
   `uv lock --check --offline` PASS。src、依赖与既有基准 gold 未改动。
 - EXTERNAL_REVIEW：独立 Agent `/root/d1_independent_review` 于 `d1868a1` 判定 D1 ACCEPTED，
   CRITICAL=0 / IMPORTANT=0 / MINOR=0；独立 pytest 233 passed、Ruff/mypy PASS。
-  额外三种 Git 换行配置及源覆盖保护验证通过，详情见 D1 记录。D2–D7 未实现。
+  额外三种 Git 换行配置及源覆盖保护验证通过，详情见 D1 记录。后续实际阶段见当前 D2 专节。
 - 真实 DeepSeek/Neo4j/UI 与工程质量验收不在 D1 完成范围，本次未调用或验收。
 
 ## MVP-1 验收基线（既有发布能力）
@@ -238,6 +248,7 @@ DONE（独立补丁审核 ACCEPTED；附注 tag 为 v0.1.1）。
 - [Demo 实施计划](docs/plans/DEMO_V1_IMPLEMENTATION_PLAN.md)：D1–D7 文件、接口与验证步骤。
 - [D0 记录](docs/records/DEMO_V1/D0_SPEC_AND_PLAN.md)：准备核查、初审问题与后续复验。
 - [D1 记录](docs/records/DEMO_V1/D1_FIXED_CASE_AND_INPUT_PACK.md)：固定资料、测试、基线变化与独立审核。
+- [D2 记录](docs/records/DEMO_V1/D2_INPUT_EVIDENCE_AND_LEGACY_EXPORT.md)：输入/证据契约、文件载入及旧导出修复。
 
 首例选定项目自有 `typed_inside_probe.sysml`，分析 hydraulicPump 下 motor 的 spin 功能；
 资料包位于 [examples/demo_v1](examples/demo_v1/README.md)，真实解析及副本重读成功（0 diagnostics）；
@@ -250,8 +261,8 @@ SysML 与 Neo4j 案例仍独立；无匹配、相关但适用性待确认、推�
 Demo 可用自动测试减少人工准备，但不以同源派生资料或模型自己生成的答案验证工程正确率。
 历史讨论见 [信息对齐台账](docs/product/MVP_2_PREPLANNING_ALIGNMENT.md)，现为 HISTORICAL。
 
-下一步：D1 独立审核已通过；新主会话进入 D2 输入/证据契约与旧导出修复，不重复规划前问卷。
-实施基线包含 `740279c`、路线澄清 `9d5c0a7`、D1 实现 `d1868a1` 及后续 D1 收尾提交；
+下一步：完成 D2 独立审核与收尾后，进入 D3 可独立验证的只读检索，不重复规划前问卷。
+实施基线包含 `740279c`、路线澄清 `9d5c0a7`、D1 实现 `d1868a1`、D1 收尾 `35aa066` 及后续 D2 提交；
 按实际 Git 最新记录恢复，不从旧 master 遗漏这些提交。
 约一周为可放宽目标窗口；真实API/图/前端接入状态分别记录，不能以mock通过替代live验收。
 

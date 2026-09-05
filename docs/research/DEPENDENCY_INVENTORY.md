@@ -78,6 +78,23 @@ DEFERRED
 | Docling MCP | https://github.com/docling-project/docling-mcp | 文档处理 MCP | D/W | CANDIDATE | 需要面向 Agent 的文档处理时复用 |
 | SYSMOD SysML MCP | https://github.com/Open-MBEE/sysmod-sysmlv2-api | SysML/SYSMOD Agent 工具 | W/R | WIP | 研究/封装；具有方法论专属性 |
 
+## Demo V1 / D2 文件解析依赖（2026-09-05）
+
+以下仅通过 optional extra `demo` 安装；原依赖版本没有升级，基础 CLI 不依赖这些包。
+精确 wheel/source hash 由 `uv.lock` 记录，契约测试见 `tests/test_demo_document_inputs.py`。
+
+| 包 | 固定版本 | 已安装包许可证元数据/原文 | 分类 | 用途 |
+|---|---|---|---|---|
+| pypdf | 6.17.0 | BSD-3-Clause；dist-info/licenses/LICENSE | W | 本地 PDF 逐页提取文本；不做 OCR/布局还原 |
+| openpyxl | 3.1.5 | MIT；dist-info/LICENCE.rst | W | read_only=True、data_only=False、keep_links=False 读取 BOM |
+| et-xmlfile | 2.0.0 | MIT；dist-info/LICENCE.rst，另带 LICENCE.python | D（传递） | openpyxl 传递依赖 |
+
+API 依据：[pypdf 文本提取](https://pypdf.readthedocs.io/en/stable/user/extract-text.html)、
+[openpyxl 只读模式](https://openpyxl.readthedocs.io/en/stable/optimized.html)与
+[load_workbook](https://openpyxl.readthedocs.io/en/stable/api/openpyxl.reader.excel.html)。
+openpyxl stable 文档显示 3.1.3，实际安装并测试版本为 3.1.5；不把文档标签当作运行版本。
+包从公开 registry 安装，没有复制外部产品资料或修改许可证原文。
+
 ## 已启用依赖记录（MVP-0，集成于 2026-09-04）
 
 由 `uv.lock` 锁定。构建后端：hatchling（通过 `uv`）。

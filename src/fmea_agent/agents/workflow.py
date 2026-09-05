@@ -197,21 +197,14 @@ def build_workflow_graph(
             "method": context.method.value,
             "item": component.name,
             "function": function.name,
+            "item_id": component.id,
+            "function_id": function.id,
+            "source_refs": {
+                "item": [ref.model_dump(mode="json") for ref in component.source_refs],
+                "function": [ref.model_dump(mode="json") for ref in function.source_refs],
+            },
             "failure_modes": [
-                {
-                    "value": mode.value,
-                    "status": mode.status.value,
-                    "causes": [
-                        {"value": cause.value, "status": cause.status.value}
-                        for cause in mode.causes
-                    ],
-                    "effects": [
-                        {"level": effect.level.value, "value": effect.value}
-                        for effect in mode.effects
-                    ],
-                    "evidence": [{"source": ev.source} for ev in mode.evidence],
-                }
-                for mode in state.failure_candidates
+                mode.model_dump(mode="json") for mode in state.failure_candidates
             ],
             "risk": risk.model_dump(mode="json"),
             "stage_status": {name: s.value for name, s in final_statuses.items()},

@@ -50,6 +50,9 @@ def test_demo_output_contains_candidate_failure_mode() -> None:
     assert mode["effects"][0] == {
         "level": "LOCAL",
         "value": "Required outlet pressure is unavailable",
+        "status": "CANDIDATE",
+        "affected_item_id": None,
+        "evidence": [{"source": "demo-failure-library:001"}],
     }
 
 

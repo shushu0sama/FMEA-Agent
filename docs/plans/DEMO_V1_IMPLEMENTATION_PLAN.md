@@ -15,7 +15,7 @@ LangGraph 负责明确的 Demo 状态转换；Streamlit 仅作为应用入口。
 
 Lifecycle: ACTIVE
 Status: ACCEPTED（D0 独立计划审查）
-Implementation: D1 ACCEPTED；D2–D7 NOT_STARTED
+Implementation: D1 ACCEPTED；D2 READY_FOR_REVIEW；D3–D7 NOT_STARTED
 起点与本次准备证据：[D0 记录](../records/DEMO_V1/D0_SPEC_AND_PLAN.md)。
 
 D0–D7 是 Demo V1 的内部工作步骤，保留原 MVP 能力路线；对应关系与收尾归入原则以
@@ -176,20 +176,22 @@ def test_empty_hit_result_is_invalid():
         RetrievalResult(status="HITS", hits=[], terms=["motor"], truncated=False, error_code=None)
 ```
 
-- [ ] 写字段/状态/引用负例，运行 `python -m pytest tests/test_demo_contracts.py -q` 看失败，再实现 validators。
-- [ ] `load_inputs(sysml_path: Path, design_path: Path|None, bom_path: Path|None) -> LoadedInputs`：
+- [x] 写字段/状态/引用负例，运行 `python -m pytest tests/test_demo_contracts.py -q` 看失败，再实现 validators。
+- [x] `load_inputs(sysml_path: Path, design_path: Path|None, bom_path: Path|None) -> LoadedInputs`：
   复用 SysML adapter，partial 拒绝；文本逐行定位，PDF 用 pypdf 逐页提取，空页/扫描件给明确错误；
   XLSX 用 openpyxl `read_only=True,data_only=False` 检测 formula；CSV 用 stdlib csv，拒绝缺列/重复 item_id。
   source_element_id 只映射已存在模型元素；BOM 名称不一致保留冲突，不用名字覆盖 CSM。
-- [ ] 文件载入抛 `DemoInputError(code: str, message: str)`，code 限定
+- [x] 文件载入抛 `DemoInputError(code: str, message: str)`，code 限定
   UNSUPPORTED_FORMAT / LIMIT_EXCEEDED / NO_TEXT / ENCRYPTED / INVALID_BOM / PARTIAL_MODEL / INVALID_MODEL。
-- [ ] 添加入参越界、超量、伪扩展名、公式、未知引用、独立资料误配、用户路径穿越测试。
+- [x] 添加入参越界、超量、伪扩展名、公式、未知引用、独立资料误配、用户路径穿越测试。
   无文件保存副作用的 loader 只读；UI 保存路径检查在 D6 另测。
-- [ ] 修复现有 `results_documentation` 的输出，保留现有键并新增 item/function ID、source_refs、
+- [x] 修复现有 `results_documentation` 的输出，保留现有键并新增 item/function ID、source_refs、
   模式的 item_id/function_id 关联、cause mechanism/evidence、effect status/evidence/affected_item_id。
   现有 FailureModeCandidate 没有自身 id，本次不新增其自身 ID。
   `tests/test_demo_legacy_export.py` 构建带嵌套来源的候选，经原图执行后逐字段比对，不能只测新 serializer。
 - [ ] 运行 D2 测试、全套 `python scripts/verify.py` 和 B0/B1；审查/记录 D2 并提交。
+
+D2 执行证据与实现细化见 [D2 记录](../records/DEMO_V1/D2_INPUT_EVIDENCE_AND_LEGACY_EXPORT.md)。
 
 ## D3 — 可独立验证的只读检索（A05、A06）
 

@@ -49,6 +49,38 @@ MVP-1 已把系统事实来源替换为真实 SysML v2：
 - Function 分配基于真实 owner traversal 证据（禁止 name/FQN 匹配）
 - B0/B1 benchmark 通过（`docs/evaluation/MVP_1_BENCHMARK_REPORT.md`）
 
+Demo V1 已具备固定资料包及 D2 输入基础（当前审核状态见 PROGRESS）：
+
+- [固定案例包](examples/demo_v1/README.md)：SysML 原样副本、BOM、中文设计说明和来源清单。
+- 只读载入一个 SysML、可选设计说明（MD/TXT/文本 PDF）与 BOM（CSV/XLSX 的 BOM 表）。
+  保留文件 hash、行/页/模型元素定位、冲突与缺失项；不把文档断言自动提升为模型事实。
+- 新增严格输入/证据/候选及失败诊断契约，可脱离文件会话进行 JSON 往返。
+- 原 CLI JSON 补齐 item/function ID、source_refs，以及候选起因机理/证据和影响状态/证据。
+  原字段名称和值保留；这些新增字段不是完整 Demo 报告导出或工程批准。
+
+安装 D2 可选文件解析依赖，并在 Python 中载入固定资料：
+
+```bash
+uv sync --extra demo
+uv run --extra demo python scripts/verify.py
+```
+
+```python
+from pathlib import Path
+from fmea_agent.adapters.documents.demo_inputs import load_inputs
+
+inputs = load_inputs(
+    Path("examples/demo_v1/system.sysml"),
+    Path("examples/demo_v1/design.md"),
+    Path("examples/demo_v1/bom.csv"),
+)
+print(inputs.input_digest, inputs.missing_files, inputs.conflicts)
+```
+
+每文件 5 MiB、PDF 20 页、BOM 200 数据行、所有输入提取文本合计 30,000 字符；
+XLSX 总展开大小上限 25 MiB。超限、公式、无文本/加密 PDF、partial 模型或无合法目标明确拒绝。
+loader 不保存文件或执行链接；UI 上传存储与模型交互尚未实现。
+
 ## 当前不能做什么
 
 - 不读取多文件 / import 模型（单文件子集，unresolved import 显式诊断）
@@ -105,11 +137,13 @@ drift）→ docs-only patch → Independent Patch Review ACCEPTED
 ```
 
 下一步：按已同意方向推进 Demo V1，从现有 SysML 派生演示资料，接入只读知识检索、DeepSeek 和最小 UI/候选报告。
-当前只有规格与计划，演示能力尚未实现；MVP-1 稳定发布不变。
+已实现输入资料与契约基础；真实知识检索、LLM、UI 和完整候选报告尚未接入。
+MVP-1 稳定发布 tag 不变，当前开发阶段以 PROGRESS 和阶段记录为准。
 
 - [Demo 规格](docs/specs/DEMO_V1_END_TO_END_FMEA.md)
 - [Demo 实施计划](docs/plans/DEMO_V1_IMPLEMENTATION_PLAN.md)
 - [D0 记录](docs/records/DEMO_V1/D0_SPEC_AND_PLAN.md)
+- [D2 记录](docs/records/DEMO_V1/D2_INPUT_EVIDENCE_AND_LEGACY_EXPORT.md)
 
 当前阶段以 [PROGRESS.md](PROGRESS.md) 为准；[信息对齐](docs/product/MVP_2_PREPLANNING_ALIGNMENT.md)
 保留历史问答。SysML 与 Neo4j 案例独立，不强行配对。
