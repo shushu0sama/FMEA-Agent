@@ -106,7 +106,7 @@ def test_retrieval_failure_requires_explicit_action(app, monkeypatch):
     assert app.session_state["session"].phase == "READY" and app.error
     app.run()
     assert not app.download_button
-    app.button(key="analyze").click().run()
+    app.button(key="confirm_downgrade").click().run()
     assert app.session_state["session"].report.retrieval.status == "ERROR"
 
 

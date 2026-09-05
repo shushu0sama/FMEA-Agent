@@ -145,10 +145,10 @@ def _dialogue(settings: DemoSettings) -> None:
             )
         else:
             st.info("下一步：点击“生成候选报告”。系统将检索相关知识并生成待审核候选。")
-        with st.form("analyze_form"):
+        with st.form("downgrade_form" if retrieval_failed else "analyze_form"):
             submit = st.form_submit_button(
                 "确认降级并生成候选报告" if retrieval_failed else "生成候选报告",
-                key="analyze", type="primary",
+                key="confirm_downgrade" if retrieval_failed else "analyze", type="primary",
             )
         if submit:
             with st.spinner("正在生成参考候选…" if retrieval_failed else "正在检索知识并生成候选…"):
@@ -275,6 +275,8 @@ def main() -> None:
     if st.button("新建分析会话（重新载入资料）", key="reset"):
         _invalidate()
         st.rerun()
+    if st.session_state.get("operation_failed"):
+        return
     session = st.session_state.get("session")
     if session is not None and session.report is not None:
         st.header("3 · 候选与证据")

@@ -68,14 +68,17 @@ def test_connection_error_offers_explicit_downgrade_without_silent_retry(app, mo
     load_pack(app)
     start(app)
     app.button(key="continue_unknown").click().run()
-    app.button(key="analyze").click().run()
+    original_submit = app.button(key="analyze")
+    original_submit.click().run()
     before = app.session_state["session"].model_copy(deep=True)
     assert before.phase == "READY" and before.retrieval.status == "ERROR"
-    assert "确认降级" in app.button(key="analyze").label
     assert not app.download_button
+    original_submit.click().run()  # A queued original click must never authorize downgrade.
+    assert app.session_state["session"] == before
+    assert "确认降级" in app.button(key="confirm_downgrade").label
     app.run()
     assert app.session_state["session"] == before and len(searches) == 1
-    app.button(key="analyze").click().run()
+    app.button(key="confirm_downgrade").click().run()
     assert app.session_state["session"].report.retrieval.status == "ERROR"
     assert len(searches) == 1
 
@@ -116,3 +119,23 @@ def test_unexpected_start_failure_blocks_replay_and_keeps_reset_available(app, m
     app.button(key="reset").click().run()
     assert "service" not in app.session_state and "inputs" not in app.session_state
     assert not app.exception
+
+
+def test_export_failure_does_not_present_an_incomplete_delivery_as_success(app, monkeypatch):  # noqa: F811
+    from fmea_agent.adapters.reports import demo_report
+
+    def fail(*args):
+        raise RuntimeError("private export error")
+
+    load_pack(app)
+    start(app)
+    app.button(key="continue_unknown").click().run()
+    monkeypatch.setattr(demo_report, "export_report", fail)
+    app.button(key="analyze").click().run()
+    before = app.session_state["session"].model_copy(deep=True)
+    assert app.error and not app.success
+    assert not any("候选与证据" in h.value for h in app.header)
+    assert not app.download_button
+    app.run()
+    assert app.session_state["session"] == before
+    assert app.button(key="reset") and not app.exception
