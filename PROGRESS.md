@@ -12,7 +12,8 @@ Development mode:      Runnable Vertical Slice First
 FMEA profile:          AIAG & VDA FMEA Handbook（First Edition, 2019；
                        Seven-Step Approach）
 Current branch:        fix/pre-mvp2-review-remediation
-Review Baseline:       369f09d
+MVP-1 Review Baseline: 369f09d
+C-1 Review Baseline:   70052a0（ACCEPTED，2026-09-05）
 Current MVP:           MVP-1 Real System Facts（stable） /
                        Pre-MVP-2 Governance Baseline（planning docs）
 MVP status:            RELEASED（v0.1.0 = original capability release；
@@ -109,7 +110,7 @@ Post-Release Patch            — DONE（2026-09-04，annotated tag v0.1.1；
 
 ## 当前阻塞项
 
-无阻塞项。MVP-1 = RELEASED，发布流程已全部完成：
+MVP-1 发布无阻塞项。MVP-1 = RELEASED，既有发布流程已全部完成：
 
 ```text
 merge master（2871b23c，--no-ff）
@@ -122,12 +123,13 @@ current-state drift）→ v0.1.1 docs-only patch → Independent Patch
 Review ACCEPTED → annotated tag v0.1.1（current stable patch）
 ```
 
-MVP-2 实现的前置阻塞项：
+MVP-2 规划与实现边界：
 
 ```text
-Implementation Plan NOT_STARTED pending independent review of
-docs/specs/MVP_2_REAL_FAILURE_KNOWLEDGE.md.
-Production implementation NOT_STARTED.
+C-1 final re-review: ACCEPTED（仅限 credential remediation）。
+G0B / Implementation Plan: NOT_STARTED；先讨论现有数据配对案例，
+并明确 docs/specs/MVP_2_REAL_FAILURE_KNOWLEDGE.md 的 Spec 审查决定。
+Production implementation: NOT_STARTED；不得在 Spec / Plan 门禁前实现。
 ```
 
 ## 当前已知限制
@@ -138,6 +140,10 @@ Production implementation NOT_STARTED.
 - `Component.component_type` 保持 `None`（无证据规则）。
 - system-level Function 暂不被 workflow 分析目标使用。
 - partial Snapshot 的 workflow 接入行为未单独覆盖。
+- 最终 JSON 未完整保留内部来源引用、候选关联 ID、起因机理/证据和影响状态/证据；
+  当前导出不能作为完整工程证据档案。需在真实知识输出契约及集成前明确修复。
+- Python 包元数据仍为 `0.0.1`；原发布审核已将其列为非阻塞观察，包发布前需明确同步政策。
+- 后续事项及适用边界：`docs/records/G0A_R_FINAL_C1_REVIEW.md` 第 5 节。
 
 ## 当前开放研究问题
 
@@ -153,33 +159,39 @@ Production implementation NOT_STARTED.
 
 ## 当前验收基线
 
+2026-09-05 在 `70052a0` 重新执行下列本地验证；生产代码、测试和依赖与 `v0.1.1` 无差异。
+
 ```text
-pytest:          223 passed（LOCAL，Windows；212 基线 + 11 benchmark）
+pytest:          223 passed in 11.78s（LOCAL，Windows；212 基线 + 11 benchmark）
 ruff:            check . PASS（LOCAL）
 mypy:            src strict PASS（LOCAL）
 real E2E:        typed_inside_probe.sysml → workflow PASS（suite 内）
 benchmark:       B0 PASS / B1 PASS（docs/evaluation/MVP_1_BENCHMARK_REPORT.md）
-sysml-grpc:      0 orphan processes（LOCAL）
+sysml-grpc:      no-new-orphan regression PASS（suite 内，LOCAL）
+uv lock:         --check --offline PASS（LOCAL）
 master verification:
-                 PASS（LOCAL，release closeout @ v0.1.0）
+                 历史 PASS（LOCAL，release closeout @ v0.1.0；本次未重新运行 master）
 CI:              GitHub Actions NOT CONFIGURED
 ```
 
 ## 当前补充治理状态
 
 - G0A 基线：`4d38489f92c41ffa906c6d0b79a4fd34d6ecb422`，完整保留。
-- G0A + G0A-L Independent Review：`CHANGES_REQUIRED`；发现 C-1、I-1、I-2、I-3。
-- Pre-MVP-2 Governance：`READY_FOR_FINAL_RE_REVIEW`；repository-side blocker 已修复；
+- G0A + G0A-L 原 Independent Review：`CHANGES_REQUIRED`；发现 C-1、I-1、I-2、I-3，历史保留。
+- G0A-R 最终 C-1 独立复审：`ACCEPTED`（CRITICAL = 0 / IMPORTANT = 0 / MINOR = 0）；
+  reviewer 为独立 Agent `/root/c1_final_review`，基线 `70052a0`。
+- C-1 已关闭；该结论仅适用于凭证处置，不等于整个 MVP-2 Spec 获得批准。
   用户已于 2026-09-05 确认 provider-side credential 状态为
   `USER_CONFIRMED_REVOKED_OR_ROTATED`。该状态仅基于用户确认，未由 Codex、API 或
   provider 独立验证。
-- G0A-L 状态与本次验证证据：`docs/records/G0A_L_DOCUMENTATION_LOCALIZATION.md`。
+- G0A-L 历史状态与当时验证证据：`docs/records/G0A_L_DOCUMENTATION_LOCALIZATION.md`。
 - G0A-R 记录：`docs/records/G0A_R_PRE_MVP_2_REVIEW_REMEDIATION.md`。
+- 最终复审与本次 MVP-1 状态复核：`docs/records/G0A_R_FINAL_C1_REVIEW.md`。
 - Credential 处置记录：
   `docs/records/security/2026-09-05_CREDENTIAL_EXPOSURE_REMEDIATION.md`。
 - 文档默认语言：zh-CN，保留英文技术标识符及原始代码块。
 - MVP-2 production implementation：`NOT_STARTED`。
-- MVP-2 Implementation Plan：`NOT_STARTED pending spec review`；本次不创建 Plan。
+- G0B / MVP-2 Implementation Plan：`NOT_STARTED`；后续先明确 Spec 审查决定与实施范围。
 
 ## 下一步
 
@@ -187,15 +199,13 @@ MVP-1 = RELEASED（v0.1.0 = 原始能力发布；
 v0.1.1 = 当前稳定文档补丁）。发布后补丁状态为
 DONE（独立补丁审核 ACCEPTED；附注 tag 为 v0.1.1）。
 
-下一步先执行 **Final Independent Re-review of C-1 only**。只有复审 `ACCEPTED` 后，
-才可进入 **G0B MVP-2 Implementation Planning**。原规划顺序保留如下：
+**C-1 最终复审已通过，MVP-1 按既有发布范围收尾。** 按用户要求，下一步先讨论编程思路，
+以**现有 Neo4j 知识库和现有 SysML 数据**作为首个真实验证案例的输入来源。
 
 ```text
-1. Final independent re-review of C-1 credential remediation only:
-   - `docs/records/security/2026-09-05_CREDENTIAL_EXPOSURE_REMEDIATION.md`
-   - `docs/records/G0A_R_PRE_MVP_2_REVIEW_REMEDIATION.md`
-2. After review acceptance, create `docs/plans/MVP_2_IMPLEMENTATION_PLAN.md`.
-禁止:     开始 MVP-2 production implementation before spec review
+1. 讨论并选定 SysML 文件/分析目标与 Neo4j 知识子集，明确来源及可核对的参考匹配。
+2. 明确 MVP-2 Spec 审查决定和实施范围，再进入 G0B 并创建 Implementation Plan。
+禁止: 开始 MVP-2 production implementation before spec / plan gates。
 ```
 
 Patch 详情：`docs/records/MVP_1/MVP_1_POST_RELEASE_PATCH.md`。

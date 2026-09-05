@@ -2,6 +2,9 @@
 
 Status: REPOSITORY_REMEDIATED / USER_CONFIRMED_REVOKED_OR_ROTATED
 
+> 2026-09-05 最终独立 C-1 复审：`ACCEPTED`。
+> [复审证据](../G0A_R_FINAL_C1_REVIEW.md)不改变下方 provider 状态的用户确认边界。
+
 ## 检测
 
 - Detection source：G0A + G0A-L Independent Review。

@@ -106,8 +106,10 @@ drift）→ docs-only patch → Independent Patch Review ACCEPTED
 
 下一步：MVP-2 Real Failure Knowledge — Read-only Planning（另开 Session）。
 Pre-MVP-2 治理与 Spec 基线仅作为文档准备；生产实现仍为 `NOT_STARTED`。
-G0A-L 已补充中文文档语言政策，下一步先独立审核 G0A + G0A-L，再进入 G0B 规划。
-MVP-2 Implementation Plan 仍为 `NOT_STARTED pending spec review`。
+当前审查、规划状态与下一步统一以 [PROGRESS.md](PROGRESS.md) 为准。
+MVP-1 收尾复核及已知后续事项见
+[最终 C-1 复审与 MVP-1 状态复核](docs/records/G0A_R_FINAL_C1_REVIEW.md)。
+后续先讨论现有 Neo4j 知识库与现有 SysML 数据的配对案例；MVP-2 Implementation Plan 尚未创建。
 
 尚未实现（MVP-1 明确延后，不宣传为已有能力）：
 

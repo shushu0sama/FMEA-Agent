@@ -78,7 +78,7 @@
 ## 当前稳定发布
 
 当前稳定发布 tag 为 `v0.1.1`，它是 MVP-1 Real System Facts 之上的文档补丁；
-MVP-2 生产实现仍为 `NOT_STARTED`，Implementation Plan 仍为 `NOT_STARTED pending spec review`。
+当前治理、Spec 审查及 Implementation Plan 状态统一见 [PROGRESS.md](../PROGRESS.md)。
 
 ## 文档语言与当前治理任务
 
@@ -87,8 +87,9 @@ MVP-2 生产实现仍为 `NOT_STARTED`，Implementation Plan 仍为 `NOT_STARTED
 G0A-L 语言治理的范围、文件清单及验证证据见
 `docs/records/G0A_L_DOCUMENTATION_LOCALIZATION.md`；该记录记载本次工作，不替代 `PROGRESS.md` 的当前状态职责。
 
-G0A + G0A-L Independent Review 返回 `CHANGES_REQUIRED`；G0A-R 的修复与验证记录见
-`docs/records/G0A_R_PRE_MVP_2_REVIEW_REMEDIATION.md`，credential 处置记录见
-`docs/records/security/2026-09-05_CREDENTIAL_EXPOSURE_REMEDIATION.md`。
-当前状态为 `READY_FOR_RE_REVIEW`；MVP-2 production implementation 和
-MVP-2 Implementation Plan 均保持 `NOT_STARTED`。
+G0A + G0A-L 的原审核、G0A-R 修复与后续 C-1 最终复审形成以下追踪链；
+历史交付状态不替代 `PROGRESS.md` 的当前状态：
+
+- [原修复记录](records/G0A_R_PRE_MVP_2_REVIEW_REMEDIATION.md)。
+- [凭证处置记录](records/security/2026-09-05_CREDENTIAL_EXPOSURE_REMEDIATION.md)。
+- [最终 C-1 复审与 MVP-1 状态复核](records/G0A_R_FINAL_C1_REVIEW.md)。

@@ -4,6 +4,9 @@ Status: READY_FOR_FINAL_RE_REVIEW
 日期：2026-09-05
 证据分类：LOCAL
 
+> 上方为原修复交付状态。2026-09-05 后续独立 C-1 复审结果为 `ACCEPTED`，
+> 详见 [最终复审记录](G0A_R_FINAL_C1_REVIEW.md)。原修复范围、验证和当时的下一步保留如下。
+
 ## 1. 基线与范围
 
 - Branch：`fix/pre-mvp2-review-remediation`。
