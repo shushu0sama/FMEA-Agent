@@ -40,6 +40,37 @@ git log -5 --oneline
 
 后续阶段切换时同步更新本节入口，避免留下第二份过期状态快照。
 
+### 可直接复制的新会话启动语
+
+```text
+请继续当前 FMEA Agent 项目。先读取 AGENTS.md、PROGRESS.md、docs/README.md，
+再按当前入口读取 Spec、Plan、上一阶段记录及有效的 Stage 内交接记录。
+先核对实际仓库路径、branch、HEAD、工作区差异，简要报告：
+当前已实现能力、当前 Stage、下一项未完成任务、范围边界、所依据的文件。
+核对一致后，执行 PROGRESS 指定的下一阶段；不要重复已接受的需求问卷。
+出现分支或记录差异时先追查来源，不自动 reset、丢弃修改或把旧 master 当成最新状态。
+完成后运行适用验证，更新 Stage Record 与 PROGRESS，区分实现完成和独立审核通过。
+```
+
+这段启动语只提供恢复流程，不保存另一份阶段或 HEAD 快照。下一阶段若已推进，
+按最新 PROGRESS 执行，不能长期照抄旧聊天中的“从 D1 开始”。
+
+### 顺序切换与并行开发
+
+- 顺序切换：旧会话结束写入后，新会话可在同一 checkout 继续；仍需执行上述核对。
+- 同一 Stage 中断：使用[交接模板](records/templates/SESSION_HANDOFF_TEMPLATE.md)，
+  保存到该 Stage 的 records 目录，并在 PROGRESS 链接唯一有效交接；恢复/收尾后标记历史状态。
+- 同一 checkout 同时只保留一个实现写入者。其他会话可只读评审；独立实现任务使用各自 worktree/分支，
+  明确范围，集成后重新验证。不能在另一个会话仍写入时替它切分支或提交所有差异。
+- 新 worktree 必须包含当前规划及收尾提交；检查实际起点，不默认旧 master 已包含它们。
+  `.venv`、ignored 本地输入、环境变量和服务连接需要独立核对；只记录配置变量名和资料位置，
+  不读取或复制密钥到交接文档，也不把缺少配置悄悄改成 mock 成功。
+
+Codex 的项目指令加载和 worktree 隔离机制参见
+[官方 AGENTS.md 文档](https://learn.chatgpt.com/docs/agent-configuration/agents-md)与
+[官方 worktree 文档](https://learn.chatgpt.com/docs/environments/git-worktrees)。
+文件恢复流程能降低漂移并使差异可检查，不能保证模型永不误读；测试和独立审核仍是必要关口。
+
 ## 生命周期状态
 
 `ACTIVE` = 当前操作依据。
@@ -82,6 +113,7 @@ git log -5 --oneline
 - `docs/research/NEO4J_FAILURE_KNOWLEDGE_BASELINE.md` — 供 MVP-2 规划使用的现有 Neo4j 故障知识基线。
 - [MVP-2 输入数据盘点](research/MVP_2_INPUT_DATA_INVENTORY_2026_09_05.md) — 原始 Excel、当前 Neo4j 查询及 SysML 目录实查；包含查询复现与来源限制。
 - [FMEA 智能化参考项目](research/FMEA_INTELLIGENCE_REFERENCE_REVIEW_2026_09_05.md) — 2026-09-05 外部调研；仅供现有 Neo4j + SysML 数据后续讨论。
+- [LLMRiskAnalyzer 复用评估](research/LLMRISKANALYZER_REUSE_REVIEW_2026_09_05.md) — 固定提交的源码与许可证检查；当前仅参考，不引入代码或改变 Demo 范围。
 - `docs/research/OPENSYSML_SPIKE_REPORT.md` — MVP-1 OpenSysML 探索证据。
 - `docs/research/OPENSYSML_DEPENDENCY_REPRODUCTION_REPORT.md` — OpenSysML 固定版本的复现证据。
 - `docs/research/SYSML_SOURCE_CATALOG.md` — SysML 来源目录。

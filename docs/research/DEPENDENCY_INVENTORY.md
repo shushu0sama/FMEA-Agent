@@ -24,6 +24,12 @@ WIP
 DEFERRED
 ```
 
+## 外部 FMEA 研究实现
+
+| 项目 | 固定提交 | 复用分类 | 当前决策 |
+|---|---|---|---|
+| [LLMRiskAnalyzer](https://github.com/YuchenXia/LLMRiskAnalyzer) | `03dfd4cf3e6095d71f6b78317f333911016a65e3` | R | 未发现许可证声明；仅参考字段建议交互，不引入代码/数据/依赖。[核查记录](LLMRISKANALYZER_REUSE_REVIEW_2026_09_05.md) |
+
 ## 核心开发依赖
 
 | 项目 | URL | 作用 | 复用分类 | 成熟度 | 当前决策 |

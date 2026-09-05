@@ -177,6 +177,17 @@ CI:              GitHub Actions NOT CONFIGURED
 
 ## 当前补充治理状态
 
+2026-09-05 补充复核（起点 `648009ba5a571a15bb9706dabb95afb3f6db8bbd`）：
+
+- [LLMRiskAnalyzer 核查](docs/research/LLMRISKANALYZER_REUSE_REVIEW_2026_09_05.md)：固定上游提交，
+  分类 R；未发现许可证声明，不复制代码/数据或引入依赖，不改变 Demo Spec。
+- [新会话启动说明](docs/README.md)补充实际 Git/阶段核对、顺序交接与并行写入边界；
+  扩展既有 Stage 内交接模板，不另建长期状态台账。
+- LOCAL 重新执行 `.venv/Scripts/python.exe scripts/verify.py`：223 passed in 12.23s；
+  Ruff PASS；mypy PASS（24 source files）。包括现有 SysML/benchmark 回归，非 Demo live 验收。
+- 本次仅研究/交接文档变更；外部 SysML 目录保留原位，D1 演示资料包尚未创建，
+  D1–D7 仍 NOT_STARTED。独立审核结论仍只沿用已接受的 D0，不扩展为本次补充文档的新审核。
+
 - G0A 基线：`4d38489f92c41ffa906c6d0b79a4fd34d6ecb422`，完整保留。
 - G0A + G0A-L 原 Independent Review：`CHANGES_REQUIRED`；发现 C-1、I-1、I-2、I-3，历史保留。
 - G0A-R 最终 C-1 独立复审：`ACCEPTED`（CRITICAL = 0 / IMPORTANT = 0 / MINOR = 0）；
