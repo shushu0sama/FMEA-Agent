@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Self
 
 from pydantic import SecretStr
 
+from fmea_agent.adapters.llm._logging import quiet_http_logs
 from fmea_agent.application._demo_json import MAX_JSON_BYTES, json_object
 from fmea_agent.application.demo_ports import DemoModelError
 
@@ -34,7 +35,8 @@ class DeepSeekLLMClient:
         self._key = SecretStr(api_key)
         self._owned = http_client is None
         # No ambient proxy credentials, redirects, or transport-level retries.
-        self._http = http_client or httpx.Client(trust_env=False, follow_redirects=False)
+        with quiet_http_logs():
+            self._http = http_client or httpx.Client(trust_env=False, follow_redirects=False)
         self._closed = False
         self._usage: dict[str, int | str | None] = {
             "model": MODEL,
@@ -60,13 +62,18 @@ class DeepSeekLLMClient:
     def close(self) -> None:
         self._closed = True
         if self._owned:
-            self._http.close()
+            with quiet_http_logs():
+                self._http.close()
 
     def usage(self) -> dict[str, int | str | None]:
         """Token sums include only reported counters, not estimates for missing responses."""
         return dict(self._usage)
 
     def generate(self, prompt: str) -> str:
+        with quiet_http_logs():
+            return self._generate(prompt)
+
+    def _generate(self, prompt: str) -> str:
         import httpx
 
         if self._closed:

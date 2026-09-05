@@ -111,6 +111,10 @@ HTTPX 0.28.1 上游核对：[超时](https://www.python-httpx.org/advanced/timeo
   包含原 CLI、SysML、D1–D3、B0/B1 与 orphan 回归；gold/度量未变，无已观察退化。
 - `mypy src scripts/demo_model_smoke.py`：40 files PASS。
 - `uv lock --check --offline`：78 packages PASS；diff whitespace PASS。
+- 本机拦截 HTTPX import 后，application/adapter 模块导入通过，构造 adapter 返回
+  DEPENDENCY_MISSING；这是依赖边界模拟，不是新建无 extra 环境的验证。
+- 66 条 Markdown 本地链接及围栏检查通过；变更文件四类凭证形态扫描 0 hits。
+  该扫描不证明能识别所有秘密形态，没有读取 ignored 秘密文件。
 - `uv add --optional demo httpx==0.28.1` / `uv sync --extra demo`：仅增加直接依赖声明，
   已有包版本不变；HTTPX 的安装元数据许可证为 BSD-3-Clause。
 
@@ -126,8 +130,40 @@ CI = NOT_CONFIGURED。真实 Neo4j 仍沿用 D3 的 SKIPPED / CONFIG_MISSING 状
 
 ## 6. 独立审核与 Git 收尾
 
-待实施提交/推送后开展独立只读审核，当前不宣称 ACCEPTED。
-审核结论、发现、修复与复验在本节追加，保留真实演化。
+实施提交 `321edf1960bc2f52f13f036fe27d932203138679`，独立 reviewer
+`/root/d4_independent_review` 审核范围 `9643c37..321edf1`，当前等待结论，不宣称 ACCEPTED。
+
+前两次标准 push 遇到 GitHub TLS unexpected EOF；仅命令级 schannel/HTTP 1.1 重试也握手失败。
+随后 `git -c http.version=HTTP/1.1 push -u origin codex/demo-v1-d4-deepseek-validation` 成功，
+远端分支已创建并跟踪，`origin/codex/demo-v1-d4-deepseek-validation` 与实施 HEAD 相同。
+没有关闭 TLS 验证，没有修改永久 Git 配置或覆盖远端历史。
+
+首审期间先准备治理回填和 README 过时措辞修正，随后基于 reviewer 的可复现发现进行修复。
+首审结论：**CHANGES_REQUIRED**，CRITICAL=0 / IMPORTANT=1 / MINOR=0。
+
+IMPORTANT：公共 adapter 使用标准 HTTPX/httpcore 时，`httpcore.http11` 的 DEBUG 会输出原始
+响应 header；异常已转为 AUTH_FAILED 仍不能撤回日志。reviewer 使用自建 client、
+内存 `httpcore.MockBackend` 的合成 401 响应头复现，未联网或使用私密记录。
+smoke 外围抑制能保护脚本，但不足以覆盖独立调用 adapter；不能把该问题推迟到 D6。
+
+首审 EXTERNAL_REVIEW 证据：467 passed in 19.59s；Ruff PASS、mypy src39 / src+smoke40 PASS、
+lock78 / diff PASS；24 项附加状态/JSON/FACT/原生日志与异常恢复探查。
+真实 smoke 于 `2026-09-05T10:51:44 UTC` 仍 SKIPPED / CONFIG_MISSING。
+reviewer 未修改仓库、index 或 HEAD。
+
+定点修复：新增 `adapters/llm/_logging.py`，登记固定 HTTPX 0.28.1 / HTTPcore 1.0.9 的全部
+原生 logger，在 adapter 构造、generate（含重试/响应关闭）与拥有 client 的 close 期间挂接
+当前线程过滤器，finally 仅移除自己的 filter。不改 levels、handlers、disabled 或全局门槛；
+其他线程/非 HTTP 库日志正常输出，注入设施自定义 hooks 仍是调用者责任。
+
+新增 `tests/test_demo_deepseek_logging.py`：首 5 项 LOCAL 均先因真实原生头/模拟错误日志泄漏失败，
+修复后通过；另测全部登记 logger、一次重试和过滤器/handler/门槛恢复。
+全部使用合成标记和内存后端，不建立真实连接；测试探查中的底层 pool/backend 属性仅用于回归。
+
+修复后 LOCAL：**473 passed in 20.36s**，Ruff PASS、mypy src40 / src+smoke41 PASS，
+lock78 / diff PASS；D4 累计新增 95 项测试。真实 smoke 于
+`2026-09-05T10:53:59.130618+00:00` 仍 SKIPPED / CONFIG_MISSING。
+修复提交后送回同一独立 reviewer 复审，最终 ACCEPTED 需由其判定。
 
 ## 7. 已知限制与下一步
 

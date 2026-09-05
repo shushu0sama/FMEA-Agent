@@ -170,11 +170,13 @@ Demo D1/D2: ACCEPTED；D3: ACCEPTED；D4: READY_FOR_REVIEW；D5–D7: NOT_STARTE
 
 - [D4 记录](docs/records/DEMO_V1/D4_DEEPSEEK_AND_GENERATION_VALIDATION.md)：传输预算、输入解析、原文支持、生成校验与安全 smoke。
 - 起点 `9643c37`，fetch 后本地/远端 D3 一致；创建 `codex/demo-v1-d4-deepseek-validation`。
-- LOCAL：D4 新增 89 项通过；全套 467 passed in 19.83s，Ruff PASS、mypy src 39 files PASS；
-  src+model smoke 40 files PASS、lock offline 78 packages PASS。B0/B1、旧 CLI/SysML 与 D1–D3 回归通过。
+- LOCAL：修复后 D4 新增 95 项通过；全套 473 passed in 20.36s，Ruff PASS、mypy src 40 files PASS；
+  src+model smoke 41 files PASS、lock offline 78 packages PASS。B0/B1、旧 CLI/SysML 与 D1–D3 回归通过。
 - `httpx==0.28.1` 补为 Demo 直接依赖，未升级已有包；官方 API 核对无实质差异。
 - 真实 DeepSeek smoke：SKIPPED / CONFIG_MISSING，通用 JSON/完整 schema 均 NOT_RUN，未发真实请求。
-- 当前 READY_FOR_REVIEW，等待独立审核；不把 LOCAL 通过写成 ACCEPTED。
+- 首审 `321edf1` CHANGES_REQUIRED：1 项 IMPORTANT（公共 adapter 原生 HTTP DEBUG 头日志）；
+  已新增当前线程日志过滤与六项回归，修复后 READY_FOR_REVIEW，等待独立复审。
+- 实施 `321edf1` 已成功推送；前几次 TLS 失败过程见 D4 记录，不改写为首次成功。
 - D5–D7 尚未实现；无评分、批准或知识写回，正式 MVP-2/3 尚未验收。
 
 ## D3 验证与审核基线（已接受）
