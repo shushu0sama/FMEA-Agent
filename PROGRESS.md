@@ -170,14 +170,15 @@ Demo D1–D5: ACCEPTED；D6: READY_FOR_REVIEW；D7: NOT_STARTED。
 
 - [D6 记录](docs/records/DEMO_V1/D6_REPORTS_AND_LOCAL_UI.md)：自包含导出、默认 live 配置与本机四区 UI。
 - 起点 `8a77ed9`，fetch 后本地/远端 D5 一致，当前 checkout 创建 D6 单目标分支。
-- LOCAL：新增 26 项导出/配置/UI 测试；全套 524 项通过，最终 lint/type/lock 证据见 D6 记录。
+- LOCAL：新增 29 项导出/配置/UI 测试；全套 527 项、Ruff/mypy/lock 通过，证据见 D6 记录。
 - LOCAL 浏览器：真实三类文件上传、仅文档提示、补问/未知继续、mock 生成、三格式下载与文件移除失效。
   下载文件与独立恢复后的导出器结果逐字节相同；已移除原生表格不带防护的 CSV 下载旁路。
 - LOCAL 真实 DeepSeek：公开资料、2 次请求、8 条候选、独立导出三格式通过；检索 FAKE_NO_MATCH，
   未构造 Neo4j adapter 或发送私有图正文。D3 最新真实图 PASS 保持有效；本阶段未重跑。
 - 新增 streamlit 1.63.0；新传递 NumPy 限制为 2.3.5 以兼容 Python 3.11 类型检查。
   既有依赖版本不变，104 locked packages；依赖/许可证细节见依赖清单与 D6 记录。
-- 当前 READY_FOR_REVIEW；独立审核尚未完成，不宣称 ACCEPTED。D7 NOT_STARTED，工程质量未验收。
+- 初审发现 1 项 IMPORTANT（mock 补问导致非首个目标漂移），已修复并补充 3 项回归；
+  当前 READY_FOR_REVIEW，等待固定修复提交独立复验，不宣称 ACCEPTED。D7 NOT_STARTED，工程质量未验收。
 - [中文用户指南](docs/product/DEMO_V1_USER_GUIDE.md)：启动、模式、限制、来源和报告含义。
 
 ## D5 验证与审核基线（已接受）

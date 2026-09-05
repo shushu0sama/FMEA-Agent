@@ -186,7 +186,7 @@ drift）→ docs-only patch → Independent Patch Review ACCEPTED
 
 下一步：完成 D6 独立审核与收尾后，按既有计划进入 D7 集成验收；不据此宣布整个 Demo 完成。
 已实现输入资料、只读检索和 DeepSeek 适配/校验；真实 DeepSeek 与 Neo4j 独立 smoke 均通过，
-会话工作流、UI 和完整候选报告尚未接入。
+会话工作流、UI 和完整候选报告现已接入；完整图与模型集成和工程质量仍待后续验收。
 MVP-1 稳定发布 tag 不变，当前开发阶段以 PROGRESS 和阶段记录为准。
 
 - [Demo 规格](docs/specs/DEMO_V1_END_TO_END_FMEA.md)

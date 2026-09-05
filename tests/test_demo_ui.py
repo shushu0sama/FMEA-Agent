@@ -4,6 +4,8 @@ from pathlib import Path
 
 import pytest
 from streamlit.testing.v1 import AppTest
+from test_demo_contracts import report_data  # noqa: F401
+from test_demo_service import inputs  # noqa: F401
 
 ROOT = Path(__file__).resolve().parents[1]
 APP = ROOT / "src/fmea_agent/ui/demo_app.py"
@@ -62,9 +64,9 @@ def test_upload_safe_names_and_change_invalidates_old_report(app):
     raw = (PACK / "system.sysml").read_bytes()
     app.file_uploader(key="sysml_upload").upload("../../原始.sysml", raw).run()
     app.button(key="load_inputs").click().run()
-    inputs = app.session_state["inputs"]
-    assert inputs.files[0].filename == "原始.sysml"
-    assert inputs.files[0].sha256 == __import__("hashlib").sha256(raw).hexdigest()
+    loaded = app.session_state["inputs"]
+    assert loaded.files[0].filename == "原始.sysml"
+    assert loaded.files[0].sha256 == __import__("hashlib").sha256(raw).hexdigest()
     start(app)
     old_service = app.session_state["service"]
     app.file_uploader(key="sysml_upload").upload("不同.sysml", raw + b"\n").run()
@@ -154,3 +156,26 @@ def test_input_parser_error_cannot_render_external_markup(app, monkeypatch):
     load_pack(app)
     assert not app.exception
     assert all("https://invalid" not in e.value for e in app.error)
+
+
+def test_ui_clarification_keeps_selected_second_target(app, monkeypatch, inputs):  # noqa: F811
+    from fmea_agent.application import demo_uploads
+    from fmea_agent.domain.system_model import Component, Function
+
+    inputs.model.components.append(Component(id="c2", name="second motor", parent_id="s1"))
+    inputs.model.functions.append(Function(id="f2", name="second spin", allocated_to=["c2"]))
+    monkeypatch.setattr(demo_uploads, "load_inputs", lambda *a: inputs.model_copy(deep=True))
+    load_pack(app)
+    app.selectbox(key="target").set_value(("c2", "f2", "second motor / second spin")).run()
+    start(app)
+    assert app.session_state["session"].intake.component_id == "c2"
+    app.text_area(key="answer_message").set_value("仍未知").run()
+    app.button(key="answer").click().run()
+    assert app.session_state["session"].intake.component_id == "c2"
+    app.text_area(key="answer_message").set_value("").run()
+    app.checkbox(key="continue_unknown").check().run()
+    app.button(key="answer").click().run()
+    app.button(key="analyze").click().run()
+    report = app.session_state["session"].report
+    assert report.component_id == "c2" and report.function_id == "f2"
+    assert not app.exception

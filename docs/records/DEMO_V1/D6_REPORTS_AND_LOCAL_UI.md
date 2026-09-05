@@ -67,7 +67,7 @@ SecretStr 遮蔽密钥；未将配置值放在 UI 或异常中。只展示 Uploa
 后续补测无结果语义、异常 Markdown 泄漏与原生 CSV 旁路，先复现失败再修复。
 RED 未独立保存为 Git commit。
 
-当前新增 26 项（报告 13、配置 4、UI/上传 9）；最近全套 524 passed in 24.31s。
+首审前新增 26 项（报告 13、配置 4、UI/上传 9）；当时全套 524 passed in 24.31s。
 该次随后 Ruff 检出一个新增 import 空行顺序问题，已修复。
 最终提交前 `scripts/verify.py`：524 passed in 24.20s，Ruff PASS、mypy src 50 files PASS；
 `uv lock --check --offline` PASS（104 packages）、`git diff --check` PASS。
@@ -114,6 +114,8 @@ CandidateReport JSON 往返并导出三格式。未新增 D7 验收器，未读�
 结果 PASS：8 条候选，2 次请求，prompt_tokens=13102、completion_tokens=2471、total_tokens=15573。
 model=response_model=`deepseek-v4-pro`，called_at=`2026-09-05T11:54:01.767746+00:00`。
 脱离会话导出大小：JSON 57277、HTML 76688、CSV 389474 bytes。
+之后仅在本机产物 usage 补充 `mode=LIVE_DEEPSEEK`、`retrieval_mode=FAKE_NO_MATCH`、
+`graph_used=false` 的实际验证模式，再离线重导出，没有新增模型调用。
 公开产物保存在 ignored `outputs/d6-public-smoke/`，不作为已批准工程知识提交。
 
 实际模式：真实本机 SysML + LIVE_DEEPSEEK + **FAKE_NO_MATCH**；graph_used=false。
@@ -121,10 +123,31 @@ model=response_model=`deepseek-v4-pro`，called_at=`2026-09-05T11:54:01.767746+0
 此结果证明 D6 导出能承接真实模型校验后的候选，不是完整图与模型集成或工程正确率验收。
 D3 最新真实图验证仍引用 D3 第 8 节，本阶段不重复图 smoke。
 
+另外显式注入 `.env.local` 后，默认 live 配置缺失项为零，真实适配器延迟装配并关闭成功；
+该只读配置检查没有 API 调用或图查询，不将“配置具备”写作“服务连通”。
+
 ## 7. EXTERNAL_REVIEW 与 Git 保存
 
-待独立 reviewer 对固定 D6 提交运行全套检查和边界探查；实现方不自封 ACCEPTED。
-审核后的发现、修复、复验与推送结果在本节追加，保留真实演化。
+实施提交 `932a4d4e42eee0ef7420222b597a280b7a3d800b`，验证后进入 READY_FOR_REVIEW。
+独立 reviewer `/root/d6_independent_review` 正在对 `8a77ed9..932a4d4` 运行全套检查和边界探查；
+实现方不自封 ACCEPTED。审核后的发现、修复、复验与推送结果在本节追加，保留真实演化。
+
+实施分支首次标准 push 成功，远端已建立同名 upstream，`932a4d4` 已保存；未 force push。
+
+初审决定 **CHANGES_REQUIRED**：CRITICAL=0 / IMPORTANT=1 / MINOR=0。
+I-1：mock 客户端仅看最后一条用户消息选择目标，非首个组件/功能在补问“仍未知”后退回首个目标。
+reviewer 在真实 service 与 AppTest UI（仅 loader 注入两目标 CSM）均复现最终报告对象错误。
+EXTERNAL_REVIEW：524 passed in 23.96s；Ruff、mypy 50 files、lock 104、diff PASS。
+另 8 组独立探查通过：完整往返、跨字段 HTML inert、非 mode CSV 危险值/来源、格式拒绝、
+诊断转义、随机上传路径/清理、预解析限额、live 部分装配失败的关闭与安全异常。
+
+修复仅限新增 mock：反向扫描完整用户证据，保留最近明确 ID 对；按标识符边界匹配，
+防止 c1/f1 误匹配 c10/f10。新增 2 项 service 配置回归及 1 项实际 UI 多目标回归。
+前两项在原实现均失败；UI 回归通过在独立进程加载 `932a4d4` 原 generate 方法再次复现失败，
+恢复修复方法后通过。没有更改 D2–D5 或真实模型行为。等待固定修复提交的独立复验。
+
+修复后 LOCAL：`scripts/verify.py` → **527 passed in 24.16s**，Ruff PASS，mypy src 50 files PASS；
+lock offline 104 packages PASS、diff PASS。累计新增 29 项（报告 13、配置 6、UI/上传 10）。
 
 ## 8. 已知限制与下一步
 

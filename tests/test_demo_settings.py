@@ -98,3 +98,40 @@ def test_live_assembly_is_lazy_and_closes_owned_resources(monkeypatch):
     service.close()
     service.close()
     assert closed == ["driver"]
+
+
+@pytest.mark.parametrize("component_id,function_id", [("c2", "f2"), ("c10", "f10")])
+def test_mock_clarification_preserves_nonfirst_selected_target(
+    inputs,  # noqa: F811
+    component_id,
+    function_id,
+):
+    from fmea_agent.application.demo_settings import DemoSettings, create_demo_service
+    from fmea_agent.domain.system_model import Component, Function
+
+    inputs.model.components.append(Component(id=component_id, name="second motor", parent_id="s1"))
+    inputs.model.functions.append(
+        Function(id=function_id, name="second spin", allocated_to=[component_id])
+    )
+    api = create_demo_service(DemoSettings(mode="mock"))
+    try:
+        session = api.start(
+            inputs, f"选择组件 ID：{component_id}；功能 ID：{function_id}。", "start"
+        )
+        assert (session.intake.component_id, session.intake.function_id) == (
+            component_id,
+            function_id,
+        )
+        session = api.answer(session, "仍未知", "answer")
+        assert (session.intake.component_id, session.intake.function_id) == (
+            component_id,
+            function_id,
+        )
+        session = api.answer(session, "", "unknown", continue_unknown=True)
+        result = api.analyze(session, "analyze")
+        assert (result.report.component_id, result.report.function_id) == (
+            component_id,
+            function_id,
+        )
+    finally:
+        api.close()

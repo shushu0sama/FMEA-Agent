@@ -1,6 +1,7 @@
 """Explicit offline teaching client; deterministic inferences, never live evidence."""
 
 import json
+import re
 
 from fmea_agent.application.demo_ports import DemoModelError
 from fmea_agent.domain.demo_knowledge import KnowledgeQuery, RetrievalResult
@@ -31,7 +32,7 @@ class DemoMockLLMClient:
         data = json.loads(prompt.split("\n", 1)[1])
         if "allowed_targets" in data:
             targets = data["allowed_targets"]
-            # UI's explicit selection is recorded in the last user message.
+            # Clarifications need not repeat IDs. Use the most recent explicit pair.
             messages = [
                 ref["text"]
                 for ref in data["untrusted_data"]["evidence"]
@@ -40,10 +41,12 @@ class DemoMockLLMClient:
             target = next(
                 (
                     t
+                    for message in reversed(messages)
                     for t in targets
-                    if messages
-                    and t["component_id"] in messages[-1]
-                    and t["function_id"] in messages[-1]
+                    if all(
+                        re.search(r"(?<![\w:-])" + re.escape(t[key]) + r"(?![\w:-])", message)
+                        for key in ("component_id", "function_id")
+                    )
                 ),
                 targets[0],
             )
