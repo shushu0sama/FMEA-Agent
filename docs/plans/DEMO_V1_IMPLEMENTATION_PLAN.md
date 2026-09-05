@@ -15,7 +15,7 @@ LangGraph 负责明确的 Demo 状态转换；Streamlit 仅作为应用入口。
 
 Lifecycle: ACTIVE
 Status: ACCEPTED（D0 独立计划审查）
-Implementation: D1/D2 ACCEPTED；D3 READY_FOR_REVIEW；D4–D7 NOT_STARTED
+Implementation: D1/D2 ACCEPTED；D3 ACCEPTED；D4–D7 NOT_STARTED
 起点与本次准备证据：[D0 记录](../records/DEMO_V1/D0_SPEC_AND_PLAN.md)。
 
 D0–D7 是 Demo V1 的内部工作步骤，保留原 MVP 能力路线；对应关系与收尾归入原则以
@@ -232,7 +232,7 @@ ORDER BY mode_name, mode_id LIMIT $fetch_limit
 
 D3 实际验证及资源/排除接口细化见 [D3 记录](../records/DEMO_V1/D3_READONLY_NEO4J_RETRIEVAL.md)。
 真实 smoke 已执行但因 CONFIG_MISSING 跳过；上述勾选不表示真实连接通过。
-首审提出的 smoke 子 logger 脱敏问题已修复，待独立复审；真实演化见 D3 记录。
+首审提出的 smoke 子 logger 脱敏问题已修复，独立复审 `059b6ee` ACCEPTED；真实演化见 D3 记录。
 
 ## D4 — DeepSeek 与生成校验（A04、A07、A08）
 

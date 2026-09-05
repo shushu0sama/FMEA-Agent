@@ -18,7 +18,7 @@ Current MVP:           MVP-1 Real System Facts（stable） /
                        Demo V1 End-to-End FMEA（D3 read-only knowledge retrieval）
 MVP status:            RELEASED（v0.1.0 = original capability release；
                        v0.1.1 = current stable docs-only patch）
-Current Stage:         Demo D3 只读 Neo4j 检索（READY_FOR_REVIEW）
+Current Stage:         Demo D3 只读 Neo4j 检索（ACCEPTED）
 Post-Release Patch:    DONE（Independent Patch Review = ACCEPTED；
                        annotated tag v0.1.1）
 ```
@@ -33,7 +33,7 @@ Demo 不替代或重编号 MVP，也不等同于 FMEA 方法七步法。当前�
 ```text
 MVP-0 COMPLETE（v0.0.1 tagged）
 MVP-1 Real System Facts       — RELEASED（v0.1.0 capability；v0.1.1 stable patch）
-Demo V1 End-to-End FMEA       — D0/D1/D2 ACCEPTED；D3 READY_FOR_REVIEW；D4–D7 NOT_STARTED
+Demo V1 End-to-End FMEA       — D0/D1/D2 ACCEPTED；D3 ACCEPTED；D4–D7 NOT_STARTED
 MVP-2 Real Failure Knowledge  — NOT_STARTED（PLANNING ONLY；
                                   原草案作为完整检索阶段参考）
 MVP-3 Evidence-grounded LLM
@@ -138,7 +138,7 @@ MVP-2 规划与实现边界：
 C-1 final re-review: ACCEPTED（仅限 credential remediation）。
 Standalone MVP-2 G0B: NOT_STARTED（完整检索阶段未单独开工）。
 Demo D0: ACCEPTED；新增 Demo Spec / Plan，复审决定见 D0 记录。
-Demo D1/D2: ACCEPTED；D3: READY_FOR_REVIEW；D4–D7: NOT_STARTED。
+Demo D1/D2: ACCEPTED；D3: ACCEPTED；D4–D7: NOT_STARTED。
 ```
 
 ## 当前已知限制
@@ -174,8 +174,10 @@ Demo D1/D2: ACCEPTED；D3: READY_FOR_REVIEW；D4–D7: NOT_STARTED。
   D3 新增 44 项；既有 B0/B1、CLI、SysML、D1/D2 和 orphan 回归通过。
 - 新增 optional extra `demo` 的 neo4j 5.28.2 与传递 pytz 2026.3.post1；既有锁定版本未升级。
 - 真实 Neo4j smoke：SKIPPED / CONFIG_MISSING（2026-09-05）；未验证真实连接或真实 Cypher。
-- EXTERNAL_REVIEW：首审 `22bd3a1` 为 CHANGES_REQUIRED（1 IMPORTANT：smoke 子 logger 脱敏）。
-  已复现并修复，待独立复审。首次实现已提交并推送，修复及最终记录待收尾。
+- EXTERNAL_REVIEW：首审 `22bd3a1` 的 1 项 IMPORTANT 已关闭；独立复审 `059b6ee` 为 ACCEPTED，
+  未解决 CRITICAL/IMPORTANT/MINOR 均为 0。独立全套 378 passed in 19.13s，Ruff/mypy/lock/diff PASS，
+  原生驱动日志泄漏及 12 个异常恢复用例通过；真实 smoke 仍 SKIPPED/CONFIG_MISSING。
+- Git：实现 `22bd3a1` 与修复 `059b6ee` 已推送；本次最终治理提交回填接受状态，代码未再改变。
 - D4–D7 尚未实现，正式 MVP-2/3 没有因此验收；无评分、批准或知识写回。
 
 ## D2 验证与审核基线（已接受）
@@ -247,7 +249,7 @@ CI:              GitHub Actions NOT CONFIGURED
 - Credential 处置记录：
   `docs/records/security/2026-09-05_CREDENTIAL_EXPOSURE_REMEDIATION.md`。
 - 文档默认语言：zh-CN，保留英文技术标识符及原始代码块。
-- MVP-2 production implementation：`NOT_STARTED`。
+- 正式 MVP-2 独立阶段：`NOT_STARTED`；Demo D3 已实现受限检索，不能将其记为全量 MVP-2 验收。
 - 独立 MVP-2 G0B 未开工；当前工作入口转为 Demo D0 Spec/Plan 及其复审记录。
 
 ## 下一步
@@ -276,9 +278,9 @@ SysML 与 Neo4j 案例仍独立；无匹配、相关但适用性待确认、推�
 Demo 可用自动测试减少人工准备，但不以同源派生资料或模型自己生成的答案验证工程正确率。
 历史讨论见 [信息对齐台账](docs/product/MVP_2_PREPLANNING_ALIGNMENT.md)，现为 HISTORICAL。
 
-当前 D3 已实现并通过本机契约/回归，正在独立审核及 Git 收尾；详细状态见上方 D3 专节。
+当前 D3 已实现、独立复审 ACCEPTED，实施/修复已推送；详细证据见上方 D3 专节及 D3 记录。
 D3 基线含 `f6d83d1` 及全部 D0–D2 规划、实现、审核记录；不从旧 master 恢复。
-D3 收尾后下一阶段是 D4 DeepSeek 与生成校验；不重复问卷，不提前实现 D5–D7。
+下一阶段是 D4 DeepSeek 与生成校验；不重复问卷，不提前实现 D5–D7。
 真实 Neo4j 配置缺失时 smoke 明确跳过，待配置后另行执行。
 约一周为可放宽目标窗口；真实API/图/前端接入状态分别记录，不能以mock通过替代live验收。
 

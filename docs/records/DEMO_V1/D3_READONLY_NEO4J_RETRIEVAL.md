@@ -1,8 +1,8 @@
 # Demo V1 D3 — 可独立验证的只读 Neo4j 知识检索
 
 日期：2026-09-05
-Stage status: READY_FOR_REVIEW
-Closeout status: 待独立审核及最终远端保存
+Stage status: ACCEPTED（仅 Demo V1 / D3 技术范围）
+Closeout status: ACCEPTED（实现、修复与复审记录随 D3 分支保存）
 Scope: Demo V1 / D3（A05、A06）；不是完整 Demo 或正式 MVP-2 验收。
 
 ## 1. 依据与 Git 基线
@@ -137,7 +137,26 @@ stdlib `logging.disable(CRITICAL)`，并在 finally 恢复原门槛；不改 log
 修复后 LOCAL：**378 passed in 19.03s**，Ruff PASS、mypy src PASS（35 files）；
 mypy src+smoke PASS（36 files），diff PASS。D3 共新增 44 项测试。
 真实 smoke 于 `2026-09-05T10:20:42.394056+00:00` 再次 SKIPPED/CONFIG_MISSING。
-修复后重新送审；最终复审结论待回填，不沿用首审全套通过冒称验收。
+修复提交 `059b6ee` 已推送，随后重新送审，不沿用首审全套通过冒称验收。
+
+最终复审：同一独立 reviewer，基线 `059b6ee`，总范围 `f6d83d1..059b6ee`。
+结论 **ACCEPTED（仅 D3 技术范围）**；未解决 CRITICAL=0 / IMPORTANT=0 / MINOR=0。
+
+EXTERNAL_REVIEW 新证据：
+
+- 全套 **378 passed in 19.13s**，Ruff --no-cache PASS、mypy src+smoke 36 files PASS、
+  uv lock --check --offline 78 packages PASS、总范围与修复 diff PASS。
+- 原 `neo4j.pool` 实际 driver 构造/关闭与 `Bolt5x0.run` 的 IO 参数泄漏均已关闭；
+  两条探查均确认 logger level/disabled/handlers 及全局 disable 完整恢复。
+- 额外 4 种原始日志门槛 × RuntimeError/SystemExit/KeyboardInterrupt，12 个异常恢复用例 PASS。
+  全部使用合成数据/内存连接，未建立真实数据库连接。
+- 真实 smoke 于 `2026-09-05T10:22:58 UTC` 仍 SKIPPED/CONFIG_MISSING。
+- 审核前后 HEAD、index 与 branch 未变，工作区干净；reviewer 未修改代码或 Git。
+
+本次最后只回填 PROGRESS/Plan/本记录的复审状态，不改变被审代码；
+不扩大验收到真实服务、完整 Demo、工程质量或正式 MVP-2/3。
+实施与修复已推送到同名远端分支，最终治理提交锚点可用
+`git log -1 --format=%H -- docs/records/DEMO_V1/D3_READONLY_NEO4J_RETRIEVAL.md` 查询，避免自引用 SHA。
 
 收尾范围检查：60 个 Markdown 本地链接及围栏通过；D2 祖先关系确认，
 领域、旧 workflow、D1 工件/夹具和 benchmark 无差异；变更 blob 的四类凭证形态扫描 0 hits。
