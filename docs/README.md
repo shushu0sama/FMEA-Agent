@@ -21,6 +21,9 @@
 当前入口为 Demo V1：读完 `AGENTS.md` 与 `PROGRESS.md` 后，读取
 [Demo 规格](specs/DEMO_V1_END_TO_END_FMEA.md)、[实施计划](plans/DEMO_V1_IMPLEMENTATION_PLAN.md)
 和 [D0 记录](records/DEMO_V1/D0_SPEC_AND_PLAN.md)。D1–D7 的实际完成情况仍以 PROGRESS 和阶段记录为准。
+MVP 能力路线继续保留；D1–D7 是 Demo 内部步骤，不是 MVP 编号替换。
+新会话先核对 [Demo Spec 第 1.1 节对应表](specs/DEMO_V1_END_TO_END_FMEA.md#11-mvp-路线与-demo-步骤的对应关系)，
+任务命名使用 `Demo V1 / Dn`，Demo 通过不等于正式 MVP-2/3/5/7 通过。
 [信息对齐台账](product/MVP_2_PREPLANNING_ALIGNMENT.md)保存历史问答，
 [原 MVP-2 草案](specs/MVP_2_REAL_FAILURE_KNOWLEDGE.md)为完整检索阶段参考，不是当前全部 Demo 范围。
 

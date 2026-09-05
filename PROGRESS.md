@@ -25,6 +25,11 @@ Post-Release Patch:    DONE（Independent Patch Review = ACCEPTED；
 
 ## 总体路线图
 
+MVP 是正式能力里程碑；Demo V1 / D0–D7 是近期演示的内部实施步骤。
+Demo 不替代或重编号 MVP，也不等同于 FMEA 方法七步法。当前先集成受限 MVP-2/3 能力供演示，
+随后核对正式 MVP 差距、复用已有实现并分别验收。
+详细对应关系见 [Demo Spec 第 1.1 节](docs/specs/DEMO_V1_END_TO_END_FMEA.md#11-mvp-路线与-demo-步骤的对应关系)。
+
 ```text
 MVP-0 COMPLETE（v0.0.1 tagged）
 MVP-1 Real System Facts       — RELEASED（v0.1.0 capability；v0.1.1 stable patch）
@@ -39,6 +44,9 @@ MVP-7 Aerospace Benchmark
 MVP-8 MCP
 MVP-9 Dynamic FMEA
 ```
+
+上表 MVP-2 的 NOT_STARTED 指正式独立阶段尚未开工，不要求未来忽略 Demo 中已实现的检索工作。
+Demo 开工后应分别记录实际能力和正式验收状态，不能用任何单一状态隐藏部分完成情况。
 
 ## 当前 MVP — MVP-1 Real System Facts
 

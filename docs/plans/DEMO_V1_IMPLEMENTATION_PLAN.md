@@ -18,6 +18,10 @@ Status: ACCEPTED（D0 独立计划审查）
 Implementation: NOT_STARTED
 起点与本次准备证据：[D0 记录](../records/DEMO_V1/D0_SPEC_AND_PLAN.md)。
 
+D0–D7 是 Demo V1 的内部工作步骤，保留原 MVP 能力路线；对应关系与收尾归入原则以
+[Demo Spec 第 1.1 节](../specs/DEMO_V1_END_TO_END_FMEA.md#11-mvp-路线与-demo-步骤的对应关系)为准。
+新会话使用 `Demo V1 / Dn` 标识任务，不把 Dn 当成 MVP-n，也不将其混同于 FMEA 方法七步法。
+
 ## 全局约束
 
 - 首例 `hydraulicPump / motor / spin`；根动作 `pumpSpin` 明确排除。
@@ -355,6 +359,8 @@ uv run --extra demo streamlit run src/fmea_agent/ui/demo_app.py --server.address
   无真实接口配置时前者仅离线演示，不称真实端到端通过。
 - [ ] 更新真实能力、已知限制、启动命令、实际依赖许可证与 lock；仅对Demo创建收尾，
   不移动 MVP-1 tag，不自动宣称 MVP-2/3/5已发布。
+- [ ] 在同一验收报告中列出 MVP-2/3 已实现能力、对应代码/测试证据、已知限制与正式验收差距；
+  后续依当期正式 MVP Spec 复用、补齐和独立验收，不另起重复实现，不把 D7 当成 MVP-7。
 
 ## 排期与交接
 
