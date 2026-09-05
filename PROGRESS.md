@@ -202,6 +202,9 @@ DONE（独立补丁审核 ACCEPTED；附注 tag 为 v0.1.1）。
 **C-1 最终复审已通过，MVP-1 按既有发布范围收尾。** 按用户要求，下一步先讨论编程思路，
 以**现有 Neo4j 知识库和现有 SysML 数据**作为首个真实验证案例的输入来源。
 
+讨论参考：`docs/research/FMEA_INTELLIGENCE_REFERENCE_REVIEW_2026_09_05.md`（REFERENCE；
+不替代 Spec / Plan，不表示已采用外部项目或已验证两组数据的工程对应关系）。
+
 ```text
 1. 讨论并选定 SysML 文件/分析目标与 Neo4j 知识子集，明确来源及可核对的参考匹配。
 2. 明确 MVP-2 Spec 审查决定和实施范围，再进入 G0B 并创建 Implementation Plan。

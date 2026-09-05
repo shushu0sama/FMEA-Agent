@@ -52,6 +52,7 @@
 - `docs/foundation/FMEA_AGENT_STAGED_DEVELOPMENT_AND_REUSE_GUIDE.md` — 长篇阶段与复用指南。
 - `docs/research/DEPENDENCY_INVENTORY.md` — 依赖与复用清单。
 - `docs/research/NEO4J_FAILURE_KNOWLEDGE_BASELINE.md` — 供 MVP-2 规划使用的现有 Neo4j 故障知识基线。
+- [FMEA 智能化参考项目](research/FMEA_INTELLIGENCE_REFERENCE_REVIEW_2026_09_05.md) — 2026-09-05 外部调研；仅供现有 Neo4j + SysML 数据后续讨论。
 - `docs/research/OPENSYSML_SPIKE_REPORT.md` — MVP-1 OpenSysML 探索证据。
 - `docs/research/OPENSYSML_DEPENDENCY_REPRODUCTION_REPORT.md` — OpenSysML 固定版本的复现证据。
 - `docs/research/SYSML_SOURCE_CATALOG.md` — SysML 来源目录。
