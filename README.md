@@ -78,7 +78,8 @@ print(inputs.input_digest, inputs.missing_files, inputs.conflicts)
 ```
 
 每文件 5 MiB、PDF 20 页、BOM 200 数据行、所有输入提取文本合计 30,000 字符；
-XLSX 总展开大小上限 25 MiB。超限、公式、无文本/加密 PDF、partial 模型或无合法目标明确拒绝。
+XLSX 总展开大小上限 25 MiB，BOM 表扫描最多 10,000 物理行、64 列（含空白间隔）。
+超限、公式、加密/损坏文件、无文本 PDF、partial 模型或无合法目标明确拒绝。
 loader 不保存文件或执行链接；UI 上传存储与模型交互尚未实现。
 
 ## 当前不能做什么

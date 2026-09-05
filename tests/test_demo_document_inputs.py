@@ -328,3 +328,90 @@ def test_xlsx_expansion_limit_is_checked_before_xml_loading(tmp_path):
         archive.writestr("xl/sharedStrings.xml", b"x" * (25 * 1024 * 1024 + 1))
     assert path.stat().st_size < 5 * 1024 * 1024
     assert_error("LIMIT_EXCEEDED", bom=path)
+
+
+def rewrite_xlsx_sheet(path, transform):
+    import io
+    from zipfile import ZipFile
+
+    with ZipFile(io.BytesIO(path.read_bytes())) as source, ZipFile(path, "w") as target:
+        for entry in source.infolist():
+            data = source.read(entry.filename)
+            if entry.filename == "xl/worksheets/sheet1.xml":
+                data = transform(data)
+            target.writestr(entry, data)
+    return path
+
+
+@pytest.mark.parametrize("row", [10001, 1000000000])
+def test_sparse_xlsx_scan_has_a_time_bounded_error(tmp_path, row):
+    import re
+    import subprocess
+    import sys
+
+    path = rewrite_xlsx_sheet(
+        write_xlsx(tmp_path / "sparse.xlsx"),
+        lambda xml: re.sub(rb'r="([A-F]?)2"', lambda m: b'r="' + m[1]
+                          + str(row).encode() + b'"', xml),
+    )
+    result = subprocess.run(
+        [sys.executable, "-c", "\n".join([
+            "from pathlib import Path",
+            "from fmea_agent.adapters.documents.demo_inputs import load_inputs",
+            "from fmea_agent.adapters.documents._demo_extract import DemoInputError",
+            "import sys",
+            "try: load_inputs(Path(sys.argv[1]), bom_path=Path(sys.argv[2]))",
+            "except DemoInputError as exc: print(exc.code)",
+        ]), str(SOURCE), str(path)],
+        capture_output=True, text=True, timeout=5, check=True,
+    )
+    assert result.stdout.strip() == "LIMIT_EXCEEDED"
+
+
+def test_sparse_xlsx_inside_scan_budget_preserves_physical_locator(tmp_path):
+    import re
+
+    path = rewrite_xlsx_sheet(
+        write_xlsx(tmp_path / "sparse.xlsx"),
+        lambda xml: re.sub(rb'r="([A-F]?)2"', rb'r="\g<1>10000"', xml),
+    )
+    ref = next(ev for ev in load(bom=path).evidence if ev.source_kind == "bom")
+    assert ref.locator.endswith("#sheet=BOM&row=10000")
+
+
+@pytest.mark.parametrize("column,code", [("BM", "LIMIT_EXCEEDED"),
+                                        ("ZZZ", "LIMIT_EXCEEDED"),
+                                        ("AAAA", "UNSUPPORTED_FORMAT")])
+def test_xlsx_abnormal_column_coordinates_are_rejected(tmp_path, column, code):
+    path = rewrite_xlsx_sheet(
+        write_xlsx(tmp_path / "wide.xlsx"),
+        lambda xml: xml.replace(b'r="F2"', f'r="{column}2"'.encode()),
+    )
+    assert_error(code, bom=path)
+
+
+@pytest.mark.parametrize("damage,code", [("encrypted", "ENCRYPTED"),
+                                        ("compression", "UNSUPPORTED_FORMAT"),
+                                        ("corrupt", "UNSUPPORTED_FORMAT")])
+def test_xlsx_zip_preflight_errors_are_safe_diagnostics(tmp_path, damage, code):
+    import struct
+    from zipfile import ZipFile
+
+    path = write_xlsx(tmp_path / "damaged.xlsx")
+    with ZipFile(path) as archive:
+        entry = archive.getinfo("[Content_Types].xml")
+    data = bytearray(path.read_bytes())
+    local = entry.header_offset
+    central = data.index(b"[Content_Types].xml", local + 30 + len(entry.filename)) - 46
+    assert data[central:central + 4] == b"PK\x01\x02"
+    if damage == "encrypted":
+        struct.pack_into("<H", data, local + 6, entry.flag_bits | 1)
+        struct.pack_into("<H", data, central + 8, entry.flag_bits | 1)
+    elif damage == "compression":
+        struct.pack_into("<H", data, local + 8, 99)
+        struct.pack_into("<H", data, central + 10, 99)
+    else:
+        start = local + 30 + len(entry.filename) + len(entry.extra)
+        data[start:start + entry.compress_size] = b"\xff" * entry.compress_size
+    path.write_bytes(data)
+    assert_error(code, bom=path)

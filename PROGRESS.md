@@ -169,11 +169,13 @@ Demo D1: ACCEPTED；D2: READY_FOR_REVIEW；D3–D7: NOT_STARTED。
 ## 当前 D2 验证与审核状态
 
 - [D2 记录](docs/records/DEMO_V1/D2_INPUT_EVIDENCE_AND_LEGACY_EXPORT.md)：范围、接口细化、验证与审核。
-- LOCAL：`scripts/verify.py` → 325 passed in 17.88s；Ruff PASS；mypy src PASS（32 files）。
-  新增 92 项 D2 测试；既有 CLI、SysML、B0/B1、D1 及 orphan 回归通过。
+- LOCAL：修复后 `scripts/verify.py` → 334 passed in 18.87s；Ruff PASS；mypy src PASS（32 files）。
+  新增 101 项 D2 测试；既有 CLI、SysML、B0/B1、D1 及 orphan 回归通过。
 - 新增 optional extra `demo`：pypdf 6.17.0、openpyxl 3.1.5，传递 et-xmlfile 2.0.0；
   既有锁定版本未升级，`uv lock --check --offline` PASS。
-- EXTERNAL_REVIEW：待独立 D2 审核，当前 READY_FOR_REVIEW。
+- EXTERNAL_REVIEW：首次 CHANGES_REQUIRED（0 CRITICAL / 1 IMPORTANT / 1 MINOR），
+  稀疏 XLSX 扫描及 ZIP 异常已修复并补测；当前 READY_FOR_REVIEW，等待复审。
+- Git：首次实现 `bdbdede` 已本地提交；远端推送遇到 TLS 握手/连接超时，尚未成功。
 - D3–D7 未实现；本次没有调用 DeepSeek/Neo4j，也不宣布完整 Demo 或工程质量通过。
 
 ## D1 验证与审核基线（已接受）

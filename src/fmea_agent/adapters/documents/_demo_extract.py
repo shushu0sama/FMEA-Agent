@@ -4,7 +4,7 @@ import csv
 import io
 from dataclasses import dataclass
 from typing import Literal
-from zipfile import BadZipFile, ZipFile
+from zipfile import ZipFile
 
 ErrorCode = Literal[
     "UNSUPPORTED_FORMAT",
@@ -18,6 +18,8 @@ ErrorCode = Literal[
 MAX_FILE_BYTES = 5 * 1024 * 1024
 MAX_TEXT_CHARS = 30_000
 MAX_BOM_ROWS = 200
+MAX_XLSX_SCAN_ROWS = 10_000
+MAX_XLSX_SCAN_COLUMNS = 64
 BOM_HEADER = ("item_id", "parent_id", "name", "quantity", "unit", "source_element_id")
 
 
@@ -94,6 +96,8 @@ def _xlsx_rows(raw: bytes) -> list[tuple[int, list[str]]]:
         raise DemoInputError("UNSUPPORTED_FORMAT", "XLSX 扩展名与内容不符。")
     try:
         with ZipFile(io.BytesIO(raw)) as archive:
+            if any(info.flag_bits & 1 for info in archive.infolist()):
+                raise DemoInputError("ENCRYPTED", "不支持包含加密条目的 XLSX。")
             # Bound the archive before openpyxl inflates shared strings/styles.
             if sum(info.file_size for info in archive.infolist()) > 25 * 1024 * 1024:
                 raise DemoInputError("LIMIT_EXCEEDED", "XLSX 展开内容超过 25 MiB。")
@@ -103,7 +107,9 @@ def _xlsx_rows(raw: bytes) -> list[tuple[int, list[str]]]:
                 or b"spreadsheetml.sheet.main+xml" not in content_types
             ):
                 raise DemoInputError("UNSUPPORTED_FORMAT", "只支持无宏的 XLSX 工作簿。")
-    except (BadZipFile, KeyError) as exc:
+    except DemoInputError:
+        raise
+    except Exception as exc:
         raise DemoInputError("UNSUPPORTED_FORMAT", "文件不是有效的 XLSX 工作簿。") from exc
     from openpyxl import load_workbook  # type: ignore[import-untyped]
 
@@ -116,6 +122,13 @@ def _xlsx_rows(raw: bytes) -> list[tuple[int, list[str]]]:
         sheet.reset_dimensions()  # Do not trust declared dimensions that hide data/formulas.
         rows = []
         for number, cells in enumerate(sheet.iter_rows(), 1):
+            # Count yielded physical rows BEFORE skipping blanks. Do not pass max_row/
+            # max_col to openpyxl: that would silently hide data beyond the boundary.
+            # A sparse huge row index therefore consumes at most 10,001 iterations.
+            if number > MAX_XLSX_SCAN_ROWS or len(cells) > MAX_XLSX_SCAN_COLUMNS:
+                raise DemoInputError(
+                    "LIMIT_EXCEEDED", "BOM 工作表扫描范围超过 10,000 物理行或 64 列。"
+                )
             if any(cell.data_type == "f" for cell in cells):
                 raise DemoInputError("INVALID_BOM", f"BOM 第 {number} 行含公式。")
             values = ["" if cell.value is None else str(cell.value) for cell in cells]

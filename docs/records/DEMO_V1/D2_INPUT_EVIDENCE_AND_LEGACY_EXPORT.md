@@ -39,7 +39,9 @@ D1 工件/原夹具/benchmark gold 不变；D3–D7 图/LLM/新工作流/报告/
 - 从该 HEAD 创建 `codex/demo-v1-d2-input-contracts`，复用当前 checkout/`.venv`。
   已确认包含原规划 `740279c`、路线澄清 `9d5c0a7` 与全部 D1 实现/收尾提交。
 - 本阶段没有观察到其他并行提交/修改；范围限定 D2，不从旧 master 漏掉交接。
-- 实现验证与此送审记录一起提交；具体实现 SHA、推送和独立决定于后续收尾补记。
+- 首次送审实现提交：`bdbdedea03429ff1aeeacbfca229a2a408b3a5f4`。
+  当前远端推送因 GitHub TLS 握手/连接超时未成功；没有禁用证书验证或修改永久 Git 配置。
+  修复提交与最终保存状态于收尾补记。
 - 不合并到 master，不创建或移动发布 tag。
 
 范围变化：没有进入其他 D 阶段。Spec §3.1 本轮记录以下实施细化，随本次独立审查：
@@ -77,6 +79,10 @@ openpyxl stable 文档标题为 3.1.3，实际安装/测试 3.1.5；重设 works
   D6 仍须使用服务端生成的上传路径；本 loader 没有写文件副作用。
 - 每文件 5 MiB；总提取文本 30,000 字符（SysML 原文、设计文本和 BOM 内容合计）；PDF 20 页；BOM 200 行。
   XLSX 解压前增加目录声明的总展开 25 MiB 保护，不声明进程级内存/时间沙箱。
+- 首次独立审核发现稀疏坐标绕过非空行数量限制后，增加 BOM 物理扫描预算：10,000 行、64 列。
+  空行也计入扫描，不以 `iter_rows(max_row/max_col)` 静默截断；正常稀疏行保留物理 locator。
+  复用 openpyxl 公开迭代接口，无自建 XLSX 解析器或私有 API。列限制在 openpyxl 产出一行时检查，
+  不宣称在单行解析前隔离内存；固定依赖对更长的非法列名称抛出错误，由适配器封装。
 - 文件 ID 是输入内的角色标识 `file-sysml/file-document/file-bom`；与文件 SHA-256 联用。
   `input_digest` 为按 SysML/设计/BOM 顺序的完整 InputFileRecord JSON 摘要（排序 key、紧凑 UTF-8），
   包括 basename 和 parser/runtime；改名会改变清单摘要，内容 SHA-256 不变，不包含本地绝对路径。
@@ -93,8 +99,8 @@ openpyxl stable 文档标题为 3.1.3，实际安装/测试 3.1.5；重设 works
 ## 6. LOCAL 验证与开发发现
 
 基线：233 passed in 13.22s；Ruff PASS；mypy src PASS（24 files）。
-当前最终验证：`scripts/verify.py` → **325 passed in 17.88s**；Ruff PASS；mypy src PASS（32 files）。
-新增 92 项 = 47 契约/目标测试 + 44 文件契约测试 + 1 原图导出回归。
+首次送审验证：`scripts/verify.py` → **325 passed in 17.88s**；Ruff PASS；mypy src PASS（32 files）。
+首次送审新增 92 项 = 47 契约/目标测试 + 44 文件契约测试 + 1 原图导出回归。
 原 B0/B1、D1 字节固定、CLI 与 orphan 回归包含在全套；benchmark/gold/度量未修改，无已观察退化。
 `uv lock --check --offline` PASS（76 packages）；`git diff --check` PASS。
 
@@ -119,8 +125,23 @@ Ruff/mypy 初次指出长行/导入及局部变量类型复用，限定新增文
 
 ## 7. EXTERNAL_REVIEW
 
-当前 READY_FOR_REVIEW，独立 reviewer 尚未给出决定；在提交后补记审核基线、发现与复验。
-不沿用 D1 的 ACCEPTED 代替 D2 审核。
+首次独立 reviewer：`/root/d2_independent_review`；范围 `35aa066` → `bdbdede`。
+决定 **CHANGES_REQUIRED**；CRITICAL=0 / IMPORTANT=1 / MINOR=1。
+
+- IMPORTANT：约 4,966 bytes 的 XLSX 使用第 1,000,000,000 行，openpyxl 补空行导致公共载入入口
+  在独立子进程 3 秒超时；200 非空行和 ZIP 展开大小限制均不能防止该问题。
+- MINOR：ZIP 预检查未封装加密条目的 RuntimeError，调用者无法按 DemoInputError 分类。
+- EXTERNAL_REVIEW：325 passed in 18.02s、Ruff PASS、mypy 32 files PASS、uv lock 76 packages PASS、
+  diff PASS；真实包 CandidateReport JSON 往返保留 39 条证据，可选依赖延迟导入通过。
+  审核没有修改工作树、index 或 Git；未发现其他阻塞问题。
+
+修复过程：新增 9 项回归，首次 7 failed / 2 passed；巨大行号在测试子进程 5 秒超时，
+未知压缩方法和损坏压缩数据也复现底层异常外泄。增加扫描预算及 ZIP 安全异常边界后，
+文件契约测试 **53 passed in 6.09s**。另覆盖第 10,000 行成功、第 10,001 行拒绝、
+超宽/非法列名拒绝、加密条目返回 ENCRYPTED。修复后重新送独立复审，不沿用首次全套通过作为验收。
+
+修复后 LOCAL 全套：`scripts/verify.py` → **334 passed in 18.87s**，Ruff PASS、mypy 32 files PASS；
+新增共 101 项（47 契约/目标 + 53 文件 + 1 旧导出）。`uv lock --check --offline` 与 `git diff --check` PASS。
 
 ## 8. 已知限制与下一步
 
