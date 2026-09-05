@@ -231,7 +231,8 @@ ORDER BY mode_name, mode_id LIMIT $fetch_limit
 - [x] 运行 D3 契约、完整验证，保留本机 smoke 的真实状态；记录 D3，不写入原图或提交私有记录。
 
 D3 实际验证及资源/排除接口细化见 [D3 记录](../records/DEMO_V1/D3_READONLY_NEO4J_RETRIEVAL.md)。
-真实 smoke 已执行但因 CONFIG_MISSING 跳过；上述勾选不表示真实连接通过。独立审核待进行。
+真实 smoke 已执行但因 CONFIG_MISSING 跳过；上述勾选不表示真实连接通过。
+首审提出的 smoke 子 logger 脱敏问题已修复，待独立复审；真实演化见 D3 记录。
 
 ## D4 — DeepSeek 与生成校验（A04、A07、A08）
 

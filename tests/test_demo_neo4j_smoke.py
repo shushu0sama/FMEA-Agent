@@ -1,6 +1,8 @@
 """Run the smoke entry with controlled repositories and check redacted output."""
 
+import io
 import json
+import logging
 import runpy
 
 import pytest
@@ -90,3 +92,48 @@ def test_smoke_checks_lookup_locator_and_absent_term_without_printing_records(
     output = capsys.readouterr().out
     assert json.loads(output)["status"] == expected
     assert "private" not in output and repo.closed
+
+
+@pytest.mark.parametrize("logger_name", ["neo4j.pool", "neo4j.io"])
+def test_smoke_suppresses_independent_debug_handlers_and_restores_logging(
+    monkeypatch,
+    capsys,
+    logger_name,
+):
+    from neo4j.debug import Watcher
+
+    from fmea_agent.adapters.neo4j.failure_knowledge import Neo4jSourceKnowledgeRepository
+
+    logger = logging.getLogger(logger_name)
+    previous_level = logger.level
+    previous_disabled = logging.root.manager.disable
+    buffer = io.StringIO()
+    for key, value in {
+        "URI": "bolt://synthetic-private-host:7687",
+        "USERNAME": "test",
+        "PASSWORD": "test-only",
+    }.items():
+        monkeypatch.setenv("NEO4J_" + key, value)
+    monkeypatch.delenv("NEO4J_DATABASE", raising=False)
+
+    def focus(self):
+        # Same stdlib logging path used by the driver's RUN parameter debug output.
+        logger.debug("RUN parameters=%r", {"terms": ["synthetic-private-term"]})
+        logger.critical("synthetic-private-critical")
+        return None, None, "NO_SOURCE_FOCUS"
+
+    monkeypatch.setattr(Neo4jSourceKnowledgeRepository, "smoke_focus", focus)
+    main = runpy.run_path("scripts/demo_neo4j_smoke.py")["main"]
+    try:
+        with Watcher(logger_name, default_out=buffer):
+            assert main() == 1  # actual driver constructed/closed, never connected
+            output = capsys.readouterr()
+            assert "synthetic-private" not in output.out + output.err + buffer.getvalue()
+            assert json.loads(output.out)["reason"] == "NO_SOURCE_FOCUS"
+            assert logger.level == logging.DEBUG
+            assert logging.root.manager.disable == previous_disabled
+            logger.debug("logging-restored")
+            assert "logging-restored" in buffer.getvalue()
+    finally:
+        logger.setLevel(previous_level)
+        logging.disable(previous_disabled)

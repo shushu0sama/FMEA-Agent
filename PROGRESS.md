@@ -170,11 +170,12 @@ Demo D1/D2: ACCEPTED；D3: READY_FOR_REVIEW；D4–D7: NOT_STARTED。
 
 - [D3 记录](docs/records/DEMO_V1/D3_READONLY_NEO4J_RETRIEVAL.md)：双入口固定只读检索、独立关系证据、配置与排除边界。
 - 基线为 `f6d83d1`，fetch 后远端 D2 一致；本地创建 `codex/demo-v1-d3-readonly-neo4j`。
-- LOCAL：`scripts/verify.py` → 376 passed in 19.42s；Ruff PASS；mypy src PASS（35 files）。
-  D3 新增 42 项；既有 B0/B1、CLI、SysML、D1/D2 和 orphan 回归通过。
+- LOCAL：修复后 `scripts/verify.py` → 378 passed in 19.03s；Ruff PASS；mypy src PASS（35 files）。
+  D3 新增 44 项；既有 B0/B1、CLI、SysML、D1/D2 和 orphan 回归通过。
 - 新增 optional extra `demo` 的 neo4j 5.28.2 与传递 pytz 2026.3.post1；既有锁定版本未升级。
 - 真实 Neo4j smoke：SKIPPED / CONFIG_MISSING（2026-09-05）；未验证真实连接或真实 Cypher。
-- EXTERNAL_REVIEW：待独立审核；最终 Git 提交与推送待收尾。
+- EXTERNAL_REVIEW：首审 `22bd3a1` 为 CHANGES_REQUIRED（1 IMPORTANT：smoke 子 logger 脱敏）。
+  已复现并修复，待独立复审。首次实现已提交并推送，修复及最终记录待收尾。
 - D4–D7 尚未实现，正式 MVP-2/3 没有因此验收；无评分、批准或知识写回。
 
 ## D2 验证与审核基线（已接受）

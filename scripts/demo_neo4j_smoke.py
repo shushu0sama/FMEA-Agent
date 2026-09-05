@@ -10,8 +10,17 @@ from fmea_agent.domain.demo_knowledge import KnowledgeQuery
 
 
 def main() -> int:
-    # A locally configured debug logger must not expose parameters in smoke output.
-    logging.getLogger("neo4j").setLevel(logging.CRITICAL)
+    # Standalone smoke emits only its summary. Parent logger levels cannot suppress
+    # independently configured child handlers (e.g. neo4j.debug.Watcher).
+    previous_disable = logging.root.manager.disable
+    logging.disable(logging.CRITICAL)
+    try:
+        return _run()
+    finally:
+        logging.disable(previous_disable)
+
+
+def _run() -> int:
     summary: dict[str, object] = {
         "evidence": "LOCAL",
         "checked_at": datetime.now(UTC).isoformat(),

@@ -116,7 +116,32 @@ TIMEOUT、CONNECTION_FAILED、QUERY_FAILED、INVALID_RECORD；不输出底层异
 
 ## 6. EXTERNAL_REVIEW 与收尾
 
-待独立 reviewer 对固定实现提交复核，并在此追加实际结论与验证证据。
+首次实现提交：`22bd3a1bb3889476a14e4bf11950c5c30045eafd`，已成功推送并建立 upstream。
+独立 reviewer `/root/d3_independent_review` 审核范围 `f6d83d1..22bd3a1`，结论
+**CHANGES_REQUIRED**：CRITICAL=0 / IMPORTANT=1 / MINOR=0。
+
+IMPORTANT：smoke 仅调高 `neo4j` 父 logger，不能抑制单独开启 DEBUG 的 `neo4j.pool/neo4j.io`。
+reviewer 用公开 `neo4j.debug.watch`、真实 driver 构造/关闭及内存 dummy connection 的
+`Bolt5x0.run` 复现合成主机名/查询参数输出，未联网、未使用真实私有记录。
+首审其他证据：376 passed in 20.09s；Ruff --no-cache PASS；mypy src+smoke 36 files PASS；
+lock offline 78 packages PASS；固定范围 diff PASS；缺 neo4j 时返回 DEPENDENCY_MISSING，
+application/adapter 导入通过。实际 smoke 于 10:19:46 UTC 仍 SKIPPED/CONFIG_MISSING。
+未发现其他需要修改的业务契约问题；reviewer 没有写仓库或改变 Git 状态。
+
+定点修复：新增两项 Watcher 子 logger 回归，LOCAL 初次 **2 failed / 6 passed**，
+实际 driver 构造/close 无连接，输出仅含合成标记。smoke `main` 在整个构造/查询/关闭期间调用
+stdlib `logging.disable(CRITICAL)`，并在 finally 恢复原门槛；不改 logger 自身的 levels/handlers。
+此设置只用于单用途同步 smoke，临时抑制该进程标准日志，不是后续服务/UI 的日志治理实现。
+修复后 8 项 smoke 通过，并验证结束后原 DEBUG handler 可继续工作。
+
+修复后 LOCAL：**378 passed in 19.03s**，Ruff PASS、mypy src PASS（35 files）；
+mypy src+smoke PASS（36 files），diff PASS。D3 共新增 44 项测试。
+真实 smoke 于 `2026-09-05T10:20:42.394056+00:00` 再次 SKIPPED/CONFIG_MISSING。
+修复后重新送审；最终复审结论待回填，不沿用首审全套通过冒称验收。
+
+收尾范围检查：60 个 Markdown 本地链接及围栏通过；D2 祖先关系确认，
+领域、旧 workflow、D1 工件/夹具和 benchmark 无差异；变更 blob 的四类凭证形态扫描 0 hits。
+这项扫描不是对所有未知秘密形式的证明，没有读取 ignored 秘密文件。
 
 ## 7. 已知限制与下一步
 
