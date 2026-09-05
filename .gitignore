@@ -31,6 +31,10 @@ CLAUDE.local.md
 *.pem
 *.key
 
+# Local engineering inputs; track instructions only
+/local_data/*
+!/local_data/README.md
+
 # IDE / OS
 .vscode/
 .idea/

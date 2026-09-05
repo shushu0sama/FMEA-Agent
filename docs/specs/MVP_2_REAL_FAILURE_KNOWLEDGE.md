@@ -2,6 +2,11 @@
 
 Status: ACTIVE SPEC / PLANNING ONLY
 
+> 2026-09-05 规划前补充：本文是当前草案入口，`ACTIVE` 不代表已批准。
+> 用户已确认现有 SysML 与 Neo4j 案例独立且不重合，不能预设同一案例对应。
+> 当前先进行[信息对齐](../product/MVP_2_PREPLANNING_ALIGNMENT.md)；第 4、8、10、16、17 节涉及的
+> 实体解析、跨案例适用性及验收边界需在对齐后修订和审查。原草案正文保留，不据此启动 Plan 或生产实现。
+
 ## 1. 目标
 
 从现有 Neo4j Failure Knowledge Base 开始，以对真实故障知识来源的只读检索替换 MVP-0 fixture 故障知识，同时保留 MVP-0/MVP-1 行为及架构边界。

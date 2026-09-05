@@ -21,6 +21,7 @@ docs/records/
 ├── README.md                        ← 本文件
 ├── G0A_L_DOCUMENTATION_LOCALIZATION.md
 ├── G0A_R_PRE_MVP_2_REVIEW_REMEDIATION.md
+├── G0A_R_FINAL_C1_REVIEW.md
 ├── bootstrap/
 │   └── PROJECT_CLEANUP_REPORT.md
 ├── MVP_0/
@@ -32,7 +33,8 @@ docs/records/
 │   ├── MVP_1D_CANONICAL_MAPPING.md
 │   ├── MVP_1E_WORKFLOW_INTEGRATION.md
 │   ├── MVP_1F_BENCHMARK_RELEASE.md
-│   └── MVP_1_RELEASE.md
+│   ├── MVP_1_RELEASE.md
+│   └── MVP_1_POST_RELEASE_PATCH.md
 ├── security/
 │   └── 2026-09-05_CREDENTIAL_EXPOSURE_REMEDIATION.md
 └── templates/

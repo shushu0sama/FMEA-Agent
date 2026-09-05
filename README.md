@@ -104,12 +104,13 @@ drift）→ docs-only patch → Independent Patch Review ACCEPTED
 → annotated tag v0.1.1（current stable patch；无 capability 变化）
 ```
 
-下一步：MVP-2 Real Failure Knowledge — Read-only Planning（另开 Session）。
+下一步：先完成 MVP-2 Real Failure Knowledge 的规划前信息对齐。
 Pre-MVP-2 治理与 Spec 基线仅作为文档准备；生产实现仍为 `NOT_STARTED`。
 当前审查、规划状态与下一步统一以 [PROGRESS.md](PROGRESS.md) 为准。
 MVP-1 收尾复核及已知后续事项见
 [最终 C-1 复审与 MVP-1 状态复核](docs/records/G0A_R_FINAL_C1_REVIEW.md)。
-后续先讨论现有 Neo4j 知识库与现有 SysML 数据的配对案例；MVP-2 Implementation Plan 尚未创建。
+现有 Neo4j 与 SysML 案例独立且不重合。数据事实、待答问题和讨论边界见
+[规划前信息对齐](docs/product/MVP_2_PREPLANNING_ALIGNMENT.md)；MVP-2 Implementation Plan 尚未创建。
 
 尚未实现（MVP-1 明确延后，不宣传为已有能力）：
 

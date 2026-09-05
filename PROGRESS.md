@@ -127,7 +127,7 @@ MVP-2 规划与实现边界：
 
 ```text
 C-1 final re-review: ACCEPTED（仅限 credential remediation）。
-G0B / Implementation Plan: NOT_STARTED；先讨论现有数据配对案例，
+G0B / Implementation Plan: NOT_STARTED；先完成独立数据源的信息对齐，
 并明确 docs/specs/MVP_2_REAL_FAILURE_KNOWLEDGE.md 的 Spec 审查决定。
 Production implementation: NOT_STARTED；不得在 Spec / Plan 门禁前实现。
 ```
@@ -199,15 +199,18 @@ MVP-1 = RELEASED（v0.1.0 = 原始能力发布；
 v0.1.1 = 当前稳定文档补丁）。发布后补丁状态为
 DONE（独立补丁审核 ACCEPTED；附注 tag 为 v0.1.1）。
 
-**C-1 最终复审已通过，MVP-1 按既有发布范围收尾。** 按用户要求，下一步先讨论编程思路，
-以**现有 Neo4j 知识库和现有 SysML 数据**作为首个真实验证案例的输入来源。
+**C-1 最终复审已通过，MVP-1 按既有发布范围收尾。** 当前先完成 MVP-2 规划前的信息对齐。
+用户已明确：**现有 SysML 与 Neo4j 数据独立，案例没有关系与重合**，不得假设同一案例配对。
+已确认事实、待答问题及本轮文档盘点集中在
+[规划前信息对齐](docs/product/MVP_2_PREPLANNING_ALIGNMENT.md)；Alignment status 为 `IN_PROGRESS`。
 
 讨论参考：`docs/research/FMEA_INTELLIGENCE_REFERENCE_REVIEW_2026_09_05.md`（REFERENCE；
 不替代 Spec / Plan，不表示已采用外部项目或已验证两组数据的工程对应关系）。
 
 ```text
-1. 讨论并选定 SysML 文件/分析目标与 Neo4j 知识子集，明确来源及可核对的参考匹配。
-2. 明确 MVP-2 Spec 审查决定和实施范围，再进入 G0B 并创建 Implementation Plan。
+1. 澄清两组数据各自的内容、来源、用途及 MVP-2 的预期验收目标。
+2. 区分知识检索、身份解析和跨案例适用性；未回答的需求保持待定。
+3. 信息对齐后修订和审查 MVP-2 Spec，再进入 G0B 并创建 Implementation Plan。
 禁止: 开始 MVP-2 production implementation before spec / plan gates。
 ```
 

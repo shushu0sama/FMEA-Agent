@@ -16,6 +16,29 @@
 
 无需每次会话完整读取地基指南；修改长期架构、阶段策略或事实来源规则时再读。
 
+## 当前会话恢复入口
+
+当前进行 MVP-2 规划前信息对齐，尚未进入 G0B。读完 `AGENTS.md` 与 `PROGRESS.md` 后，
+优先读取[信息对齐台账](product/MVP_2_PREPLANNING_ALIGNMENT.md)，确认最新用户事实和待答问题，
+再按需要读取 [MVP-2 草案](specs/MVP_2_REAL_FAILURE_KNOWLEDGE.md)与
+[最近收尾记录](records/G0A_R_FINAL_C1_REVIEW.md)。草案、旧记录和旧 Prompt 都不自动构成开工授权。
+
+先运行以下只读检查：
+
+```bash
+git status --short
+git branch --show-current
+git rev-parse HEAD
+git log -5 --oneline
+```
+
+当前恢复预期分支见 `PROGRESS.md`；本轮起点和本地分支差异见信息对齐台账第 5 节。
+若实际分支/提交不一致，先查明是否在旧 master、新 worktree 或未同步副本中；
+不要自动切换、reset 或把旧文档当成当前状态。确认 checkout 含最新文档提交后再继续。
+同一工作区切换聊天不会自动删除文件，但新工作树、换机器或只读取已发布 tag 不保证拥有最新本地收尾。
+
+本次对齐结束并进入正式规划时，同步更新本节入口，避免留下第二份过期状态快照。
+
 ## 生命周期状态
 
 `ACTIVE` = 当前操作依据。
@@ -33,6 +56,7 @@
 - `README.md` — 项目总览与当前可运行能力。
 - `docs/README.md` — 文档生命周期与导航。
 - `docs/product/FMEA_AGENT_V1.md` — V1 产品与能力边界。
+- [MVP-2 规划前信息对齐](product/MVP_2_PREPLANNING_ALIGNMENT.md) — 已确认事实、待答问题与恢复依据；不是 Spec 或 Plan。
 - `docs/architecture/FMEA_AGENT_V1_ARCHITECTURE.md` — V1 架构边界。
 - `docs/architecture/CANONICAL_SYSTEM_MODEL_SPEC.md` — CSM 契约。
 - `docs/architecture/SYSML_FACT_SNAPSHOT_CONTRACTS.md` — SysML 快照契约。
@@ -42,7 +66,7 @@
 - `docs/evaluation/BENCHMARK_SPEC.md` — 长期基准模型。
 - `docs/governance/DEVELOPMENT_WORKFLOW_AND_RECORDS_POLICY.md` — 治理规则。
 - `docs/governance/LANGUAGE_AND_TERMINOLOGY_POLICY.md` — 语言与术语政策。
-- `docs/specs/MVP_2_REAL_FAILURE_KNOWLEDGE.md` — 当前 MVP-2 规划 Spec。
+- `docs/specs/MVP_2_REAL_FAILURE_KNOWLEDGE.md` — 当前 MVP-2 草案；信息对齐与审查尚未完成，ACTIVE 不等于批准。
 
 ## REFERENCE
 

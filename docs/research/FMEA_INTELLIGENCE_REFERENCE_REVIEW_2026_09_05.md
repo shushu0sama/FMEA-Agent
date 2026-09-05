@@ -4,6 +4,10 @@ Status: REFERENCE
 检索日期：2026-09-05
 用途：MVP-1 收尾后的技术讨论；不是 MVP-2 Spec、Implementation Plan 或采用决策。
 
+> 后续澄清（2026-09-05）：用户确认现有 SysML 与 Neo4j 案例独立且不重合。
+> 下方“配对”“产品关系待确认”等表述保留为调研当时的设想，不能继续作为当前假设。
+> 当前事实和待答问题以[规划前信息对齐](../product/MVP_2_PREPLANNING_ALIGNMENT.md)为准。
+
 ## 1. 本项目的输入约束
 
 用户在本次会话明确选择：后续优先使用**现有 Neo4j 知识库和现有 SysML 数据**。
