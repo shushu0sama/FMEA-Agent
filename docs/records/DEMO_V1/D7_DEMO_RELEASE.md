@@ -2,7 +2,7 @@
 
 日期：2026-09-05
 Stage status: ACCEPTED
-Closeout status: PENDING_PUSH（技术已接受，远端保存核对中）
+Closeout status: ACCEPTED（技术审核及实施/审核记录推送通过）
 技术范围：Demo V1 / D7，A01–A12；人工工程质量 NOT_ACCEPTED。
 
 ## 1. 起点、范围与实际演化
@@ -83,7 +83,13 @@ EXTERNAL_REVIEW：539 passed in 28.83s；Ruff/mypy src50/lock104/diff PASS。
 
 Git：首次标准 push 返回 SSL_read unexpected EOF / sideband disconnect（输出含 Everything up-to-date，
 但退出码为 1，不能据此认定成功）；随后 ls-remote 和仅命令级 HTTP/1.1 push 也遇到 TLS EOF。
-未禁用 TLS 验证、修改永久 Git 配置或 force push。远端保存仍需实际查回确认。
+仅命令级 schannel/HTTP 1.1 重试也握手失败；普通 HTTPS 探测成功。
+检查仅确认系统 HTTPS 代理与 Git http.proxy 均已配置，不记录代理地址或配置值。
+仅为本次 Git 命令使用系统已有 HTTPS 代理并选择 schannel 后，标准非 force push 成功，
+远端创建同名分支并设置 upstream；`f550a0d` 实施与 `7549dfb` 审核记录均已保存。
+这说明该次使用系统现有网络路径可完成推送，不据此断言既有 Git 配置永久无效。
+未禁用 TLS 验证、修改永久 Git/系统配置或 force push。此前失败历史完整保留。
+本次最后文档提交只回填已解除的远端待办；其锚点从同分支 Git log / upstream 查询，避免自引用 SHA。
 本机公开工件 hash 与摘要一致；变更文件凭证形态扫描 0 hits；中文/术语/原文边界检查通过。
 浏览器临时页面关闭；8501/8502 测试进程已停止，监听检查为空。
 
