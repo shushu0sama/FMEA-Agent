@@ -18,7 +18,7 @@ Current MVP:           MVP-1 Real System Facts（stable） /
                        Demo V1 End-to-End FMEA（D4 DeepSeek / generation validation）
 MVP status:            RELEASED（v0.1.0 = original capability release；
                        v0.1.1 = current stable docs-only patch）
-Current Stage:         Demo D4 DeepSeek 与生成校验（READY_FOR_REVIEW）
+Current Stage:         Demo D4 DeepSeek 与生成校验（ACCEPTED）
 Post-Release Patch:    DONE（Independent Patch Review = ACCEPTED；
                        annotated tag v0.1.1）
 ```
@@ -33,7 +33,7 @@ Demo 不替代或重编号 MVP，也不等同于 FMEA 方法七步法。当前�
 ```text
 MVP-0 COMPLETE（v0.0.1 tagged）
 MVP-1 Real System Facts       — RELEASED（v0.1.0 capability；v0.1.1 stable patch）
-Demo V1 End-to-End FMEA       — D0/D1/D2 ACCEPTED；D3 ACCEPTED；D4 READY_FOR_REVIEW；D5–D7 NOT_STARTED
+Demo V1 End-to-End FMEA       — D0/D1/D2 ACCEPTED；D3 ACCEPTED；D4 ACCEPTED；D5–D7 NOT_STARTED
 MVP-2 Real Failure Knowledge  — NOT_STARTED（PLANNING ONLY；
                                   原草案作为完整检索阶段参考）
 MVP-3 Evidence-grounded LLM
@@ -138,7 +138,7 @@ MVP-2 规划与实现边界：
 C-1 final re-review: ACCEPTED（仅限 credential remediation）。
 Standalone MVP-2 G0B: NOT_STARTED（完整检索阶段未单独开工）。
 Demo D0: ACCEPTED；新增 Demo Spec / Plan，复审决定见 D0 记录。
-Demo D1/D2: ACCEPTED；D3: ACCEPTED；D4: READY_FOR_REVIEW；D5–D7: NOT_STARTED。
+Demo D1/D2: ACCEPTED；D3: ACCEPTED；D4: ACCEPTED；D5–D7: NOT_STARTED。
 ```
 
 ## 当前已知限制
@@ -175,8 +175,10 @@ Demo D1/D2: ACCEPTED；D3: ACCEPTED；D4: READY_FOR_REVIEW；D5–D7: NOT_STARTE
 - `httpx==0.28.1` 补为 Demo 直接依赖，未升级已有包；官方 API 核对无实质差异。
 - 真实 DeepSeek smoke：SKIPPED / CONFIG_MISSING，通用 JSON/完整 schema 均 NOT_RUN，未发真实请求。
 - 首审 `321edf1` CHANGES_REQUIRED：1 项 IMPORTANT（公共 adapter 原生 HTTP DEBUG 头日志）；
-  已新增当前线程日志过滤与六项回归，修复后 READY_FOR_REVIEW，等待独立复审。
-- 实施 `321edf1` 已成功推送；前几次 TLS 失败过程见 D4 记录，不改写为首次成功。
+  修复后独立复审 `dafbe82` ACCEPTED，未解决 CRITICAL/IMPORTANT/MINOR 均为 0。
+  EXTERNAL_REVIEW：473 passed in 20.08s，Ruff/mypy/lock/diff PASS，原探查及13项附加恢复检查通过。
+- 实施 `321edf1`、修复 `dafbe82` 已成功推送；最终治理回填不改变被审代码。
+  前几次 TLS 失败及恢复过程见 D4 记录，不改写为首次成功。
 - D5–D7 尚未实现；无评分、批准或知识写回，正式 MVP-2/3 尚未验收。
 
 ## D3 验证与审核基线（已接受）
@@ -291,9 +293,9 @@ SysML 与 Neo4j 案例仍独立；无匹配、相关但适用性待确认、推�
 Demo 可用自动测试减少人工准备，但不以同源派生资料或模型自己生成的答案验证工程正确率。
 历史讨论见 [信息对齐台账](docs/product/MVP_2_PREPLANNING_ALIGNMENT.md)，现为 HISTORICAL。
 
-当前 D4 已实现并完成 LOCAL 验证，等待独立审核；详细证据见上方 D4 专节及 D4 记录。
+当前 D4 已实现，独立复审 ACCEPTED；详细证据见上方 D4 专节及 D4 记录。
 D4 起点包含 `9643c37` 及全部 D0–D3 规划、实现、审核记录；不从旧 master 恢复。
-D4 接受后下一阶段为 D5 受控工作流；本次不提前实现 D5–D7。
+下一阶段为 D5 受控工作流；本次止于 D4，不提前实现 D5–D7。
 真实 Neo4j 配置缺失时 smoke 明确跳过，待配置后另行执行。
 约一周为可放宽目标窗口；真实API/图/前端接入状态分别记录，不能以mock通过替代live验收。
 

@@ -1,8 +1,8 @@
 # Demo V1 D4 — DeepSeek、输入解析与生成校验
 
 日期：2026-09-05
-Stage status: READY_FOR_REVIEW（仅 Demo V1 / D4 技术范围）
-Closeout status: READY_FOR_REVIEW
+Stage status: ACCEPTED（仅 Demo V1 / D4 技术范围）
+Closeout status: ACCEPTED（实现、修复和最终复审记录随 D4 分支保存）
 Scope: Demo V1 / D4（A04、A07、A08），不包括 D5–D7 或正式 MVP-3 验收。
 
 ## 1. 依据与 Git 基线
@@ -131,7 +131,7 @@ CI = NOT_CONFIGURED。真实 Neo4j 仍沿用 D3 的 SKIPPED / CONFIG_MISSING 状
 ## 6. 独立审核与 Git 收尾
 
 实施提交 `321edf1960bc2f52f13f036fe27d932203138679`，独立 reviewer
-`/root/d4_independent_review` 审核范围 `9643c37..321edf1`，当前等待结论，不宣称 ACCEPTED。
+`/root/d4_independent_review` 首审范围 `9643c37..321edf1`，当时状态为 READY_FOR_REVIEW。
 
 前两次标准 push 遇到 GitHub TLS unexpected EOF；仅命令级 schannel/HTTP 1.1 重试也握手失败。
 随后 `git -c http.version=HTTP/1.1 push -u origin codex/demo-v1-d4-deepseek-validation` 成功，
@@ -163,7 +163,26 @@ reviewer 未修改仓库、index 或 HEAD。
 修复后 LOCAL：**473 passed in 20.36s**，Ruff PASS、mypy src40 / src+smoke41 PASS，
 lock78 / diff PASS；D4 累计新增 95 项测试。真实 smoke 于
 `2026-09-05T10:53:59.130618+00:00` 仍 SKIPPED / CONFIG_MISSING。
-修复提交后送回同一独立 reviewer 复审，最终 ACCEPTED 需由其判定。
+修复提交 `dafbe823b958fe5c365d483fc95ace873cd0dd03` 已推送，送回同一独立 reviewer 复审。
+
+最终复审：总范围 `9643c37..dafbe82`，定点范围 `321edf1..dafbe82`。
+结论 **ACCEPTED（仅 D4 技术范围）**，未解决 CRITICAL=0 / IMPORTANT=0 / MINOR=0。
+首审的原生 HTTP 响应头日志泄漏已关闭。
+
+最终 EXTERNAL_REVIEW 证据：
+
+- 原生内存 HTTP/1.1 401 仍返回 AUTH_FAILED，合成私密 header 不再输出；调用后日志正常恢复。
+- 全套 **473 passed in 20.08s**；Ruff PASS、mypy src40 / src+smoke41 PASS、lock78 / 总范围 diff PASS。
+- 核对固定 HTTPX/httpcore 安装源码，过滤器覆盖全部原生 logger 名称。
+- 附加 13 项构造、生成、关闭异常及嵌套过滤检查通过；原 filters/handlers/全局门槛保留。
+- 真实 smoke 于 `2026-09-05T10:56:01 UTC` 仍 SKIPPED / CONFIG_MISSING，两段 live 均 NOT_RUN。
+- 审核前后 HEAD、branch、index 一致，工作区干净，reviewer 未修改仓库或连接真实服务。
+
+最后仅回填 PROGRESS/Plan/README/本记录的接受状态，不改变被审代码。
+收尾 LOCAL 确认 20 个 D4 文件、66 条 Markdown 本地链接与围栏；四类凭证形态扫描 0 hits；
+起点 `9643c37` 为祖先；domain、旧 agents、D1 工件、夹具和 evaluation 无差异。
+实现及修复已推送，同名远端与 `dafbe82` 一致。最终治理提交锚点使用
+`git log -1 --format=%H -- docs/records/DEMO_V1/D4_DEEPSEEK_AND_GENERATION_VALIDATION.md` 查询，避免自引用 SHA。
 
 ## 7. 已知限制与下一步
 

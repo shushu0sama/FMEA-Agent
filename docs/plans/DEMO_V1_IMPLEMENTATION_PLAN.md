@@ -15,7 +15,7 @@ LangGraph 负责明确的 Demo 状态转换；Streamlit 仅作为应用入口。
 
 Lifecycle: ACTIVE
 Status: ACCEPTED（D0 独立计划审查）
-Implementation: D1/D2 ACCEPTED；D3 ACCEPTED；D4 READY_FOR_REVIEW；D5–D7 NOT_STARTED
+Implementation: D1/D2 ACCEPTED；D3 ACCEPTED；D4 ACCEPTED；D5–D7 NOT_STARTED
 起点与本次准备证据：[D0 记录](../records/DEMO_V1/D0_SPEC_AND_PLAN.md)。
 
 D0–D7 是 Demo V1 的内部工作步骤，保留原 MVP 能力路线；对应关系与收尾归入原则以
@@ -284,7 +284,7 @@ def test_provider_uses_json_mode():
 - [x] 运行目标测试和完整验证；记录 D4 是否仅 mock PASS 或另有真实 API PASS；提交。
 
 D4 实际验证及实施细化见 [D4 记录](../records/DEMO_V1/D4_DEEPSEEK_AND_GENERATION_VALIDATION.md)。
-真实 DeepSeek smoke 因 CONFIG_MISSING 跳过；勾选代表已执行检查，不表示真实 API 通过。独立审核待进行。
+真实 DeepSeek smoke 因 CONFIG_MISSING 跳过；勾选代表已执行检查，不表示真实 API 通过。首审 HTTP 原生日志问题已修复，独立复审 `dafbe82` ACCEPTED；真实演化见 D4 记录。
 
 ## D5 — 可补问、可恢复的受控工作流（A04、A07、A10）
 
