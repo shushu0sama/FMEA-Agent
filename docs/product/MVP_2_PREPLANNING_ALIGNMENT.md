@@ -1,11 +1,16 @@
 # MVP-2 规划前信息对齐
 
-Lifecycle: ACTIVE
-Alignment status: IN_PROGRESS
+Lifecycle: HISTORICAL
+Alignment status: TRANSFERRED_TO_DEMO_SPEC（方向已同意，长期未知仍保留）
 建立日期：2026-09-05
 
 本文集中保存规划前的用户确认、待答问题和假设修正。它不是 Spec、Implementation Plan、
 正式 Stage Record 或开工授权。当前开发与发布状态仍以 [PROGRESS.md](../../PROGRESS.md) 为准。
+
+> 2026-09-05 转归：用户同意端到端 Demo 方向并要求进行下一步，已形成
+> [Demo 规格](../specs/DEMO_V1_END_TO_END_FMEA.md)、[实施计划](../plans/DEMO_V1_IMPLEMENTATION_PLAN.md)
+> 和 [D0 记录](../records/DEMO_V1/D0_SPEC_AND_PLAN.md)。后续从这些材料恢复；
+> 下方逐轮的 IN_PROGRESS、尚未建 Plan 等原文保留为当时状态，不代表最新阶段。
 
 > 最新范围澄清：用户希望约一周内演示产品资料/BOM/SysML 输入、自然语言交互、自动检索、
 > 参考性推理、前端 UI 和 FMEA 报告。期限可放宽。此目标超出现有“仅真实检索”的 MVP-2 草案，

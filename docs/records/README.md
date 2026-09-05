@@ -16,6 +16,8 @@ Release Record
 
 ## 结构
 
+当前规划记录：[Demo V1 D0](DEMO_V1/D0_SPEC_AND_PLAN.md)。后续 D1–D7 记录随真实执行产生。
+
 ```text
 docs/records/
 ├── README.md                        ← 本文件

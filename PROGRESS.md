@@ -11,14 +11,14 @@ Architecture baseline: v0.1
 Development mode:      Runnable Vertical Slice First
 FMEA profile:          AIAG & VDA FMEA Handbook（First Edition, 2019；
                        Seven-Step Approach）
-Current branch:        fix/pre-mvp2-review-remediation
+Current branch:        codex/demo-v1-spec-plan
 MVP-1 Review Baseline: 369f09d
 C-1 Review Baseline:   70052a0（ACCEPTED，2026-09-05）
 Current MVP:           MVP-1 Real System Facts（stable） /
-                       Pre-MVP-2 Governance Baseline（planning docs）
+                       Demo V1 End-to-End FMEA（planning）
 MVP status:            RELEASED（v0.1.0 = original capability release；
                        v0.1.1 = current stable docs-only patch）
-Current Stage:         1F Benchmark & Release（ACCEPTED）
+Current Stage:         Demo D0 Spec & Plan（ACCEPTED）
 Post-Release Patch:    DONE（Independent Patch Review = ACCEPTED；
                        annotated tag v0.1.1）
 ```
@@ -28,8 +28,9 @@ Post-Release Patch:    DONE（Independent Patch Review = ACCEPTED；
 ```text
 MVP-0 COMPLETE（v0.0.1 tagged）
 MVP-1 Real System Facts       — RELEASED（v0.1.0 capability；v0.1.1 stable patch）
+Demo V1 End-to-End FMEA       — D0 ACCEPTED；D1–D7 NOT_STARTED
 MVP-2 Real Failure Knowledge  — NOT_STARTED（PLANNING ONLY；
-                                  Spec baseline prepared for review）
+                                  原草案作为完整检索阶段参考）
 MVP-3 Evidence-grounded LLM
 MVP-4 AIAG-VDA Risk & Semantic Validation
 MVP-5 Human Review
@@ -127,9 +128,9 @@ MVP-2 规划与实现边界：
 
 ```text
 C-1 final re-review: ACCEPTED（仅限 credential remediation）。
-G0B / Implementation Plan: NOT_STARTED；先完成独立数据源的信息对齐，
-并明确 docs/specs/MVP_2_REAL_FAILURE_KNOWLEDGE.md 的 Spec 审查决定。
-Production implementation: NOT_STARTED；不得在 Spec / Plan 门禁前实现。
+Standalone MVP-2 G0B: NOT_STARTED（完整检索阶段未单独开工）。
+Demo D0: ACCEPTED；新增 Demo Spec / Plan，复审决定见 D0 记录。
+Demo D1–D7 implementation: NOT_STARTED。
 ```
 
 ## 当前已知限制
@@ -191,7 +192,7 @@ CI:              GitHub Actions NOT CONFIGURED
   `docs/records/security/2026-09-05_CREDENTIAL_EXPOSURE_REMEDIATION.md`。
 - 文档默认语言：zh-CN，保留英文技术标识符及原始代码块。
 - MVP-2 production implementation：`NOT_STARTED`。
-- G0B / MVP-2 Implementation Plan：`NOT_STARTED`；后续先明确 Spec 审查决定与实施范围。
+- 独立 MVP-2 G0B 未开工；当前工作入口转为 Demo D0 Spec/Plan 及其复审记录。
 
 ## 下一步
 
@@ -199,34 +200,25 @@ MVP-1 = RELEASED（v0.1.0 = 原始能力发布；
 v0.1.1 = 当前稳定文档补丁）。发布后补丁状态为
 DONE（独立补丁审核 ACCEPTED；附注 tag 为 v0.1.1）。
 
-**C-1 最终复审已通过，MVP-1 按既有发布范围收尾。** 当前先完成 MVP-2 规划前的信息对齐。
-用户最新进一步明确：近期希望有设计文档/BOM/SysML 输入、自然语言交互、自动检索与参考性推理、
-前端 UI 和 FMEA 报告的端到端 Demo；目标约一周，允许放缓。
-该目标超出现有仅检索的 MVP-2 草案。当前进行范围重对齐，阶段重排与 Demo 设计仍待确认，
-详见[信息对齐第 9 节](docs/product/MVP_2_PREPLANNING_ALIGNMENT.md#9-完整问卷答复与-demo-目标澄清)。
-首个 Demo 资料来源已确认：从现有 SysML 派生并标注演示资料；用户已有 DeepSeek API 可用于后续接入。
-具体 SysML 文件、官方模型标识/接口及本机配置尚未核验，未执行模型调用。
-用户已明确：**现有 SysML 与 Neo4j 数据独立，案例没有关系与重合**，不得假设同一案例配对。
-已确认事实、待答问题及本轮文档盘点集中在
-[规划前信息对齐](docs/product/MVP_2_PREPLANNING_ALIGNMENT.md)；Alignment status 为 `IN_PROGRESS`。
+**C-1 最终复审已通过，MVP-1 按既有发布范围收尾。用户已同意端到端 Demo 方向。**
+当前操作依据：
 
-既有 MVP-2 检索目标仍保留：**真实知识检索可靠，无适用知识时正确返回无匹配**；
-后续参考性推理须与检索结果区分，不能以生成内容伪装命中。
-已完成本机 Neo4j、两份经用户确认由工程师审核的 Excel 及主要 SysML 来源目录的只读盘点，见
-[输入数据盘点](docs/research/MVP_2_INPUT_DATA_INVENTORY_2026_09_05.md)。两表属不同分析层次／案例，同时保留；
-用户进一步说明仅知道来源可信，不清楚具体审核范围；早先工程师审核陈述不构成逐字段签审证明。
-希望利用 SysML 自动准备测试以减少人工工作，样例尚未建立。图表逐行对账、方法分类/评分版本、
-验收样例和输出细节仍待对齐。
+- [Demo 规格](docs/specs/DEMO_V1_END_TO_END_FMEA.md)：输入/分析/来源/报告/验收边界。
+- [Demo 实施计划](docs/plans/DEMO_V1_IMPLEMENTATION_PLAN.md)：D1–D7 文件、接口与验证步骤。
+- [D0 记录](docs/records/DEMO_V1/D0_SPEC_AND_PLAN.md)：准备核查、初审问题与后续复验。
 
-讨论参考：`docs/research/FMEA_INTELLIGENCE_REFERENCE_REVIEW_2026_09_05.md`（REFERENCE；
-不替代 Spec / Plan，不表示已采用外部项目或已验证两组数据的工程对应关系）。
+首例选定项目自有 `typed_inside_probe.sysml`，分析 hydraulicPump 下 motor 的 spin 功能；
+本次真实解析成功（0 diagnostics），两个既有相关测试通过，派生资料包尚未创建。
+DeepSeek 官方接口已核实 `deepseek-v4-pro`，但本次未调用API。当前进程未见DeepSeek/Neo4j配置变量，
+不表示用户在其他位置没有配置；真实接入前在本机配置，不在聊天/Git记录密钥。
 
-```text
-1. 先对齐端到端 Demo 与检索阶段的范围，选择首个输入资料包并核查可行性。
-2. 区分知识检索、身份解析和跨案例适用性；未回答的需求保持待定。
-3. 信息对齐后修订和审查 MVP-2 Spec，再进入 G0B 并创建 Implementation Plan。
-禁止: 开始 MVP-2 production implementation before spec / plan gates。
-```
+SysML 与 Neo4j 案例仍独立；无匹配、相关但适用性待确认、推理建议及查询失败分别展示。
+两份 Excel 同时保留，审核范围只知来源可信；方法版本/来源覆盖与工程gold仍未核实。
+Demo 可用自动测试减少人工准备，但不以同源派生资料或模型自己生成的答案验证工程正确率。
+历史讨论见 [信息对齐台账](docs/product/MVP_2_PREPLANNING_ALIGNMENT.md)，现为 HISTORICAL。
+
+下一步：D0 独立审查已通过，从 D1 固定案例与演示资料开始；不重复规划前问卷。
+约一周为可放宽目标窗口；真实API/图/前端接入状态分别记录，不能以mock通过替代live验收。
 
 Patch 详情：`docs/records/MVP_1/MVP_1_POST_RELEASE_PATCH.md`。
 

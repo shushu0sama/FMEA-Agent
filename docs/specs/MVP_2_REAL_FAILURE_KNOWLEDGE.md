@@ -1,6 +1,11 @@
 # MVP-2 规格说明 — 真实故障知识
 
-Status: ACTIVE SPEC / PLANNING ONLY
+Status: REFERENCE / ORIGINAL DRAFT（完整检索阶段尚未验收）
+
+> 2026-09-05：用户同意近期端到端 Demo 方向，当前切片以
+> [Demo V1 规格](DEMO_V1_END_TO_END_FMEA.md)及其计划为入口。
+> 本文保留原检索草案，非当前 Demo 的完整范围；下方“不引入 LLM/UI”等是原阶段边界，
+> 不能据此否定新 Demo 规格，也不能据新 Demo 宣称原完整 MVP-2 已完成。
 
 > 最新需求提示：用户进一步希望约一周内演示资料上传、自然语言、参考性推理、UI 与 FMEA 报告，
 > 期限可放宽。该体验超出本文原检索范围；详见[信息对齐第 9 节](../product/MVP_2_PREPLANNING_ALIGNMENT.md#9-完整问卷答复与-demo-目标澄清)。

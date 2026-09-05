@@ -104,13 +104,15 @@ drift）→ docs-only patch → Independent Patch Review ACCEPTED
 → annotated tag v0.1.1（current stable patch；无 capability 变化）
 ```
 
-下一步：先完成 MVP-2 Real Failure Knowledge 的规划前信息对齐。
-Pre-MVP-2 治理与 Spec 基线仅作为文档准备；生产实现仍为 `NOT_STARTED`。
-当前审查、规划状态与下一步统一以 [PROGRESS.md](PROGRESS.md) 为准。
-MVP-1 收尾复核及已知后续事项见
-[最终 C-1 复审与 MVP-1 状态复核](docs/records/G0A_R_FINAL_C1_REVIEW.md)。
-现有 Neo4j 与 SysML 案例独立且不重合。数据事实、待答问题和讨论边界见
-[规划前信息对齐](docs/product/MVP_2_PREPLANNING_ALIGNMENT.md)；MVP-2 Implementation Plan 尚未创建。
+下一步：按已同意方向推进 Demo V1，从现有 SysML 派生演示资料，接入只读知识检索、DeepSeek 和最小 UI/候选报告。
+当前只有规格与计划，演示能力尚未实现；MVP-1 稳定发布不变。
+
+- [Demo 规格](docs/specs/DEMO_V1_END_TO_END_FMEA.md)
+- [Demo 实施计划](docs/plans/DEMO_V1_IMPLEMENTATION_PLAN.md)
+- [D0 记录](docs/records/DEMO_V1/D0_SPEC_AND_PLAN.md)
+
+当前阶段以 [PROGRESS.md](PROGRESS.md) 为准；[信息对齐](docs/product/MVP_2_PREPLANNING_ALIGNMENT.md)
+保留历史问答。SysML 与 Neo4j 案例独立，不强行配对。
 
 尚未实现（MVP-1 明确延后，不宣传为已有能力）：
 

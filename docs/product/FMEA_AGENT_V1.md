@@ -4,7 +4,8 @@ Status: ACTIVE
 
 > 2026-09-05 近期交付意图补充：用户希望设计文档/BOM/SysML、自然语言交互、前端 UI、
 > 参考性推理和候选报告形成可演示流程，并提出使用中积累知识。
-> 具体 Demo 范围及阶段重排见[信息对齐第 9 节](MVP_2_PREPLANNING_ALIGNMENT.md#9-完整问卷答复与-demo-目标澄清)，仍待设计确认。
+> 用户已同意方向，具体首版范围见 [Demo V1 规格](../specs/DEMO_V1_END_TO_END_FMEA.md)，
+> 讨论演化保存在[历史信息对齐](MVP_2_PREPLANNING_ALIGNMENT.md#9-完整问卷答复与-demo-目标澄清)。
 > 下文现有/规划/长期能力分类保留，不能将新增意图误读为这些能力已实现。
 
 ## 1. 主要用户

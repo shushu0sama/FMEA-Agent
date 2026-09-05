@@ -18,10 +18,11 @@
 
 ## 当前会话恢复入口
 
-当前进行 MVP-2 规划前信息对齐，尚未进入 G0B。读完 `AGENTS.md` 与 `PROGRESS.md` 后，
-优先读取[信息对齐台账](product/MVP_2_PREPLANNING_ALIGNMENT.md)，确认最新用户事实和待答问题，
-再按需要读取 [MVP-2 草案](specs/MVP_2_REAL_FAILURE_KNOWLEDGE.md)与
-[最近收尾记录](records/G0A_R_FINAL_C1_REVIEW.md)。草案、旧记录和旧 Prompt 都不自动构成开工授权。
+当前入口为 Demo V1：读完 `AGENTS.md` 与 `PROGRESS.md` 后，读取
+[Demo 规格](specs/DEMO_V1_END_TO_END_FMEA.md)、[实施计划](plans/DEMO_V1_IMPLEMENTATION_PLAN.md)
+和 [D0 记录](records/DEMO_V1/D0_SPEC_AND_PLAN.md)。D1–D7 的实际完成情况仍以 PROGRESS 和阶段记录为准。
+[信息对齐台账](product/MVP_2_PREPLANNING_ALIGNMENT.md)保存历史问答，
+[原 MVP-2 草案](specs/MVP_2_REAL_FAILURE_KNOWLEDGE.md)为完整检索阶段参考，不是当前全部 Demo 范围。
 
 先运行以下只读检查：
 
@@ -32,12 +33,12 @@ git rev-parse HEAD
 git log -5 --oneline
 ```
 
-当前恢复预期分支见 `PROGRESS.md`；本轮起点和本地分支差异见信息对齐台账第 5 节。
+当前恢复预期分支见 `PROGRESS.md`；本轮起点和分支来源见 D0 记录第 2 节。
 若实际分支/提交不一致，先查明是否在旧 master、新 worktree 或未同步副本中；
 不要自动切换、reset 或把旧文档当成当前状态。确认 checkout 含最新文档提交后再继续。
 同一工作区切换聊天不会自动删除文件，但新工作树、换机器或只读取已发布 tag 不保证拥有最新本地收尾。
 
-本次对齐结束并进入正式规划时，同步更新本节入口，避免留下第二份过期状态快照。
+后续阶段切换时同步更新本节入口，避免留下第二份过期状态快照。
 
 ## 生命周期状态
 
@@ -56,7 +57,8 @@ git log -5 --oneline
 - `README.md` — 项目总览与当前可运行能力。
 - `docs/README.md` — 文档生命周期与导航。
 - `docs/product/FMEA_AGENT_V1.md` — V1 产品与能力边界。
-- [MVP-2 规划前信息对齐](product/MVP_2_PREPLANNING_ALIGNMENT.md) — 已确认事实、待答问题与恢复依据；不是 Spec 或 Plan。
+- [Demo V1 规格](specs/DEMO_V1_END_TO_END_FMEA.md) — 当前端到端演示范围及验收契约。
+- [Demo V1 实施计划](plans/DEMO_V1_IMPLEMENTATION_PLAN.md) — D1–D7 任务、文件、接口及验证步骤。
 - `docs/architecture/FMEA_AGENT_V1_ARCHITECTURE.md` — V1 架构边界。
 - `docs/architecture/CANONICAL_SYSTEM_MODEL_SPEC.md` — CSM 契约。
 - `docs/architecture/SYSML_FACT_SNAPSHOT_CONTRACTS.md` — SysML 快照契约。
@@ -66,9 +68,11 @@ git log -5 --oneline
 - `docs/evaluation/BENCHMARK_SPEC.md` — 长期基准模型。
 - `docs/governance/DEVELOPMENT_WORKFLOW_AND_RECORDS_POLICY.md` — 治理规则。
 - `docs/governance/LANGUAGE_AND_TERMINOLOGY_POLICY.md` — 语言与术语政策。
-- `docs/specs/MVP_2_REAL_FAILURE_KNOWLEDGE.md` — 当前 MVP-2 草案；信息对齐与审查尚未完成，ACTIVE 不等于批准。
 
 ## REFERENCE
+
+- [原 MVP-2 草案](specs/MVP_2_REAL_FAILURE_KNOWLEDGE.md) — 完整检索阶段参考，当前 Demo 范围以 Demo Spec 为准。
+- [Demo D0 记录](records/DEMO_V1/D0_SPEC_AND_PLAN.md) — 规划起点、真实准备核查和独立审核。
 
 - `CLAUDE.md` — Claude Code 兼容指令；在正式简化工具加载行为之前，
   保持与 `AGENTS.md` 一致。
@@ -85,6 +89,8 @@ git log -5 --oneline
 - `docs/records/templates/` — 收尾、发布与会话交接模板。
 
 ## HISTORICAL
+
+- [规划前信息对齐](product/MVP_2_PREPLANNING_ALIGNMENT.md) — 用户确认、未知事项与范围演化；已转入 Demo Spec。
 
 - `docs/specs/MVP_0_RUNNABLE_AGENT_SKELETON.md`
 - `docs/specs/MVP_1_REAL_SYSTEM_FACTS.md`
