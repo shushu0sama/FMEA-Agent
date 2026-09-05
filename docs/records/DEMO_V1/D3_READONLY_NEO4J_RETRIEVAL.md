@@ -189,3 +189,19 @@ exit_code=1，status=ERROR，reason=AUTH_FAILED，read_only=true。
 这是首次配置后的真实失败证据，不覆盖第 5/6 节历史 CONFIG_MISSING 跳过记录，
 也不撤销原 D3 技术范围的独立接受。配置值、服务地址、原始错误及工程正文未提交。
 同次 DeepSeek 真实 smoke 已通过，见 [D4 补充验证](D4_DEEPSEEK_AND_GENERATION_VALIDATION.md#8-用户配置后的真实-api-补充验证)。
+
+用户随后确认先前密码错误并已修改，本轮仅重新执行上述 Neo4j smoke，没有再次调用 DeepSeek。
+运行基线 `4e99d92`，工作区干净；仍由 uv 显式加载本机配置，不输出配置值。
+
+LOCAL 重测结果（`checked_at=2026-09-05T11:06:07.441486+00:00`）：
+
+- exit_code=0，status=PASS，read_only=true。
+- lookup_status=HITS，hit_count=20，locator_verified=true，lookup_error=null。
+- context_count=1020，association_count=192；这些是各命中证据列表长度之和，包含共享证据的重复展示，
+  不是唯一关系数量，也不表示突破 D3 固定查询的关系预算。
+- absent_status=NO_MATCH，absent_error=null；随机不存在词查询正常返回无结果。
+- truncated=true：本次有界结果已截断，不宣称完整召回或全库最优排名。
+
+此次验证了真实 Neo4j 连接、只读查询执行、来源定位与无结果路径；不验证跨案例适用性或工程正确率。
+前次 AUTH_FAILED 作为真实执行历史保留，最新运行状态更新为 PASS。
+未写入数据库、变更生产代码/测试/依赖或提交工程正文；仅回填文档并进行文档/Git 检查。

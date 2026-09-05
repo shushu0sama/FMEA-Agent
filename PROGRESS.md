@@ -164,7 +164,7 @@ Demo D1/D2: ACCEPTED；D3: ACCEPTED；D4: ACCEPTED；D5–D7: NOT_STARTED。
 6. MVP-1/2 之后的最优 KG/向量融合策略。
 7. 流、接口、状态与功能之间的传播语义。
 8. MVP-2 针对现有仅有名称的 Neo4j 图的实体解析策略。
-9. Neo4j 真实 smoke 当前 AUTH_FAILED，待用户核对账号/密码；后续部署政策另定。
+9. Neo4j 真实 smoke 已通过；有界结果截断，完整召回与跨案例适用性仍未验证。
 
 ## 当前 D4 验证与审核状态
 
@@ -189,8 +189,9 @@ Demo D1/D2: ACCEPTED；D3: ACCEPTED；D4: ACCEPTED；D5–D7: NOT_STARTED。
 - LOCAL：修复后 `scripts/verify.py` → 378 passed in 19.03s；Ruff PASS；mypy src PASS（35 files）。
   D3 新增 44 项；既有 B0/B1、CLI、SysML、D1/D2 和 orphan 回归通过。
 - 新增 optional extra `demo` 的 neo4j 5.28.2 与传递 pytz 2026.3.post1；既有锁定版本未升级。
-- 最新 LOCAL 真实 Neo4j smoke（2026-09-05 11:03:17 UTC）：ERROR / AUTH_FAILED；
-  已显式加载本机配置，认证未通过，尚未验证真实检索 Cypher。历史配置缺失跳过记录保留。
+- 最新 LOCAL 真实 Neo4j smoke（2026-09-05 11:06:07 UTC）：PASS；用户修正密码后，
+  真实只读来源查回 HITS（20）、locator_verified=true、随机不存在词 NO_MATCH 均通过。
+  truncated=true，不代表完整召回；此前 CONFIG_MISSING 和 AUTH_FAILED 历史见 D3 记录。
 - EXTERNAL_REVIEW：首审 `22bd3a1` 的 1 项 IMPORTANT 已关闭；独立复审 `059b6ee` 为 ACCEPTED，
   未解决 CRITICAL/IMPORTANT/MINOR 均为 0。独立全套 378 passed in 19.13s，Ruff/mypy/lock/diff PASS，
   原生驱动日志泄漏及 12 个异常恢复用例通过；真实 smoke 仍 SKIPPED/CONFIG_MISSING。
@@ -298,7 +299,7 @@ Demo 可用自动测试减少人工准备，但不以同源派生资料或模型
 当前 D4 已实现，独立复审 ACCEPTED；详细证据见上方 D4 专节及 D4 记录。
 D4 起点包含 `9643c37` 及全部 D0–D3 规划、实现、审核记录；不从旧 master 恢复。
 下一阶段为 D5 受控工作流；本次止于 D4，不提前实现 D5–D7。
-真实 DeepSeek 接口 smoke 已通过；Neo4j 认证失败待核对后重试，完整图与模型集成尚未验证。
+真实 DeepSeek 与 Neo4j 各自的接口 smoke 均已通过；完整图与模型集成及工程质量尚未验证。
 约一周为可放宽目标窗口；真实API/图/前端接入状态分别记录，不能以mock通过替代live验收。
 
 Patch 详情：`docs/records/MVP_1/MVP_1_POST_RELEASE_PATCH.md`。

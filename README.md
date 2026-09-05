@@ -96,7 +96,8 @@ uv run --extra demo python scripts/demo_neo4j_smoke.py
 ```
 
 smoke 只输出状态/计数与定位是否通过。配置缺失返回 SKIPPED/CONFIG_MISSING，
-运行错误返回非零退出码；最新本机真实验证为 ERROR/AUTH_FAILED，待核对账号/密码，未验证真实检索。
+运行错误返回非零退出码；最新本机真实验证为 PASS，来源查回、定位及随机不存在词测试通过。
+本次返回 20 个命中且 truncated=true，仅验证有界检索，不代表完整召回。
 细节和已知限制见 [D3 记录](docs/records/DEMO_V1/D3_READONLY_NEO4J_RETRIEVAL.md)。
 
 D4 提供 `DeepSeekLLMClient.from_env()`、`record_user_input` / `analyze_intake` 和
@@ -121,7 +122,7 @@ D5 会话/补问恢复、D6 报告/UI、D7 集成验收尚未实现。
 ## 当前不能做什么
 
 - 不读取多文件 / import 模型（单文件子集，unresolved import 显式诊断）
-- Neo4j 只读适配器已实现，真实 smoke 当前 AUTH_FAILED；Qdrant 未接入，旧 workflow 仍用内存知识
+- Neo4j 只读适配器真实 smoke 已通过；Qdrant 未接入，旧 workflow 仍用内存知识
 - 原 CLI 默认路径不经过 LLM；D4 适配器真实 smoke 已通过，尚未接入 D5 会话工作流
 - 不计算真实 AIAG-VDA S/O/D/AP 风险等级
 - 没有生产 UI、Human Review、Failure Propagation、Dynamic FMEA、
@@ -174,7 +175,7 @@ drift）→ docs-only patch → Independent Patch Review ACCEPTED
 ```
 
 下一步：D4 独立复审已接受，按既有计划进入 D5 受控工作流；报告/UI 和集成验收留到 D6/D7。
-已实现输入资料、只读检索和 DeepSeek 适配/校验；真实 DeepSeek smoke 通过、Neo4j 认证待修正，
+已实现输入资料、只读检索和 DeepSeek 适配/校验；真实 DeepSeek 与 Neo4j 独立 smoke 均通过，
 会话工作流、UI 和完整候选报告尚未接入。
 MVP-1 稳定发布 tag 不变，当前开发阶段以 PROGRESS 和阶段记录为准。
 

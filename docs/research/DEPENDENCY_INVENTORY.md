@@ -103,8 +103,9 @@ pytz 为 MIT，原文位于 `pytz-2026.3.post1.dist-info/LICENSE.txt`。
 适配器：`src/fmea_agent/adapters/neo4j/failure_knowledge.py`；
 契约：`tests/test_demo_neo4j_contract.py`；真实 smoke：`scripts/demo_neo4j_smoke.py`。
 固定只读 Cypher、显式 10 秒事务、无自动事务重试；驱动不进入 domain/application。
-目标服务沿用已盘点 Neo4j 5.26.0；当前真实 smoke 为 CONFIG_MISSING/SKIPPED，
-不声明已通过该服务契约。替换实现须保持 D2 SourceKnowledgeRepository，升级一次一个集成并回归。
+目标服务沿用已盘点 Neo4j 5.26.0；初次真实 smoke 为 CONFIG_MISSING/SKIPPED；用户后续配置并修正密码后，
+2026-09-05 真实只读 smoke 已通过，结果有界且标记截断；不将单次 smoke 等同于完整服务契约验收。
+替换实现须保持 D2 SourceKnowledgeRepository，升级一次一个集成并回归。
 执行证据与上游 API 核对见 [D3 记录](../records/DEMO_V1/D3_READONLY_NEO4J_RETRIEVAL.md)。
 
 ## Demo V1 / D2 文件解析依赖（2026-09-05）
