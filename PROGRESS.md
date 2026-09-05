@@ -18,7 +18,7 @@ Current MVP:           MVP-1 Real System Facts（stable） /
                        Demo V1 End-to-End FMEA（UX1 用户流程修复）
 MVP status:            RELEASED（v0.1.0 = original capability release；
                        v0.1.1 = current stable docs-only patch）
-Current Stage:         Demo UX1 用户流程修复（IN_PROGRESS）
+Current Stage:         Demo UX1 用户流程修复（技术 ACCEPTED）
 Post-Release Patch:    DONE（Independent Patch Review = ACCEPTED；
                        annotated tag v0.1.1）
 ```
@@ -166,14 +166,18 @@ Demo D1–D7: 技术 ACCEPTED；工程质量未验收。
 8. MVP-2 针对现有仅有名称的 Neo4j 图的实体解析策略。
 9. Neo4j 真实 smoke 已通过；有界结果截断，完整召回与跨案例适用性仍未验证。
 
-## 当前 D7 集成验收状态
+## 当前 UX1 用户流程修复状态
 
 后续 UX1：用户试用未通过，已优先修复使用流程；D7 技术 ACCEPTED 历史不变。
 当前修复/验证/审核证据见 [UX1 记录](docs/records/DEMO_V1/UX1_USER_FLOW_FIX.md)。
+UX1 独立技术审核 ACCEPTED，固定基线 `71950e1`；未解决 CRITICAL/IMPORTANT/MINOR 均为 0。
+LOCAL 和 EXTERNAL_REVIEW 全套各 548 项通过，Ruff/mypy/lock/B0/B1 通过；真实浏览器 mock 路径通过。
 用户使用复验 PENDING；人工工程质量仍为 NOT_ACCEPTED。未开始后续中文映射及报告持续对话。
 
+## D7 集成验收状态（保留历史）
+
 - [验收报告](docs/evaluation/DEMO_V1_ACCEPTANCE_REPORT.md)：A01–A12 矩阵、三类独立场景、MVP-2/3 复用能力与正式差距。
-- [D7 记录](docs/records/DEMO_V1/D7_DEMO_RELEASE.md)：起点 dadc36c，当前 checkout 单目标 D7 分支；独立最终审查 ACCEPTED，基线 f550a0d；实施/审核记录已推送。
+- [D7 记录](docs/records/DEMO_V1/D7_DEMO_RELEASE.md)：起点 dadc36c，当时在当前 checkout 创建单目标 D7 分支；独立最终审查 ACCEPTED，基线 f550a0d；实施/审核记录已推送。
 - LOCAL：539 项测试、Ruff、mypy、离线 lock104、Demo 专项325项、B0/B1 11项通过。
 - LOCAL 真实 Neo4j 来源查回/定位/无结果 PASS（20 hits、truncated=true）；真实 DeepSeek 通用/schema smoke PASS。
 - LOCAL 公开资料完整服务 smoke PASS（8候选、2请求、独立三格式导出）；检索 FAKE_NO_MATCH，未外发私有图正文。
@@ -351,7 +355,7 @@ Demo 可用自动测试减少人工准备，但不以同源派生资料或模型
 
 当前 D7 集成回归、三个独立场景、验收矩阵与差距登记已通过独立技术审核；实施/审核记录已推送。
 详细状态和证据以上方 D7 专节、验收报告与阶段记录为准，不重复执行 D2–D6。
-用户试用反馈后，优先完成 UX1 使用流程修复与独立技术复审，再请用户进行完整操作复验。
+UX1 使用流程修复与独立技术复审已通过，下一步请用户进行完整操作复验。
 后续依据使用反馈安排中文可读性、来源展示和持续对话；正式 MVP-2/3 差距工作保留待后续确定范围。
 真实服务分别通过不等于私有图与模型完整联合验证；工程质量仍未验收。
 
