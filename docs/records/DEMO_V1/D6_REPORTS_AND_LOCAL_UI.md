@@ -1,8 +1,8 @@
 # Demo V1 D6 — 自包含候选报告与本机 Streamlit UI
 
 日期：2026-09-05
-Stage status: READY_FOR_REVIEW
-Closeout status: READY_FOR_REVIEW
+Stage status: ACCEPTED
+Closeout status: ACCEPTED
 Scope: Demo V1 / D6（A09、A10、A12）；D7 NOT_STARTED。
 
 ## 1. 起点与范围
@@ -69,7 +69,7 @@ RED 未独立保存为 Git commit。
 
 首审前新增 26 项（报告 13、配置 4、UI/上传 9）；当时全套 524 passed in 24.31s。
 该次随后 Ruff 检出一个新增 import 空行顺序问题，已修复。
-最终提交前 `scripts/verify.py`：524 passed in 24.20s，Ruff PASS、mypy src 50 files PASS；
+首审实施提交前 `scripts/verify.py`：524 passed in 24.20s，Ruff PASS、mypy src 50 files PASS；
 `uv lock --check --offline` PASS（104 packages）、`git diff --check` PASS。
 既有 B0/B1、原 CLI、SysML、orphan 和 D1–D5 回归均在全套内，gold/度量未修改。
 CI = NOT_CONFIGURED。独立审核证据与 LOCAL 分开见第 7 节。
@@ -129,8 +129,8 @@ D3 最新真实图验证仍引用 D3 第 8 节，本阶段不重复图 smoke。
 ## 7. EXTERNAL_REVIEW 与 Git 保存
 
 实施提交 `932a4d4e42eee0ef7420222b597a280b7a3d800b`，验证后进入 READY_FOR_REVIEW。
-独立 reviewer `/root/d6_independent_review` 正在对 `8a77ed9..932a4d4` 运行全套检查和边界探查；
-实现方不自封 ACCEPTED。审核后的发现、修复、复验与推送结果在本节追加，保留真实演化。
+独立 reviewer `/root/d6_independent_review` 对 `8a77ed9..932a4d4` 运行全套检查和边界探查；
+以下按初审、修复、复审顺序保留实际证据。
 
 实施分支首次标准 push 成功，远端已建立同名 upstream，`932a4d4` 已保存；未 force push。
 
@@ -144,10 +144,27 @@ EXTERNAL_REVIEW：524 passed in 23.96s；Ruff、mypy 50 files、lock 104、diff 
 修复仅限新增 mock：反向扫描完整用户证据，保留最近明确 ID 对；按标识符边界匹配，
 防止 c1/f1 误匹配 c10/f10。新增 2 项 service 配置回归及 1 项实际 UI 多目标回归。
 前两项在原实现均失败；UI 回归通过在独立进程加载 `932a4d4` 原 generate 方法再次复现失败，
-恢复修复方法后通过。没有更改 D2–D5 或真实模型行为。等待固定修复提交的独立复验。
+恢复修复方法后通过。没有更改 D2–D5 或真实模型行为。
 
 修复后 LOCAL：`scripts/verify.py` → **527 passed in 24.16s**，Ruff PASS，mypy src 50 files PASS；
 lock offline 104 packages PASS、diff PASS。累计新增 29 项（报告 13、配置 6、UI/上传 10）。
+
+修复提交 `4ead6fc22cba11ab3606830c90b4c53d950ca9e5` 已标准推送，未 force push。
+固定复审总范围 `8a77ed9..4ead6fc`，重点 `932a4d4..4ead6fc`。
+独立复审决定 **ACCEPTED（仅 D6 技术范围）**；未解决 CRITICAL=0 / IMPORTANT=0 / MINOR=0。
+I-1 关闭：原 service/UI 复现、c10/f10 与 c1/f1 相似 ID、最近明确目标覆盖旧选择均通过。
+
+EXTERNAL_REVIEW：**527 passed in 24.22s**；Ruff `--no-cache` PASS、mypy src 50 files PASS、
+`uv lock --check --offline` 104 packages PASS、总范围 `git diff --check` PASS。
+另验证三格式下载与重绘不新增模型调用；此前 8 组边界探查通过，相关代码未随修复改变。
+审核没有修改代码/Git、读取 `.env.local` 或真实凭据，也没有调用外部服务。
+审核结束时分支/HEAD 匹配送审范围，工作区与 index 干净。
+
+最终治理回填仅修改当前状态与本记录，不改变已审源码、测试、依赖或基准。
+LOCAL 收尾：7 份变更 Markdown 的 76 个本地链接与代码围栏检查通过；语言关口检查通过，
+中文正文、canonical 标识符、来源原文与历史状态均保留。分支/祖先/范围检查通过，无范围漂移。
+浏览器验证页面及临时本机服务已关闭；验证产物保留在 ignored outputs 与本机下载目录。
+收尾提交及远端保存以同分支 Git log / upstream 为准；不合并 master、不创建发布 tag。
 
 ## 8. 已知限制与下一步
 

@@ -18,7 +18,7 @@ Current MVP:           MVP-1 Real System Facts（stable） /
                        Demo V1 End-to-End FMEA（D6 reports/local UI）
 MVP status:            RELEASED（v0.1.0 = original capability release；
                        v0.1.1 = current stable docs-only patch）
-Current Stage:         Demo D6 报告与本机 UI（READY_FOR_REVIEW）
+Current Stage:         Demo D6 报告与本机 UI（ACCEPTED）
 Post-Release Patch:    DONE（Independent Patch Review = ACCEPTED；
                        annotated tag v0.1.1）
 ```
@@ -33,7 +33,7 @@ Demo 不替代或重编号 MVP，也不等同于 FMEA 方法七步法。当前�
 ```text
 MVP-0 COMPLETE（v0.0.1 tagged）
 MVP-1 Real System Facts       — RELEASED（v0.1.0 capability；v0.1.1 stable patch）
-Demo V1 End-to-End FMEA       — D0–D5 ACCEPTED；D6 READY_FOR_REVIEW；D7 NOT_STARTED
+Demo V1 End-to-End FMEA       — D0–D6 ACCEPTED；D7 NOT_STARTED
 MVP-2 Real Failure Knowledge  — NOT_STARTED（PLANNING ONLY；
                                   原草案作为完整检索阶段参考）
 MVP-3 Evidence-grounded LLM
@@ -138,7 +138,7 @@ MVP-2 规划与实现边界：
 C-1 final re-review: ACCEPTED（仅限 credential remediation）。
 Standalone MVP-2 G0B: NOT_STARTED（完整检索阶段未单独开工）。
 Demo D0: ACCEPTED；新增 Demo Spec / Plan，复审决定见 D0 记录。
-Demo D1–D5: ACCEPTED；D6: READY_FOR_REVIEW；D7: NOT_STARTED。
+Demo D1–D6: ACCEPTED；D7: NOT_STARTED。
 ```
 
 ## 当前已知限制
@@ -177,8 +177,12 @@ Demo D1–D5: ACCEPTED；D6: READY_FOR_REVIEW；D7: NOT_STARTED。
   未构造 Neo4j adapter 或发送私有图正文。D3 最新真实图 PASS 保持有效；本阶段未重跑。
 - 新增 streamlit 1.63.0；新传递 NumPy 限制为 2.3.5 以兼容 Python 3.11 类型检查。
   既有依赖版本不变，104 locked packages；依赖/许可证细节见依赖清单与 D6 记录。
-- 初审发现 1 项 IMPORTANT（mock 补问导致非首个目标漂移），已修复并补充 3 项回归；
-  当前 READY_FOR_REVIEW，等待固定修复提交独立复验，不宣称 ACCEPTED。D7 NOT_STARTED，工程质量未验收。
+- 初审发现 1 项 IMPORTANT（mock 补问导致非首个目标漂移），已修复并补充 3 项回归。
+- EXTERNAL_REVIEW：独立复审基线 `4ead6fc`，D6 ACCEPTED，未解决 CRITICAL/IMPORTANT/MINOR 均为 0；
+  527 passed in 24.22s，Ruff/mypy/lock/diff PASS；原问题、相似 ID、明确切换目标及下载/重绘探查通过。
+  首审另 8 组边界探查通过，相关实现未随修复改变。审核未调用外部服务。
+- 实施 `932a4d4` 与修复 `4ead6fc` 已标准推送；最终治理回填仅改文档。
+  D7 NOT_STARTED，完整图与模型集成及工程质量未验收。
 - [中文用户指南](docs/product/DEMO_V1_USER_GUIDE.md)：启动、模式、限制、来源和报告含义。
 
 ## D5 验证与审核基线（已接受）
@@ -328,9 +332,9 @@ SysML 与 Neo4j 案例仍独立；无匹配、相关但适用性待确认、推�
 Demo 可用自动测试减少人工准备，但不以同源派生资料或模型自己生成的答案验证工程正确率。
 历史讨论见 [信息对齐台账](docs/product/MVP_2_PREPLANNING_ALIGNMENT.md)，现为 HISTORICAL。
 
-当前 D6 已实现，READY_FOR_REVIEW；详细证据见上方 D6 专节及 D6 记录。
+当前 D6 已通过独立复审，ACCEPTED；详细证据见上方 D6 专节及 D6 记录。
 D6 起点包含 `8a77ed9` 及全部 D0–D5 规划、实现、审核记录；不从旧 master 恢复。
-先完成 D6 独立审核与收尾，再由后续阶段开展 D7 集成验收；本次不实施 D7。
+下一阶段按既有计划开展 D7 集成验收；本次不实施 D7。
 真实 DeepSeek 与 Neo4j 各自的接口 smoke 均已通过；完整图与模型集成及工程质量尚未验证。
 约一周为可放宽目标窗口；真实API/图/前端接入状态分别记录，不能以mock通过替代live验收。
 

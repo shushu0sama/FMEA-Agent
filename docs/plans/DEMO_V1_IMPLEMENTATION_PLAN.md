@@ -15,7 +15,7 @@ LangGraph 负责明确的 Demo 状态转换；Streamlit 仅作为应用入口。
 
 Lifecycle: ACTIVE
 Status: ACCEPTED（D0 独立计划审查）
-Implementation: D1–D5 ACCEPTED；D6 READY_FOR_REVIEW；D7 NOT_STARTED
+Implementation: D1–D6 ACCEPTED；D7 NOT_STARTED
 起点与本次准备证据：[D0 记录](../records/DEMO_V1/D0_SPEC_AND_PLAN.md)。
 
 D0–D7 是 Demo V1 的内部工作步骤，保留原 MVP 能力路线；对应关系与收尾归入原则以
@@ -361,7 +361,8 @@ uv run --extra demo streamlit run src/fmea_agent/ui/demo_app.py --server.address
   全套验证，记录 D6 并提交。
 
 D6 执行证据见 [D6 记录](../records/DEMO_V1/D6_REPORTS_AND_LOCAL_UI.md)。
-当前 READY_FOR_REVIEW；AppTest 1.63.0 实际支持上传，浏览器另验证实际保存与视觉行为。
+当前 D6 ACCEPTED（独立复审基线 `4ead6fc`）；AppTest 1.63.0 实际支持上传，
+浏览器另验证实际保存与视觉行为。D7 NOT_STARTED。
 
 ## D7 — 集成验收与演示交付（A01–A12）
 

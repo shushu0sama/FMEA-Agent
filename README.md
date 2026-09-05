@@ -113,7 +113,7 @@ smoke 只用固定 hash 的公开 D1 教学资料，先验证通用 JSON，再�
 （含一次有限重试），响应上限 1 MiB，输出始终待审核的推断/候选，无 S/O/D/AP。
 应用生成入口使用 D3 未排除参考，保留原检索审计；图错误须显式选择继续才生成。
 上下文事实的精确原文检查不是工程真实性认证。详见 [D4 记录](docs/records/DEMO_V1/D4_DEEPSEEK_AND_GENERATION_VALIDATION.md)。
-D5 会话/补问恢复已接受；D6 报告/UI 已实现并待独立审核；D7 集成验收尚未开展。
+D5 会话/补问恢复与 D6 报告/UI 均已通过独立审核；D7 集成验收尚未开展。
 
 本机私有 `.env.local` 已由 Git 忽略；需显式加 `--env-file .env.local`，例如
 `uv run --env-file .env.local --extra demo python scripts/demo_model_smoke.py`。
@@ -184,7 +184,7 @@ drift）→ docs-only patch → Independent Patch Review ACCEPTED
 → annotated tag v0.1.1（current stable patch；无 capability 变化）
 ```
 
-下一步：完成 D6 独立审核与收尾后，按既有计划进入 D7 集成验收；不据此宣布整个 Demo 完成。
+下一步：按既有计划进入 D7 集成验收；D6 已接受，不据此宣布整个 Demo 完成。
 已实现输入资料、只读检索和 DeepSeek 适配/校验；真实 DeepSeek 与 Neo4j 独立 smoke 均通过，
 会话工作流、UI 和完整候选报告现已接入；完整图与模型集成和工程质量仍待后续验收。
 MVP-1 稳定发布 tag 不变，当前开发阶段以 PROGRESS 和阶段记录为准。
