@@ -11,14 +11,14 @@ Architecture baseline: v0.1
 Development mode:      Runnable Vertical Slice First
 FMEA profile:          AIAG & VDA FMEA Handbook（First Edition, 2019；
                        Seven-Step Approach）
-Current branch:        codex/demo-v1-d5-controlled-workflow
+Current branch:        codex/demo-v1-d6-reports-ui
 MVP-1 Review Baseline: 369f09d
 C-1 Review Baseline:   70052a0（ACCEPTED，2026-09-05）
 Current MVP:           MVP-1 Real System Facts（stable） /
-                       Demo V1 End-to-End FMEA（D5 controlled workflow）
+                       Demo V1 End-to-End FMEA（D6 reports/local UI）
 MVP status:            RELEASED（v0.1.0 = original capability release；
                        v0.1.1 = current stable docs-only patch）
-Current Stage:         Demo D5 受控工作流（ACCEPTED）
+Current Stage:         Demo D6 报告与本机 UI（READY_FOR_REVIEW）
 Post-Release Patch:    DONE（Independent Patch Review = ACCEPTED；
                        annotated tag v0.1.1）
 ```
@@ -33,7 +33,7 @@ Demo 不替代或重编号 MVP，也不等同于 FMEA 方法七步法。当前�
 ```text
 MVP-0 COMPLETE（v0.0.1 tagged）
 MVP-1 Real System Facts       — RELEASED（v0.1.0 capability；v0.1.1 stable patch）
-Demo V1 End-to-End FMEA       — D0–D5 ACCEPTED；D6–D7 NOT_STARTED
+Demo V1 End-to-End FMEA       — D0–D5 ACCEPTED；D6 READY_FOR_REVIEW；D7 NOT_STARTED
 MVP-2 Real Failure Knowledge  — NOT_STARTED（PLANNING ONLY；
                                   原草案作为完整检索阶段参考）
 MVP-3 Evidence-grounded LLM
@@ -138,7 +138,7 @@ MVP-2 规划与实现边界：
 C-1 final re-review: ACCEPTED（仅限 credential remediation）。
 Standalone MVP-2 G0B: NOT_STARTED（完整检索阶段未单独开工）。
 Demo D0: ACCEPTED；新增 Demo Spec / Plan，复审决定见 D0 记录。
-Demo D1/D2: ACCEPTED；D3: ACCEPTED；D4: ACCEPTED；D5: ACCEPTED；D6–D7: NOT_STARTED。
+Demo D1–D5: ACCEPTED；D6: READY_FOR_REVIEW；D7: NOT_STARTED。
 ```
 
 ## 当前已知限制
@@ -150,7 +150,7 @@ Demo D1/D2: ACCEPTED；D3: ACCEPTED；D4: ACCEPTED；D5: ACCEPTED；D6–D7: NOT
 - system-level Function 暂不被 workflow 分析目标使用。
 - partial Snapshot 的 workflow 接入行为未单独覆盖。
 - D2 已补齐旧 JSON 的 item/function ID、source_refs、候选关联 ID、起因机理/证据和影响状态/证据；
-  原 CLI 仍不是自包含的完整 Demo 报告，D6 的报告导出尚未实现。
+  原 CLI 仍不是自包含的完整 Demo 报告；D6 另提供自包含报告导出与 UI。
 - Python 包元数据仍为 `0.0.1`；原发布审核已将其列为非阻塞观察，包发布前需明确同步政策。
 - 后续事项及适用边界：`docs/records/G0A_R_FINAL_C1_REVIEW.md` 第 5 节。
 
@@ -166,7 +166,21 @@ Demo D1/D2: ACCEPTED；D3: ACCEPTED；D4: ACCEPTED；D5: ACCEPTED；D6–D7: NOT
 8. MVP-2 针对现有仅有名称的 Neo4j 图的实体解析策略。
 9. Neo4j 真实 smoke 已通过；有界结果截断，完整召回与跨案例适用性仍未验证。
 
-## 当前 D5 验证与审核状态
+## 当前 D6 验证与审核状态
+
+- [D6 记录](docs/records/DEMO_V1/D6_REPORTS_AND_LOCAL_UI.md)：自包含导出、默认 live 配置与本机四区 UI。
+- 起点 `8a77ed9`，fetch 后本地/远端 D5 一致，当前 checkout 创建 D6 单目标分支。
+- LOCAL：新增 26 项导出/配置/UI 测试；全套 524 项通过，最终 lint/type/lock 证据见 D6 记录。
+- LOCAL 浏览器：真实三类文件上传、仅文档提示、补问/未知继续、mock 生成、三格式下载与文件移除失效。
+  下载文件与独立恢复后的导出器结果逐字节相同；已移除原生表格不带防护的 CSV 下载旁路。
+- LOCAL 真实 DeepSeek：公开资料、2 次请求、8 条候选、独立导出三格式通过；检索 FAKE_NO_MATCH，
+  未构造 Neo4j adapter 或发送私有图正文。D3 最新真实图 PASS 保持有效；本阶段未重跑。
+- 新增 streamlit 1.63.0；新传递 NumPy 限制为 2.3.5 以兼容 Python 3.11 类型检查。
+  既有依赖版本不变，104 locked packages；依赖/许可证细节见依赖清单与 D6 记录。
+- 当前 READY_FOR_REVIEW；独立审核尚未完成，不宣称 ACCEPTED。D7 NOT_STARTED，工程质量未验收。
+- [中文用户指南](docs/product/DEMO_V1_USER_GUIDE.md)：启动、模式、限制、来源和报告含义。
+
+## D5 验证与审核基线（已接受）
 
 - [D5 记录](docs/records/DEMO_V1/D5_CONTROLLED_WORKFLOW.md)：会话/图、两轮补问、明确降级、请求幂等和诊断报告。
 - 起点 `90ef7d1`，fetch 后本地/远端 D4 一致；当前 checkout 创建 D5 单目标分支。
@@ -313,9 +327,9 @@ SysML 与 Neo4j 案例仍独立；无匹配、相关但适用性待确认、推�
 Demo 可用自动测试减少人工准备，但不以同源派生资料或模型自己生成的答案验证工程正确率。
 历史讨论见 [信息对齐台账](docs/product/MVP_2_PREPLANNING_ALIGNMENT.md)，现为 HISTORICAL。
 
-当前 D5 已实现，独立审核 ACCEPTED；详细证据见上方 D5 专节及 D5 记录。
-D5 起点包含 `90ef7d1` 及全部 D0–D4 规划、实现、审核记录；不从旧 master 恢复。
-下一阶段为 D6 报告与本机 UI；本次止于 D5 收尾，不提前实现 D6/D7。
+当前 D6 已实现，READY_FOR_REVIEW；详细证据见上方 D6 专节及 D6 记录。
+D6 起点包含 `8a77ed9` 及全部 D0–D5 规划、实现、审核记录；不从旧 master 恢复。
+先完成 D6 独立审核与收尾，再由后续阶段开展 D7 集成验收；本次不实施 D7。
 真实 DeepSeek 与 Neo4j 各自的接口 smoke 均已通过；完整图与模型集成及工程质量尚未验证。
 约一周为可放宽目标窗口；真实API/图/前端接入状态分别记录，不能以mock通过替代live验收。
 

@@ -49,7 +49,7 @@ MVP-1 已把系统事实来源替换为真实 SysML v2：
 - Function 分配基于真实 owner traversal 证据（禁止 name/FQN 匹配）
 - B0/B1 benchmark 通过（`docs/evaluation/MVP_1_BENCHMARK_REPORT.md`）
 
-Demo V1 已具备固定资料包、D2 输入基础、D3 只读检索和 D4 模型适配/校验（当前审核状态见 PROGRESS）：
+Demo V1 已具备固定资料包、输入/证据、只读检索、模型校验、D5 会话及 D6 报告/UI（审核状态见 PROGRESS）：
 
 - [固定案例包](examples/demo_v1/README.md)：SysML 原样副本、BOM、中文设计说明和来源清单。
 - 只读载入一个 SysML、可选设计说明（MD/TXT/文本 PDF）与 BOM（CSV/XLSX 的 BOM 表）。
@@ -113,7 +113,7 @@ smoke 只用固定 hash 的公开 D1 教学资料，先验证通用 JSON，再�
 （含一次有限重试），响应上限 1 MiB，输出始终待审核的推断/候选，无 S/O/D/AP。
 应用生成入口使用 D3 未排除参考，保留原检索审计；图错误须显式选择继续才生成。
 上下文事实的精确原文检查不是工程真实性认证。详见 [D4 记录](docs/records/DEMO_V1/D4_DEEPSEEK_AND_GENERATION_VALIDATION.md)。
-D5 会话/补问恢复、D6 报告/UI、D7 集成验收尚未实现。
+D5 会话/补问恢复已接受；D6 报告/UI 已实现并待独立审核；D7 集成验收尚未开展。
 
 本机私有 `.env.local` 已由 Git 忽略；需显式加 `--env-file .env.local`，例如
 `uv run --env-file .env.local --extra demo python scripts/demo_model_smoke.py`。
@@ -123,12 +123,22 @@ D5 会话/补问恢复、D6 报告/UI、D7 集成验收尚未实现。
 
 - 不读取多文件 / import 模型（单文件子集，unresolved import 显式诊断）
 - Neo4j 只读适配器真实 smoke 已通过；Qdrant 未接入，旧 workflow 仍用内存知识
-- 原 CLI 默认路径不经过 LLM；D4 适配器真实 smoke 已通过，尚未接入 D5 会话工作流
+- 原 CLI 默认路径不经过 LLM；Demo UI 使用 D5 会话工作流，模型真实 smoke 已通过
 - 不计算真实 AIAG-VDA S/O/D/AP 风险等级
 - 没有生产 UI、Human Review、Failure Propagation、Dynamic FMEA、
   多智能体编排、SysML Repository API
 
 ## 如何运行 Demo
+
+D6 本机 UI（默认 live，缺少配置不切 mock；详情见[中文用户指南](docs/product/DEMO_V1_USER_GUIDE.md)）：
+
+```powershell
+uv sync --extra demo
+uv run --extra demo --env-file .env.local streamlit run src/fmea_agent/ui/demo_app.py --server.address 127.0.0.1
+```
+
+可显式使用 `FMEA_DEMO_MODE=mock` 进行离线教学演示。候选提供 JSON/HTML/CSV，
+失败仅提供诊断 JSON/HTML；所有生成结果仍待工程审核，风险 NOT_EVALUATED、优化 SKIPPED。
 
 环境要求：Python >= 3.11；安装项目依赖（uv 或 pip）。
 
@@ -174,7 +184,7 @@ drift）→ docs-only patch → Independent Patch Review ACCEPTED
 → annotated tag v0.1.1（current stable patch；无 capability 变化）
 ```
 
-下一步：D4 独立复审已接受，按既有计划进入 D5 受控工作流；报告/UI 和集成验收留到 D6/D7。
+下一步：完成 D6 独立审核与收尾后，按既有计划进入 D7 集成验收；不据此宣布整个 Demo 完成。
 已实现输入资料、只读检索和 DeepSeek 适配/校验；真实 DeepSeek 与 Neo4j 独立 smoke 均通过，
 会话工作流、UI 和完整候选报告尚未接入。
 MVP-1 稳定发布 tag 不变，当前开发阶段以 PROGRESS 和阶段记录为准。

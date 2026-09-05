@@ -15,7 +15,7 @@ LangGraph 负责明确的 Demo 状态转换；Streamlit 仅作为应用入口。
 
 Lifecycle: ACTIVE
 Status: ACCEPTED（D0 独立计划审查）
-Implementation: D1/D2 ACCEPTED；D3 ACCEPTED；D4 ACCEPTED；D5 ACCEPTED；D6–D7 NOT_STARTED
+Implementation: D1–D5 ACCEPTED；D6 READY_FOR_REVIEW；D7 NOT_STARTED
 起点与本次准备证据：[D0 记录](../records/DEMO_V1/D0_SPEC_AND_PLAN.md)。
 
 D0–D7 是 Demo V1 的内部工作步骤，保留原 MVP 能力路线；对应关系与收尾归入原则以
@@ -335,30 +335,33 @@ LOCAL 498 项测试/Ruff/mypy 通过；真实 DeepSeek 公开资料补问/恢复
 `create_demo_service(settings: DemoSettings) -> DemoService` 位于 settings 模块做装配；
 UI 的 `main()` 在 import 时不做模型/图调用，启动脚本位于地图指定路径。
 
-- [ ] 先为完整证据往返、HTML转义、CSV公式前缀、中文编码、三层影响UNKNOWN写测试。
+- [x] 先为完整证据往返、HTML转义、CSV公式前缀、中文编码、三层影响UNKNOWN写测试。
   CandidateReport JSON序列化/反序列化后清除原session，只用恢复后的对象导出HTML/CSV，
   核对文件名/hash/parser/runtime、系统结构、资料关联、冲突和证据均保留。
   DiagnosticReport单独往返后导出失败诊断，断言标题不含成功状态且没有候选表。
   exporter 保留字段级 provenance；CSV至少列 mode/cause/effect/actions/status/evidence_ids/limitations，
   多值以换行显示，不用笛卡尔积生成新分析行。
-- [ ] HTML使用 stdlib html.escape，自包含样式，完整报告章节按Spec；不允许未转义外部文本。
+- [x] HTML使用 stdlib html.escape，自包含样式，完整报告章节按Spec；不允许未转义外部文本。
   新增现有控制与建议措施不同列、风险未评估说明、原始引用详情。
-- [ ] Streamlit四区：上传、摘要/补问、候选表/证据、下载。通过 `st.session_state` 保存 DemoSession 和服务；
+- [x] Streamlit四区：上传、摘要/补问、候选表/证据、下载。通过 `st.session_state` 保存 DemoSession 和服务；
   调用只由 submit 按钮触发，以 request_id 控制；重绘/下载不调用模型。
   文件名仅显示，存盘用随机安全名；5 MiB等限制在应用层再次检查，避免只靠扩展名控件。
-- [ ] AppTest 用显式mock设置运行，测试无文件提示、加载演示包、补问及continue_unknown、
+- [x] AppTest 用显式mock设置运行，测试无文件提示、加载演示包、补问及continue_unknown、
   生成失败显示、报告下载准备；文件上传控件不支持自动操作的部分在浏览器复核，不能假称 AppTest覆盖。
-- [ ] 在本机用以下规划命令启动，并用浏览器实际操作完整流程和下载：
+- [x] 在本机用以下规划命令启动，并用浏览器实际操作完整流程和下载：
 
 ```powershell
 uv sync --extra demo
 uv run --extra demo streamlit run src/fmea_agent/ui/demo_app.py --server.address 127.0.0.1
 ```
 
-- [ ] 验证页面无私钥/堆栈，原始输入与生成内容转义；doc-only上传提示需要SysML；
+- [x] 验证页面无私钥/堆栈，原始输入与生成内容转义；doc-only上传提示需要SysML；
   断开图时显示失败，不能用预填文本冒充实时成功。
-- [ ] 更新用户指南：启动、支持格式/限制、mock/live区别、报告意义和环境变量名（无值）。
+- [x] 更新用户指南：启动、支持格式/限制、mock/live区别、报告意义和环境变量名（无值）。
   全套验证，记录 D6 并提交。
+
+D6 执行证据见 [D6 记录](../records/DEMO_V1/D6_REPORTS_AND_LOCAL_UI.md)。
+当前 READY_FOR_REVIEW；AppTest 1.63.0 实际支持上传，浏览器另验证实际保存与视觉行为。
 
 ## D7 — 集成验收与演示交付（A01–A12）
 

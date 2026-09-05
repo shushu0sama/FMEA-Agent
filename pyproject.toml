@@ -20,6 +20,7 @@ demo = [
     "neo4j==5.28.2",
     "openpyxl==3.1.5",
     "pypdf==6.17.0",
+    "streamlit==1.63.0",
 ]
 
 [dependency-groups]
@@ -34,6 +35,10 @@ packages = ["src/fmea_agent"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+
+[tool.uv]
+# Keep Streamlit's new transitive NumPy compatible with the Python 3.11 type-check target.
+constraint-dependencies = ["numpy==2.3.5"]
 
 [tool.ruff]
 line-length = 100

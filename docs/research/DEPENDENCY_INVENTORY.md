@@ -185,6 +185,38 @@ Security:      legacy importer is reference evidence only; do not copy secrets
                or run destructive import behavior against production
 ```
 
+## Demo D6 本机 UI 依赖（2026-09-05）
+
+`streamlit==1.63.0` 加入 optional extra `demo`，分类 D/W；应用入口
+`src/fmea_agent/ui/demo_app.py`，配置装配 `application/demo_settings.py`，契约测试
+`tests/test_demo_ui.py` / `test_demo_settings.py`。安装元数据声明许可证 Apache-2.0；
+本机 wheel 文件清单未附 LICENSE，已核对
+[固定版本上游原文](https://raw.githubusercontent.com/streamlit/streamlit/1.63.0/LICENSE)，
+不将不存在的本机许可证文件记作已核实；本次不修改许可文本或分发二进制。
+官方来源：[固定版本 PyPI](https://pypi.org/project/streamlit/1.63.0/)、
+[AppTest](https://docs.streamlit.io/develop/api-reference/app-testing/st.testing.v1.apptest)、
+[上传](https://docs.streamlit.io/develop/api-reference/widgets/st.file_uploader)、
+[下载](https://docs.streamlit.io/develop/api-reference/widgets/st.download_button)。
+
+首次解析引入 NumPy 2.5.2（另有平台/Python 分支 2.4.6），其 PEP 695 类型声明使项目
+`mypy python_version=3.11` 在依赖内发生语法错误。仅对新传递依赖增加
+`[tool.uv].constraint-dependencies = ["numpy==2.3.5"]`，复验类型检查通过，
+没有升级/降级 D5 既有核心依赖，也没有屏蔽项目类型检查。最终锁文件 104 packages，
+与 `8a77ed9` 的 name/version 集合比较，既有包全部保持；新增 26 包：
+
+| 新增包及固定版本 | 许可证（安装元数据 / 原文核对） |
+|---|---|
+| streamlit 1.63.0、pyarrow 25.0.1、pydeck 0.9.3、python-multipart 0.0.32、watchdog 6.0.0 | Apache-2.0 |
+| altair 6.2.2、click 8.5.0、itsdangerous 2.2.0、jinja2 3.1.6、markupsafe 3.0.3、numpy 2.3.5、pandas 3.0.5、starlette 1.6.0、uvicorn 0.52.4 | BSD-3-Clause；NumPy 二进制另含第三方声明 |
+| attrs 26.1.0、httptools 0.8.0、jsonschema 4.26.0、jsonschema-specifications 2025.9.1、narwhals 2.25.0、referencing 0.37.0、rpds-py 2026.6.3、six 1.17.0、toml 0.10.2 | MIT |
+| pillow 12.3.0 | MIT-CMU |
+| python-dateutil 2.9.0.post0 | Apache-2.0 / BSD 双许可证 |
+| tzdata 2026.3 | Python 包 Apache-2.0；IANA 时区数据另见随包许可说明 |
+
+其余已核实许可保留在各自 `*.dist-info/{LICENSE*,licenses/}`，分发二进制时须保留随包第三方声明，
+不能只用上表替代完整许可。stdlib `html/csv/json/tempfile` 直接复用；没有新增排版、解析或 Agent 框架。
+完整执行、依赖差异与适用限制见 [D6 记录](../records/DEMO_V1/D6_REPORTS_AND_LOCAL_UI.md)。
+
 ## 集成记录模板
 
 启用依赖时填写：

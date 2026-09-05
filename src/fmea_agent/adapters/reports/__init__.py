@@ -1,0 +1,1 @@
+"""Portable, deterministic report adapters."""
