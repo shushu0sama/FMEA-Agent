@@ -142,30 +142,59 @@ CSM / Engineering Context
 
 ## 9. 证据和来源追踪要求
 
-每个来源命中应保留：
+来源侧故障知识必须将证据（Evidence）与来源追踪（Provenance）作为一等数据。
+每个来源命中至少必须能够表达：
 
-- 来源系统身份；
-- 可用时的来源记录或图定位信息；
+- 来源身份（source identity）；
+- 来源类型（source type）；
+- 来源版本（source version）；
+- 定位信息（locator），例如 repository / project / file、row、node 或 relationship；
+- 来源权威性（authority）；
+- 来源本身的审查 / 批准状态（review / approval state）；
+- 从来源记录到检索命中及候选映射的可追踪链（traceability）；
 - 匹配的实体；
 - 关系路径或来源结构；
 - 检索依据；
 - 实体解析状态；
 - 已定义时的置信度或适用性元数据；
-- 来源追踪不可用时的局限。
+- 已知时的 source hash / revision、rights / authorization 与 conflict state；
+- 来源追踪字段不可用时的局限及显式 `UNKNOWN` / `unavailable` 状态。
 
 旧图缺少行级来源追踪时，适配器必须显式表达这种缺失，不得编造来源行。
 
+权威性与审查状态来自知识来源本身，例如 approved FMEA、reviewed engineering
+record、test / maintenance evidence、technical literature 或 unreviewed source。
+知识存储在 Neo4j 中只说明其 storage / retrieval source，不构成高 authority 或
+已审查 / 已批准的证明。
+
+本节不要求所有来源天然具备全部字段，也不要求 MVP-2 提前创建
+`EvidenceRepository`、复杂 RAG、vector DB 或 LLM evidence extraction。
+具体 production contract / class shape 留到 MVP-2B 冻结。
+
 ## 10. 实体解析要求
+
+当前 Canonical System Model ID（例如 `component-N`、`function-N`）仅是当前
+snapshot / mapping context 内的 canonical identifier，不承诺跨版本、跨文件或
+跨 commit 稳定，不得作为永久 Failure Knowledge identity。规范身份事实以
+`docs/architecture/CANONICAL_SYSTEM_MODEL_SPEC.md` 和
+`docs/architecture/SYSML_TO_CANONICAL_MAPPING.md` 为权威来源，本规格不复制其完整规则。
 
 实体解析必须支持：
 
-- 将 CSM 分析对象 / 组件 / 功能上下文匹配到 Neo4j 标签和名称；
-- 保留歧义；
+- 综合当前 canonical context 将 CSM 分析对象 / 组件 / 功能上下文匹配到来源知识；
+- 使用 item / component display name、alias / normalized name；
+- 使用 Function semantics 与 Component semantics；
+- 使用 `SourceReference`、`SourceReference.source_element_id`、source / model version
+  以及 source URI / locator；
+- 使用 applicability context 与来源提供时的 historical FMEA row context；
+- 保留歧义及已定义时的 confidence；
 - 不静默覆盖冲突匹配；
 - 不将显示名称作为唯一的长期身份策略；
+- 不将 `component-N` / `function-N` 作为唯一的长期身份策略；
 - 每个接受的匹配都有可追踪证据。
 
 精确显示名称匹配可以保留为兼容性基线或回退方式，但不得成为长期规范查询契约。
+具体 `EntityResolution` class shape 留到 MVP-2B，本规格不提前冻结实现。
 
 ## 11. 仓库语义契约要求
 

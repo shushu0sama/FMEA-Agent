@@ -19,6 +19,8 @@ Release Record
 ```text
 docs/records/
 ├── README.md                        ← 本文件
+├── G0A_L_DOCUMENTATION_LOCALIZATION.md
+├── G0A_R_PRE_MVP_2_REVIEW_REMEDIATION.md
 ├── bootstrap/
 │   └── PROJECT_CLEANUP_REPORT.md
 ├── MVP_0/
@@ -31,6 +33,8 @@ docs/records/
 │   ├── MVP_1E_WORKFLOW_INTEGRATION.md
 │   ├── MVP_1F_BENCHMARK_RELEASE.md
 │   └── MVP_1_RELEASE.md
+├── security/
+│   └── 2026-09-05_CREDENTIAL_EXPOSURE_REMEDIATION.md
 └── templates/
     ├── SESSION_HANDOFF_TEMPLATE.md
     ├── STAGE_CLOSEOUT_TEMPLATE.md

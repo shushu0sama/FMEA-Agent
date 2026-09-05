@@ -5,11 +5,20 @@
 
 本文档定义 FMEA Agent v1 使用的项目专用 FMEA 语义配置。
 
-基线方法为：
+项目方法基线为：
 
-> **AIAG-VDA FMEA**
+```text
+AIAG & VDA FMEA Handbook
+First Edition, 2019
+Seven-Step Approach
+```
 
-本文档定义软件需要的数据和工作流概念，**不**复制专有评分表、Action Priority 矩阵、手册文本或受版权保护的评分内容。
+即《AIAG & VDA FMEA Handbook》第一版（First Edition，2019）所定义的
+七步法（Seven-Step Approach）工作流形态。这里的“七”描述步骤数量，
+不表示版本序号。
+
+本文档定义软件需要的数据和工作流概念，**不**复制专有 S/O/D 评分表、
+Action Priority 矩阵、手册长篇内容或其他受版权保护的评分内容。
 
 实现生产级 S/O/D/AP 逻辑之前，项目必须取得授权规则来源。
 

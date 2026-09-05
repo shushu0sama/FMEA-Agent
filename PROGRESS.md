@@ -9,8 +9,9 @@
 ```text
 Architecture baseline: v0.1
 Development mode:      Runnable Vertical Slice First
-FMEA profile:          AIAG-VDA FMEA（七步 workflow shape）
-Current branch:        master
+FMEA profile:          AIAG & VDA FMEA Handbook（First Edition, 2019；
+                       Seven-Step Approach）
+Current branch:        fix/pre-mvp2-review-remediation
 Review Baseline:       369f09d
 Current MVP:           MVP-1 Real System Facts（stable） /
                        Pre-MVP-2 Governance Baseline（planning docs）
@@ -167,9 +168,13 @@ CI:              GitHub Actions NOT CONFIGURED
 ## 当前补充治理状态
 
 - G0A 基线：`4d38489f92c41ffa906c6d0b79a4fd34d6ecb422`，完整保留。
-- G0A-L：`READY_FOR_REVIEW`，文档中文化与语言治理；工作范围仅限项目自有 Markdown。
-  独立文档复核的两项措辞问题已修正；联合 G0A + G0A-L 审核待进行。
+- G0A + G0A-L Independent Review：`CHANGES_REQUIRED`；发现 C-1、I-1、I-2、I-3。
+- G0A-R：`READY_FOR_RE_REVIEW`；repository-side blocker 已修复，provider-side
+  credential revocation/rotation 仍为 `PENDING USER CONFIRMATION`。
 - G0A-L 状态与本次验证证据：`docs/records/G0A_L_DOCUMENTATION_LOCALIZATION.md`。
+- G0A-R 记录：`docs/records/G0A_R_PRE_MVP_2_REVIEW_REMEDIATION.md`。
+- Credential 处置记录：
+  `docs/records/security/2026-09-05_CREDENTIAL_EXPOSURE_REMEDIATION.md`。
 - 文档默认语言：zh-CN，保留英文技术标识符及原始代码块。
 - MVP-2 production implementation：`NOT_STARTED`。
 - MVP-2 Implementation Plan：`NOT_STARTED pending spec review`；本次不创建 Plan。
@@ -180,15 +185,16 @@ MVP-1 = RELEASED（v0.1.0 = 原始能力发布；
 v0.1.1 = 当前稳定文档补丁）。发布后补丁状态为
 DONE（独立补丁审核 ACCEPTED；附注 tag 为 v0.1.1）。
 
-后续会话先执行 **Independent Review of G0A + G0A-L**；用户审查当前 Spec 后，
-进入 **G0B MVP-2 Implementation Planning**。原规划顺序保留如下：
+下一步先执行 **Independent Re-review of G0A + G0A-L + G0A-R**。只有复审
+`ACCEPTED` 后，才可进入 **G0B MVP-2 Implementation Planning**。原规划顺序保留如下：
 
 ```text
-1. Independent review of Pre-MVP-2 governance/spec baseline:
+1. Independent re-review of Pre-MVP-2 governance/spec baseline and remediation:
    - `docs/product/FMEA_AGENT_V1.md`
    - `docs/architecture/FMEA_AGENT_V1_ARCHITECTURE.md`
    - `docs/research/NEO4J_FAILURE_KNOWLEDGE_BASELINE.md`
    - `docs/specs/MVP_2_REAL_FAILURE_KNOWLEDGE.md`
+   - `docs/records/G0A_R_PRE_MVP_2_REVIEW_REMEDIATION.md`
 2. After review acceptance, create `docs/plans/MVP_2_IMPLEMENTATION_PLAN.md`.
 禁止:     开始 MVP-2 production implementation before spec review
 ```

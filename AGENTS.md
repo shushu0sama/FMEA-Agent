@@ -16,9 +16,11 @@
 
 ## 2. 当前 FMEA 方法配置
 
-项目基线为：
+项目 FMEA 方法与版本的权威详细来源为：
+`docs/domain/FMEA_PROFILE_V1.md`。
 
-**AIAG-VDA FMEA**
+当前基线为 **AIAG & VDA FMEA Handbook, First Edition, 2019,
+Seven-Step Approach**。
 
 工作流采用七步法结构：
 

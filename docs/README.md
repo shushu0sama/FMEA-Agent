@@ -86,3 +86,9 @@ MVP-2 生产实现仍为 `NOT_STARTED`，Implementation Plan 仍为 `NOT_STARTED
 语言规则及检查关口见 `docs/governance/DEVELOPMENT_WORKFLOW_AND_RECORDS_POLICY.md` 第 14 节。
 G0A-L 语言治理的范围、文件清单及验证证据见
 `docs/records/G0A_L_DOCUMENTATION_LOCALIZATION.md`；该记录记载本次工作，不替代 `PROGRESS.md` 的当前状态职责。
+
+G0A + G0A-L Independent Review 返回 `CHANGES_REQUIRED`；G0A-R 的修复与验证记录见
+`docs/records/G0A_R_PRE_MVP_2_REVIEW_REMEDIATION.md`，credential 处置记录见
+`docs/records/security/2026-09-05_CREDENTIAL_EXPOSURE_REMEDIATION.md`。
+当前状态为 `READY_FOR_RE_REVIEW`；MVP-2 production implementation 和
+MVP-2 Implementation Plan 均保持 `NOT_STARTED`。
