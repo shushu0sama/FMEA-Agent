@@ -2,6 +2,10 @@
 
 Status: ACTIVE SPEC / PLANNING ONLY
 
+> 最新需求提示：用户进一步希望约一周内演示资料上传、自然语言、参考性推理、UI 与 FMEA 报告，
+> 期限可放宽。该体验超出本文原检索范围；详见[信息对齐第 9 节](../product/MVP_2_PREPLANNING_ALIGNMENT.md#9-完整问卷答复与-demo-目标澄清)。
+> 本文原范围/排除项尚未修订获批，不能将新增体验视作既有实现或按旧范围直接开工。
+
 > 2026-09-05 规划前补充：本文是当前草案入口，`ACTIVE` 不代表已批准。
 > 用户已确认现有 SysML 与 Neo4j 案例独立且不重合，不能预设同一案例对应。
 > 当前先进行[信息对齐](../product/MVP_2_PREPLANNING_ALIGNMENT.md)；第 4、8、10、16、17 节涉及的
