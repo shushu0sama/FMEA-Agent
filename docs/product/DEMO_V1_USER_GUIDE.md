@@ -1,7 +1,7 @@
 # Demo V1 本机候选分析用户指南
 
 Lifecycle: ACTIVE
-范围：Demo V1 / D6 用户入口与导出；D7 集成验收尚未开展。
+范围：Demo V1 用户入口与导出；D7 实际验收状态见[验收报告](../evaluation/DEMO_V1_ACCEPTANCE_REPORT.md)。
 
 ## 启动
 
@@ -79,4 +79,31 @@ HTML 对外部文字转义，不含脚本或外链；CSV 使用 UTF-8 BOM，并�
 live 的显式提交会将本次必要资料及可用检索上下文发送给 DeepSeek。仅在资料已获允许外发时使用。
 本阶段验证使用公开演示资料；不会把私有 Neo4j 工程正文送入外部模型。
 首例 hydraulicPump / motor / spin 是教学夹具；根动作 pumpSpin 与其他未选功能列在排除项中。
-报告不是工程认证；D6 技术验证不代表 D7、正式 MVP-2/3 或整个 Demo 已验收。
+报告不是工程认证；Demo 技术验收不代表正式 MVP-2/3/5 发布，人工工程质量未验收。
+
+## 重复执行 D7 的独立验证
+
+常规验证不注入真实凭据：
+
+```powershell
+uv run --no-sync --offline python scripts/verify.py
+uv lock --check --offline
+uv run --no-sync --offline python -m pytest tests -k demo -q
+uv run --no-sync --offline python -m pytest tests/test_mvp1_benchmark.py -q
+```
+
+真实图和公开资料模型验证分别运行：
+
+```powershell
+uv run --no-sync --offline --env-file .env.local python scripts/demo_neo4j_smoke.py
+uv run --no-sync --offline --env-file .env.local python scripts/demo_model_smoke.py
+uv run --no-sync --offline --env-file .env.local python scripts/demo_acceptance_smoke.py
+```
+
+前者只做只读来源查回；后两者只接受固定 hash 的公开演示资料，不装配真实图。
+新增 acceptance smoke 覆盖补问/未知继续/会话幂等/脱离会话导出，产物在
+`outputs/d7-public-smoke/candidate.{json,html,csv}`（Git ignored，重跑会更新该目录的本次 smoke 产物）。
+模型非确定性可能导致某次 schema 验证失败，按实际输出状态记录；不能将退出码或历史成功替代当前结果。
+`SKIPPED` 不是 PASS；新 acceptance smoke 对任何非 PASS 返回非零退出码。
+三场景不是“全 live”联合验证；默认 live UI 可能将可用图正文发送 DeepSeek，
+当前私有图外发不在授权范围，演示使用明确 mock UI 或上述公开资料脚本。

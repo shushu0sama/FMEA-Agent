@@ -80,7 +80,7 @@ print(inputs.input_digest, inputs.missing_files, inputs.conflicts)
 每文件 5 MiB、PDF 20 页、BOM 200 数据行、所有输入提取文本合计 30,000 字符；
 XLSX 总展开大小上限 25 MiB，BOM 表扫描最多 10,000 物理行、64 列（含空白间隔）。
 超限、公式、加密/损坏文件、无文本 PDF、partial 模型或无合法目标明确拒绝。
-loader 不保存文件或执行链接；UI 上传存储与会话交互尚未实现。
+loader 不保存文件或执行链接；Demo UI 已通过应用层安全上传入口和会话服务接入。
 
 D3 可单独调用 `Neo4jSourceKnowledgeRepository.from_env()`，通过 D2 的 `KnowledgeQuery`
 检索来源知识。固定模板双入口、最多 20 个模式，context/associations 各最多 1000 条关系记录；
@@ -109,11 +109,12 @@ uv run --extra demo python scripts/demo_model_smoke.py
 ```
 
 smoke 只用固定 hash 的公开 D1 教学资料，先验证通用 JSON，再验证 motor/spin 候选 schema；
-最新本机真实结果为 PASS（通用 JSON 与完整 schema，8 条候选）；工程质量未验收。适配器固定 `deepseek-v4-pro`，最多六次 HTTP 请求
+D7 最新本机真实结果为 PASS（通用 JSON 与完整 schema，6 条候选）；工程质量未验收。适配器固定 `deepseek-v4-pro`，最多六次 HTTP 请求
 （含一次有限重试），响应上限 1 MiB，输出始终待审核的推断/候选，无 S/O/D/AP。
 应用生成入口使用 D3 未排除参考，保留原检索审计；图错误须显式选择继续才生成。
 上下文事实的精确原文检查不是工程真实性认证。详见 [D4 记录](docs/records/DEMO_V1/D4_DEEPSEEK_AND_GENERATION_VALIDATION.md)。
-D5 会话/补问恢复与 D6 报告/UI 均已通过独立审核；D7 集成验收尚未开展。
+D5 会话/补问恢复与 D6 报告/UI 均已通过独立审核；D7 集成验收 READY_FOR_REVIEW，
+[A01–A12 矩阵和真实结果](docs/evaluation/DEMO_V1_ACCEPTANCE_REPORT.md)区分技术演示与人工工程质量。
 
 本机私有 `.env.local` 已由 Git 忽略；需显式加 `--env-file .env.local`，例如
 `uv run --env-file .env.local --extra demo python scripts/demo_model_smoke.py`。
@@ -130,7 +131,7 @@ D5 会话/补问恢复与 D6 报告/UI 均已通过独立审核；D7 集成验�
 
 ## 如何运行 Demo
 
-D6 本机 UI（默认 live，缺少配置不切 mock；详情见[中文用户指南](docs/product/DEMO_V1_USER_GUIDE.md)）：
+Demo V1 本机 UI（默认 live，缺少配置不切 mock；详情见[中文用户指南](docs/product/DEMO_V1_USER_GUIDE.md)）：
 
 ```powershell
 uv sync --extra demo
@@ -184,9 +185,10 @@ drift）→ docs-only patch → Independent Patch Review ACCEPTED
 → annotated tag v0.1.1（current stable patch；无 capability 变化）
 ```
 
-下一步：按既有计划进入 D7 集成验收；D6 已接受，不据此宣布整个 Demo 完成。
+D7 集成验收已实现，等待固定提交独立最终审核；阶段记录见 [D7 收尾](docs/records/DEMO_V1/D7_DEMO_RELEASE.md)。
 已实现输入资料、只读检索和 DeepSeek 适配/校验；真实 DeepSeek 与 Neo4j 独立 smoke 均通过，
-会话工作流、UI 和完整候选报告现已接入；完整图与模型集成和工程质量仍待后续验收。
+会话工作流、UI 和完整候选报告现已接入；公开资料完整服务验证明确使用 FAKE_NO_MATCH。
+下一建议任务为正式 MVP-2/3 差距核对与独立工程样例/人工抽查；私有图与模型完整集成和工程质量仍未验收。
 MVP-1 稳定发布 tag 不变，当前开发阶段以 PROGRESS 和阶段记录为准。
 
 - [Demo 规格](docs/specs/DEMO_V1_END_TO_END_FMEA.md)
@@ -200,7 +202,7 @@ MVP-1 稳定发布 tag 不变，当前开发阶段以 PROGRESS 和阶段记录�
 后续能力仍延后（D3 只读 Neo4j 单独验证，不改变 MVP-1 发布范围）：
 
 ```text
-RAG / real LLM / AIAG-VDA real S/O/D/AP
+RAG / AIAG-VDA real S/O/D/AP
 MCP / Human Review / Failure Propagation / Dynamic FMEA
 ```
 

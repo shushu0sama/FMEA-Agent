@@ -137,7 +137,7 @@ def _dialogue(settings: DemoSettings) -> None:
 def main() -> None:
     st.set_page_config(page_title="FMEA Agent · Demo V1", layout="wide")
     st.title("FMEA Agent · 候选分析工作台")
-    st.caption("Demo V1 / D6 · 单用户本机工程助手")
+    st.caption("Demo V1 · 单用户本机工程助手")
     st.warning("CANDIDATE / INFERENCE：所有生成结果待工程审核。风险 NOT_EVALUATED；优化 SKIPPED。")
     try:
         settings = load_demo_settings()

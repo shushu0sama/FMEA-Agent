@@ -217,6 +217,14 @@ Security:      legacy importer is reference evidence only; do not copy secrets
 不能只用上表替代完整许可。stdlib `html/csv/json/tempfile` 直接复用；没有新增排版、解析或 Agent 框架。
 完整执行、依赖差异与适用限制见 [D6 记录](../records/DEMO_V1/D6_REPORTS_AND_LOCAL_UI.md)。
 
+## Demo V1 / D7 复用与锁定核对（2026-09-05）
+
+D7 未新增或升级第三方依赖；`pyproject.toml` / `uv.lock` 与 dadc36c 一致，
+`uv lock --check --offline` 104 packages PASS。D2–D6 固定版本与许可证记录继续适用，未重新分发二进制。
+新增集成测试与 `scripts/demo_acceptance_smoke.py` 复用已安装 SysML、LangGraph、DeepSeek adapter、
+D6 导出/Mock 和 stdlib，不新建基础设施。新脚本 mypy 与端到端契约通过，
+真实图/模型 smoke 分别验证当前组合；详见 [D7 验收报告](../evaluation/DEMO_V1_ACCEPTANCE_REPORT.md)。
+
 ## 集成记录模板
 
 启用依赖时填写：
